@@ -102,6 +102,8 @@ h2 em { font-style: normal; color: var(--cyan); text-shadow: 0 0 18px rgba(60, 2
   position: relative; isolation: isolate; padding: 26px 24px 22px;
   transition: transform .25s, filter .25s;
 }
+a.card { display: block; color: inherit; text-decoration: none; }
+a.card:hover { text-shadow: none; }
 .card::before, .card::after { content: ""; position: absolute; pointer-events: none; }
 .card::before { inset: 0; z-index: -2; background: var(--line-c);
   clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut))); }
@@ -273,7 +275,7 @@ label.file input { display: none; }
         <h3>Snoop37</h3>
         <div class="from">based on SLOOP by isod89</div>
         <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37 Pro.</p>
-        <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li>3D-printable knob caps to match</li></ul>
+        <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li><a href="https://makerworld.com/en/models/3425326-m-vave-smk37-colorful-knobs">3D-printable knob caps to match</a></li></ul>
         <div class="foot"><span class="tag ">experimental</span>
           <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Snoop37">code</a></span>
           <button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></div>
@@ -328,23 +330,24 @@ label.file input { display: none; }
     <div class="reveal">
       <div class="eyebrow">// fm1-to-smk37</div>
       <h2>Port <em>your</em> firmware.</h2>
-      <p class="lead">The port guide walks an FM-1 firmware onto the SMK-37 Pro step by step: the board switch,
+      <p class="lead"><a href="https://github.com/genkigenki/fm1-to-smk37">The port guide</a> walks an FM-1 firmware onto the SMK-37 Pro step by step: the board switch,
         the input and LED layer, the flash map, the update path and the controls. Written so you can follow it with
         a coding assistant such as Claude, without any vendor code. The FM-1 build stays byte-identical, so the SMK target can live upstream.</p>
     </div>
     <div class="duo">
-      <div class="card reveal" style="--c: var(--cyan)">
+      <a class="card reveal" href="https://github.com/genkigenki/fm1-to-smk37" style="--c: var(--cyan)">
         <h3>The port guide</h3>
         <div class="from">CC BY-NC 4.0</div>
         <ul><li>Board layer as a patch series</li><li>Full panel and pin map</li><li>Controls mapping template for your overlay</li></ul>
-        <div class="foot"><span class="meta"><a href="https://github.com/genkigenki/fm1-to-smk37">github.com/genkigenki/fm1-to-smk37</a></span></div>
-      </div>
-      <div class="card reveal" style="--c: var(--amber)">
+        <div class="foot"><span class="meta">github.com/genkigenki/fm1-to-smk37</span></div>
+      </a>
+      <a class="card reveal" href="https://makerworld.com/en/models/3425326-m-vave-smk37-colorful-knobs" style="--c: var(--amber)">
         <h3>Knob caps</h3>
         <div class="from">OpenSCAD · print without supports</div>
         <p>Flat, twisted hex caps: dark grey with raised white symbols for K1 to K4, the track colours for K5 to K8. Multi-colour 3MF.</p>
         <div class="knobs"><img src="assets/knob-k1.png" width="48" height="48" draggable="false" alt="K1 cap"><img src="assets/knob-k2.png" width="48" height="48" draggable="false" alt="K2 cap"><img src="assets/knob-k3.png" width="48" height="48" draggable="false" alt="K3 cap"><img src="assets/knob-k4.png" width="48" height="48" draggable="false" alt="K4 cap"><img src="assets/knob-k5.png" width="48" height="48" draggable="false" alt="K5 cap"><img src="assets/knob-k6.png" width="48" height="48" draggable="false" alt="K6 cap"><img src="assets/knob-k7.png" width="48" height="48" draggable="false" alt="K7 cap"><img src="assets/knob-k8.png" width="48" height="48" draggable="false" alt="K8 cap"></div>
-      </div>
+        <div class="foot"><span class="meta">makerworld.com · M-Vave SMK37 colorful knobs</span></div>
+      </a>
     </div>
   </div>
 </section>
@@ -702,6 +705,7 @@ label.file input { display: none; }
   requestAnimationFrame(frame);
 
   /* ---- the knob caps turn: drag or scroll ---- */
+  document.querySelectorAll(".knobs").forEach((n) => n.addEventListener("click", (e) => e.preventDefault()));   /* turning a cap is not a click on its card */
   document.querySelectorAll(".knobs img").forEach((k) => {
     let a = 0, last = null;
     const set = () => { k.style.rotate = a + "deg"; };
