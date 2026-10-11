@@ -1,0 +1,1215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMK37 — FM-1 firmwares, unleashed</title>
+<meta name="description" content="Open FM-1 firmwares, ported to the M-Vave SMK-37 Pro: 37 velocity keys, 16 RGB pads, 4 faders, pitch and mod wheels.">
+<meta name="theme-color" content="#04060c">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root {
+  --bg: #04060c;
+  --bg2: #070b16;
+  --ink: #dff8ff;
+  --dim: #7f9bb0;
+  --cyan: #3cf0ff;
+  --mag: #ff3cd2;
+  --amber: #ffb02a;
+  --line: rgba(60, 240, 255, .18);
+  --card: rgba(10, 20, 36, .72);
+  --t1: #287cff; --t2: #1ecc70; --t3: #ffc618; --t4: #ff621a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 Inter, system-ui, sans-serif; overflow-x: hidden;
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-shadow: 0 0 12px var(--cyan); }
+.mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; height: 100vh; min-height: 560px; overflow: hidden; }
+#stage { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hud {
+  position: absolute; left: 24px; top: 20px; z-index: 2;
+  font: 12px/1.7 "JetBrains Mono", monospace; color: var(--cyan); letter-spacing: .08em;
+  text-shadow: 0 0 8px rgba(60, 240, 255, .7); pointer-events: none;
+}
+.hud .k { color: var(--dim); }
+.hud .new { color: #5ad2ff; text-shadow: 0 0 8px rgba(90, 210, 255, .8); }
+.nav {
+  position: absolute; right: 24px; top: 18px; z-index: 3; display: flex; gap: 22px;
+  font: 600 12px/1 Orbitron, sans-serif; letter-spacing: .14em; text-transform: uppercase;
+}
+.nav a { color: var(--ink); opacity: .75; }
+.nav a:hover { opacity: 1; color: var(--cyan); }
+.title {
+  position: absolute; left: 0; right: 0; bottom: 9vh; z-index: 2; text-align: center;
+  opacity: 0; transform: translateY(18px); transition: opacity 1.2s ease, transform 1.2s ease;
+  pointer-events: none; padding: 0 16px;
+}
+.title.on { opacity: 1; transform: none; pointer-events: auto; }
+.title h1 {
+  margin: 0; font: 900 clamp(48px, 11vw, 132px)/1 Orbitron, sans-serif; letter-spacing: .06em;
+  color: #effcff;
+  text-shadow: 0 0 6px var(--cyan), 0 0 22px rgba(60, 240, 255, .8), 0 0 60px rgba(60, 240, 255, .45);
+}
+.title h1 span { color: #ffe9fb; text-shadow: 0 0 6px var(--mag), 0 0 24px rgba(255, 60, 210, .85), 0 0 60px rgba(255, 60, 210, .5); }
+.title p { margin: 10px auto 22px; max-width: 640px; font-size: clamp(15px, 2.2vw, 19px); color: #bfe9f5; }
+.btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block; padding: 12px 22px; border: 1px solid var(--cyan); border-radius: 2px;
+  font: 700 13px/1 Orbitron, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--ink);
+  background: rgba(60, 240, 255, .08); box-shadow: 0 0 18px rgba(60, 240, 255, .25), inset 0 0 14px rgba(60, 240, 255, .12);
+}
+.btn.alt { border-color: var(--mag); background: rgba(255, 60, 210, .08); box-shadow: 0 0 18px rgba(255, 60, 210, .25), inset 0 0 14px rgba(255, 60, 210, .12); }
+.btn:hover { color: #fff; text-shadow: 0 0 10px var(--cyan); }
+.replay {
+  position: absolute; right: 24px; bottom: 22px; z-index: 3; background: none; border: 1px solid var(--line);
+  color: var(--dim); font: 11px "JetBrains Mono", monospace; letter-spacing: .1em; padding: 6px 10px; cursor: pointer;
+}
+.replay:hover { color: var(--cyan); border-color: var(--cyan); }
+.scrollcue { position: absolute; left: 50%; bottom: 14px; z-index: 2; width: 1px; height: 40px; background: linear-gradient(var(--cyan), transparent); opacity: .6; }
+
+/* ---------- sections ---------- */
+section { position: relative; padding: 110px 24px; }
+#why { padding-bottom: 20px; }
+#firmwares { padding-top: 40px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.eyebrow { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .24em; color: var(--mag); text-transform: uppercase; }
+h2 { margin: 10px 0 18px; font: 700 clamp(28px, 4.6vw, 48px)/1.1 Orbitron, sans-serif; letter-spacing: .03em; }
+h2 em { font-style: normal; color: var(--cyan); text-shadow: 0 0 18px rgba(60, 240, 255, .6); }
+.lead { max-width: 720px; color: #b7cfdc; font-size: 18px; }
+.gridbg {
+  background:
+    linear-gradient(var(--bg) 0, transparent 120px, transparent calc(100% - 120px), var(--bg) 100%),
+    repeating-linear-gradient(0deg, transparent 0 59px, rgba(60, 240, 255, .06) 59px 60px),
+    repeating-linear-gradient(90deg, transparent 0 59px, rgba(60, 240, 255, .06) 59px 60px),
+    var(--bg2);
+}
+
+
+/* firmware cards */
+.cards { margin-top: 44px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 22px; }
+.card {
+  /* chamfered corners: ::before is the outline (the full shape in the line colour), ::after the fill inset by the
+     line width, so the line stays closed around the cut corners; the glow is a drop-shadow that follows the shape */
+  --bw: 2px; --cut: 22px;
+  --line-c: linear-gradient(135deg, var(--c, var(--cyan)) 0 70px, rgba(60, 240, 255, .24) 70px);
+  position: relative; isolation: isolate; padding: 26px 24px 22px;
+  transition: transform .25s, filter .25s;
+}
+.card::before, .card::after { content: ""; position: absolute; pointer-events: none; }
+.card::before { inset: 0; z-index: -2; background: var(--line-c);
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut))); }
+.card::after { inset: var(--bw); z-index: -1; background: #08111f;
+  clip-path: polygon(0 0, calc(100% - var(--cut) + .6px) 0, 100% calc(var(--cut) - .6px), 100% 100%,
+                     calc(var(--cut) - .6px) 100%, 0 calc(100% - var(--cut) + .6px)); }
+.card:hover { --bw: 3px; --line-c: var(--c, var(--cyan)); transform: translateY(-3px);
+  filter: drop-shadow(0 0 10px var(--c, var(--cyan))); }
+.card h3 { margin: 0; font: 900 24px Orbitron, sans-serif; letter-spacing: .04em; color: #f2fdff; }
+.card h3 small { font: 500 11px "JetBrains Mono", monospace; letter-spacing: .12em; color: var(--c, var(--cyan)); margin-left: 8px; vertical-align: middle; }
+.card .from { margin: 4px 0 14px; font: 12px "JetBrains Mono", monospace; color: var(--dim); }
+.card p { margin: 0 0 14px; color: #c3d8e3; font-size: 15px; }
+.card ul { margin: 0 0 16px; padding: 0; list-style: none; font-size: 14px; color: #a9c2cf; }
+.card li { padding-left: 18px; position: relative; margin: 4px 0; }
+.card li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--c, var(--cyan)); }
+.tag { display: inline-block; font: 600 10px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; padding: 4px 8px; border: 1px solid currentColor; color: var(--amber); }
+.tag.ok { color: #46f0a0; }
+.card.flag { grid-column: 1 / -1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center; }
+.card.flag h3 { font-size: 34px; }
+.padrow { display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; }
+.padrow i { aspect-ratio: 1; border-radius: 3px; background: #0d1526; border: 1px solid #1b2a44; transition: background .12s, box-shadow .12s; }
+
+/* steps */
+.steps { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; counter-reset: s; }
+.step { border-top: 1px solid var(--line); padding-top: 18px; }
+.step::before { counter-increment: s; content: "0" counter(s); font: 900 34px Orbitron, sans-serif; color: transparent; -webkit-text-stroke: 1px var(--cyan); text-shadow: 0 0 18px rgba(60, 240, 255, .35); }
+.step h4 { margin: 6px 0 6px; font: 700 16px Orbitron, sans-serif; letter-spacing: .04em; }
+.step p { margin: 0; color: #a9c2cf; font-size: 15px; }
+code { font: 13px "JetBrains Mono", monospace; color: var(--cyan); background: rgba(60, 240, 255, .07); padding: 1px 6px; }
+
+/* extras */
+.duo { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+.knobs { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-top: 16px; max-width: 400px; }
+.knobs img { width: 100%; height: auto; aspect-ratio: 1; cursor: grab; touch-action: none; user-select: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .6)); transition: filter .2s; }
+.knobs img:hover { filter: drop-shadow(0 0 8px rgba(60, 240, 255, .55)); }
+.knobs img.drag { cursor: grabbing; }
+
+footer { padding: 60px 24px 50px; border-top: 1px solid var(--line); color: var(--dim); font-size: 13px; }
+footer .wrap { display: grid; gap: 14px; }
+footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing: .08em; }
+
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* installer */
+.connect {
+  position: sticky; top: 0; z-index: 20; margin: 34px 0 0; display: flex; align-items: center; gap: 16px;
+  padding: 14px 18px; background: rgba(6, 12, 24, .92); backdrop-filter: blur(8px);
+  border: 1px solid var(--line); border-left: 3px solid var(--cyan);
+}
+.led { flex: none; width: 12px; height: 12px; border-radius: 50%; background: #34404f; box-shadow: 0 0 0 3px rgba(52, 64, 79, .3); }
+.led.on { background: #46f0a0; box-shadow: 0 0 12px #46f0a0, 0 0 0 3px rgba(70, 240, 160, .2); }
+.led.busy { background: var(--amber); box-shadow: 0 0 12px var(--amber); animation: blink .8s infinite; }
+.led.err { background: #ff3c5a; box-shadow: 0 0 12px #ff3c5a; }
+@keyframes blink { 50% { opacity: .35; } }
+.ctext { flex: 1; min-width: 0; display: grid; }
+.ctext b { font: 700 15px Orbitron, sans-serif; letter-spacing: .05em; }
+.ctext span { color: var(--dim); font-size: 13px; overflow-wrap: anywhere; }
+.card .foot { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.card .meta { font: 11px "JetBrains Mono", monospace; color: var(--dim); }
+.card .inst { margin-left: auto; padding: 10px 18px; border-color: var(--c); background: transparent; cursor: pointer;
+  box-shadow: 0 0 14px -4px var(--c), inset 0 0 12px -6px var(--c); }
+.connect .btn:disabled { opacity: .45; cursor: default; border-color: #46f0a0; color: #46f0a0; box-shadow: none; background: transparent; }
+.card .inst:disabled { opacity: .35; cursor: default; box-shadow: none; }
+.card.running { --line-c: #46f0a0; }
+.card.running .meta::after { content: " · running now"; color: #46f0a0; }
+.tag.soon { color: var(--mag); }
+.card.fw .screen { margin: 4px auto 20px; }
+.screenbox { display: grid; gap: 7px; }
+.screen { width: 260px; height: 260px; justify-self: center; background: #000; overflow: hidden;
+  border: 10px solid #0d1320; border-radius: 8px; box-shadow: 0 0 0 1px #233049, 0 0 40px -10px var(--c, var(--mag)); }
+.screen img { display: block; width: 240px; height: 240px; image-rendering: pixelated; }
+.small { color: var(--dim); font-size: 13px; }
+.note { margin-top: 28px; max-width: 760px; }
+label.file { display: inline-block; padding: 9px 14px; border: 1px dashed var(--line); cursor: pointer; font-size: 14px; }
+label.file input { display: none; }
+.ovl { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px;
+  background: rgba(2, 4, 9, .86); backdrop-filter: blur(6px); }
+.ovl[hidden] { display: none; }
+.ovbox { width: min(560px, 100%); padding: 30px 28px 26px; background: #070d1a; border: 1px solid var(--cyan);
+  box-shadow: 0 0 60px -14px var(--cyan), inset 0 0 40px -24px var(--cyan); }
+.ovbox h3 { margin: 6px 0 18px; font: 900 28px Orbitron, sans-serif; letter-spacing: .04em; }
+.ovsteps { list-style: none; margin: 0 0 18px; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.ovsteps li { font: 10px "JetBrains Mono", monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--dim);
+  border-top: 3px solid #1b2a44; padding-top: 6px; }
+.ovsteps li.on { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 -6px 12px -6px var(--cyan); }
+.ovsteps li.ok { color: #46f0a0; border-color: #46f0a0; }
+.bar { height: 8px; background: #0d1526; border: 1px solid #1b2a44; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; transition: width .25s linear;
+  background: linear-gradient(90deg, var(--cyan), var(--mag)); box-shadow: 0 0 14px var(--cyan); }
+.ovstatus { min-height: 3.2em; margin: 14px 0 6px; color: #cfeefa; }
+.ovbox details summary { cursor: pointer; color: var(--dim); font-size: 12px; }
+.ovbox pre { max-height: 160px; overflow: auto; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: pre-wrap; }
+.ovbox #ovclose { margin-top: 14px; cursor: pointer; }
+@media (max-width: 720px) { .ovsteps { grid-template-columns: repeat(3, 1fr); } .connect { flex-wrap: wrap; } }
+
+@media (max-width: 720px) {
+  .nav { display: none; }
+  .hud { left: 16px; top: 14px; font-size: 10px; }
+  section { padding: 80px 16px; }
+  .card.flag { grid-template-columns: 1fr; }
+  .replay { right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .title { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="stage" aria-label="A wireframe FM-1 grows into an SMK-37 Pro"></canvas>
+  <div class="hud" id="hud" aria-hidden="true"></div>
+  <nav class="nav"><a href="#why">Why</a><a href="#firmwares">Firmwares</a><a href="#firmwares">Install</a><a href="#port">Port kit</a></nav>
+  <div class="title" id="title">
+    <h1>SMK<span>37</span></h1>
+    <p>Open FM-1 firmwares, unleashed on the M-Vave SMK-37 Pro.<br>Same chip. Ten more keys, 16 pads, 4 faders, two wheels.</p>
+    <div class="btns"><a class="btn" href="#firmwares">Install a firmware</a><a class="btn alt" href="#port">Port your own</a></div>
+  </div>
+  <button class="replay mono" id="replay" type="button">↻ replay</button>
+  <div class="scrollcue"></div>
+</header>
+
+<section id="why" class="gridbg">
+  <div class="wrap reveal">
+    <div class="eyebrow">// same brain, twice the hands</div>
+    <h2>The FM-1 has <em>grown up</em>.</h2>
+    <p class="lead">The M-Vave FM-1 and the SMK-37 Pro run the same JieLi AC791N chip, the same boot chain and the same
+      update loader. Only the panel is wired differently. So every open FM-1 firmware can run on the
+      bigger keyboard, once it learns the new panel: a thin board layer adds the keys, pads, faders,
+      wheels, LEDs and flash map.</p>
+  </div>
+</section>
+
+<section id="firmwares">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">// the lineup · install from the browser</div>
+      <h2>Pick a firmware. <em>Press install.</em></h2>
+      <p class="lead">Each port keeps its sound and workflow, but utilizes the extra hardware.
+        Connect the SMK-37 Pro by USB, open this page in Chrome or Edge, and switch firmwares in about a minute.
+       </p>
+    </div>
+
+    <div class="connect" id="connect">
+      <span class="led" id="led"></span>
+      <div class="ctext"><b id="devname">Not connected</b><span id="devsub">Use Chrome or Edge. Plug the SMK-37 Pro into this computer, then press Connect.</span></div>
+      <button class="btn" id="conn" type="button">Connect</button>
+    </div>
+
+    <div class="cards">
+      <article class="card flag fw reveal" data-fw="snoop37" data-name="Snoop37" style="--c: var(--mag)">
+        <div>
+          <h3>Snoop37</h3>
+          <div class="from">based on SLOOP by isod89</div>
+          <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37 Pro.</p>
+          <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li>3D-printable knob caps to match</li></ul>
+          <div class="foot"><span class="tag ">experimental</span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Snoop37">code</a></span>
+          <button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></div>
+        </div>
+        <div class="screenbox">
+          <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 boot intro on the SMK-37 Pro display"></div>
+        </div>
+      </article>
+      <article class="card fw reveal" data-fw="makkuro37" data-name="Makkuro37" style="--c: var(--mag)">
+        <div class="screen"><img src="assets/shot-makkuro37.png" width="240" height="240" alt="Makkuro37 on the display"></div>
+        <h3>Makkuro37</h3>
+        <div class="from">new firmware · genkigenki</div>
+        <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
+        <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li></ul>
+        <div class="foot"><span class="tag ">experimental</span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">code</a></span>
+          <button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></div>
+      </article>
+      <article class="card fw reveal" data-fw="x0x37" data-name="X0X37" style="--c: var(--t3)">
+        <div class="screen"><img src="assets/shot-x0x37.png" width="240" height="240" alt="X0X37 on the display"></div>
+        <h3>X0X37</h3>
+        <div class="from">from charlesvestal/fm1-x0x · Charles Vestal</div>
+        <p>A 909, an 808, two 303s with a line generator and a breakbeat player, all at once.</p>
+        <ul><li>Shared reverb, tape delay, master compressor</li></ul>
+        <div class="foot"><span class="tag ">experimental</span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/X0X37">code</a></span>
+          <button class="btn inst" type="button" data-fw="x0x37" disabled>Install</button></div>
+      </article>
+      <article class="card fw reveal" data-fw="fomni37" data-name="FoMni37" style="--c: var(--t4)">
+        <div class="screen"><img src="assets/shot-fomni37.png" width="240" height="240" alt="FoMni37 on the display"></div>
+        <h3>FoMni37</h3>
+        <div class="from">from charlesvestal/fm1-fomni · Charles Vestal</div>
+        <p>An Omnichord-style chord harp: the 16 pads become the strum plate, the keybed holds the chords.</p>
+        <ul><li>Strum the pads, play chords on the keys</li></ul>
+        <div class="foot"><span class="tag ">experimental</span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/FoMni37">code</a></span>
+          <button class="btn inst" type="button" data-fw="fomni37" disabled>Install</button></div>
+      </article>
+      
+    </div>
+
+    <p class="small note reveal">Unofficial firmware, at your own risk. Do not unplug the keyboard while it writes; an interrupted
+      install resumes when you press Install again. Back to the stock firmware: M-Vave's own updater, M-UPGRADE, with the official
+      SMK-37 Pro V016.</p>
+  </div>
+</section>
+
+
+<div class="ovl" id="ovl" hidden>
+  <div class="ovbox">
+    <div class="eyebrow" id="ovfw">// installing</div>
+    <h3 id="ovtitle">Installing</h3>
+    <ol class="ovsteps" id="ovsteps">
+      <li data-k="start">Connect</li><li data-k="verify">Verify</li><li data-k="loader">Update mode</li>
+      <li data-k="write">Write</li><li data-k="reboot">Restart</li><li data-k="done">Done</li>
+    </ol>
+    <div class="bar"><i id="ovbar"></i></div>
+    <p id="ovstatus" class="ovstatus">Starting</p>
+    <details><summary>Log</summary><pre id="ovlog"></pre></details>
+    <button class="btn" id="ovclose" type="button" hidden>Close</button>
+  </div>
+</div>
+
+<section id="port">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">// fm1-to-smk37</div>
+      <h2>Port <em>your</em> firmware.</h2>
+      <p class="lead">The port guide walks an FM-1 firmware onto the SMK-37 Pro step by step: the board switch,
+        the input and LED layer, the flash map, the update path and the controls. Written so you can follow it with
+        a coding assistant such as Claude, without any vendor code. The FM-1 build stays byte-identical, so the SMK target can live upstream.</p>
+    </div>
+    <div class="duo">
+      <div class="card reveal" style="--c: var(--cyan)">
+        <h3>The port guide</h3>
+        <div class="from">CC BY-NC 4.0</div>
+        <ul><li>Board layer as a patch series</li><li>Full panel and pin map</li><li>Controls mapping template for your overlay</li></ul>
+        <div class="foot"><span class="meta"><a href="https://github.com/genkigenki/fm1-to-smk37">github.com/genkigenki/fm1-to-smk37</a></span></div>
+      </div>
+      <div class="card reveal" style="--c: var(--amber)">
+        <h3>Knob caps</h3>
+        <div class="from">OpenSCAD · print without supports</div>
+        <p>Flat, twisted hex caps: dark grey with raised white symbols for K1 to K4, the track colours for K5 to K8. Multi-colour 3MF.</p>
+        <div class="knobs"><img src="assets/knob-k1.png" width="48" height="48" draggable="false" alt="K1 cap"><img src="assets/knob-k2.png" width="48" height="48" draggable="false" alt="K2 cap"><img src="assets/knob-k3.png" width="48" height="48" draggable="false" alt="K3 cap"><img src="assets/knob-k4.png" width="48" height="48" draggable="false" alt="K4 cap"><img src="assets/knob-k5.png" width="48" height="48" draggable="false" alt="K5 cap"><img src="assets/knob-k6.png" width="48" height="48" draggable="false" alt="K6 cap"><img src="assets/knob-k7.png" width="48" height="48" draggable="false" alt="K7 cap"><img src="assets/knob-k8.png" width="48" height="48" draggable="false" alt="K8 cap"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b>MAKKURO</b> · © 2026 genkigenki · site CC BY-NC 4.0 · installer code GPL-3.0 (Felucca / SLOOP)</div>
+    <div>Firmwares keep their upstream licenses and authors: SLOOP (isod89), built on Felucca (hugelton / kurogedelic);
+      X0X and FoMni (Charles Vestal). Hardware research builds on AL-255/FM-1-RE.</div>
+    <div>Unofficial community project. Not affiliated with or endorsed by M-Vave. All trademarks belong to their owners.</div>
+    <div><a href="legal.html">Legal notice · Privacy</a></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+  const cv = document.getElementById("stage"), cx = cv.getContext("2d");
+  const hud = document.getElementById("hud"), title = document.getElementById("title");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W = 0, H = 0, DPR = 1;
+  function size() {
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * DPR; cv.height = H * DPR;
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  addEventListener("resize", size); size();
+
+  const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const sst = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0)); return t * t * (3 - 2 * t); };
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const mix = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+  const CYAN = [60, 240, 255], MAG = [255, 60, 210], AMB = [255, 176, 42];
+  const TRK = [[40, 124, 255], [30, 204, 112], [255, 198, 24], [255, 98, 26]];
+
+  /* ---- geometry: every element is a list of 3D segments, a colour and an alpha ---- */
+  let E;
+  function el(col, a, order) { const e = { s: [], col, a, order, fill: null }; E.push(e); return e; }
+  function seg(e, x0, y0, z0, x1, y1, z1) { e.s.push(x0, y0, z0, x1, y1, z1); }
+  function box(e, x0, x1, y0, y1, z0, z1) {
+    for (const y of [y0, y1]) {
+      seg(e, x0, y, z0, x1, y, z0); seg(e, x1, y, z0, x1, y, z1);
+      seg(e, x1, y, z1, x0, y, z1); seg(e, x0, y, z1, x0, y, z0);
+    }
+    seg(e, x0, y0, z0, x0, y1, z0); seg(e, x1, y0, z0, x1, y1, z0);
+    seg(e, x1, y0, z1, x1, y1, z1); seg(e, x0, y0, z1, x0, y1, z1);
+  }
+  function rect(e, x0, x1, y, z0, z1) {
+    seg(e, x0, y, z0, x1, y, z0); seg(e, x1, y, z0, x1, y, z1);
+    seg(e, x1, y, z1, x0, y, z1); seg(e, x0, y, z1, x0, y, z0);
+  }
+  function ring(e, x, y, z, r, n = 18) {
+    for (let i = 0; i < n; i++) {
+      const a0 = i / n * 6.2832, a1 = (i + 1) / n * 6.2832;
+      seg(e, x + Math.cos(a0) * r, y, z + Math.sin(a0) * r, x + Math.cos(a1) * r, y, z + Math.sin(a1) * r);
+    }
+  }
+  function cyl(e, x, y0, y1, z, r, rot) {
+    ring(e, x, y0, z, r); ring(e, x, y1, z, r * .86);
+    for (let i = 0; i < 6; i++) {
+      const a = i / 6 * 6.2832 + rot;
+      seg(e, x + Math.cos(a) * r, y0, z + Math.sin(a) * r, x + Math.cos(a) * r * .86, y1, z + Math.sin(a) * r * .86);
+    }
+    seg(e, x, y1 + .02, z, x + Math.cos(rot) * r * .8, y1 + .02, z + Math.sin(rot) * r * .8);
+  }
+
+  /* Both panels measured 1:1 from top-view photos (FM-1 161.5 x 96.5 mm, SMK-37 Pro ~525 x 207 mm), 1 unit = 5 mm.
+     F(): FM-1 photo pixels (1500 x 844, body 125..1375), S(): SMK-37 Pro photo pixels (1600 x 899, body 30..1578). */
+  const KF = 32.3 / 1250, KS = 105 / 1548;
+  const F = (x, y) => [(x - 750) * KF, (y - 421.5) * KF];
+  const S = (x, y) => [(x - 804) * KS, (y - 443) * KS];
+  const FMC = [255, 150, 40], NEW = [90, 210, 255];      // the FM-1's own parts: orange. Everything the SMK adds: light blue
+
+  // an element at FM-1 rect a (centre px, size px) morphing into SMK rect b; null = it does not exist on that side
+  function rr(fa, sb, em) {
+    const a = fa && [...F(fa[0], fa[1]), fa[2] * KF, fa[3] * KF], b = sb && [...S(sb[0], sb[1]), sb[2] * KS, sb[3] * KS];
+    if (a && b) return [lerp(a[0], b[0], em), lerp(a[1], b[1], em), lerp(a[2], b[2], em), lerp(a[3], b[3], em)];
+    return a || [b[0] * GX, b[1] * GZ, b[2], b[3]];   // (new parts ride on the growing body)
+  }
+  function rbox(e, c, y0, y1, g = 1) {                  // a box from a centre rect, scaled by g (appearing parts)
+    const w = c[2] * g / 2, d = c[3] * g / 2;
+    box(e, c[0] - w, c[0] + w, y0, lerp(y0, y1, g), c[1] - d, c[1] + d);
+  }
+  function roundRect(e, x0, x1, z0, z1, r, y) {
+    const pts = [];
+    for (const [cx0, cz0, a0] of [[x1 - r, z0 + r, -90], [x1 - r, z1 - r, 0], [x0 + r, z1 - r, 90], [x0 + r, z0 + r, 180]])
+      for (let i = 0; i <= 4; i++) { const a = (a0 + i * 22.5) * Math.PI / 180; pts.push([cx0 + Math.cos(a) * r, cz0 + Math.sin(a) * r]); }
+    for (let i = 0; i < pts.length; i++) { const p = pts[i], q = pts[(i + 1) % pts.length]; seg(e, p[0], y, p[1], q[0], y, q[1]); }
+    return pts;
+  }
+
+  // FM-1 controls -> where the port puts them on the SMK-37 Pro
+  const KNOBS = [[225, 165, 0], [357, 165, 1], [357, 295, 2], [225, 295, 3], [829, 165, 4], [970, 165, 5], [1112, 165, 6], [1255, 165, 7]];
+  const SK = (i) => [453 + i * 94, 197];                 // K1..K8
+  const FBX = [847, 926, 1005, 1083, 1161, 1240], FBY = [302, 381];
+  const SBX = [1227, 1285, 1342, 1400, 1457, 1514], SBY = [352, 380];
+  // FM grid (row, col) -> SMK grid (row, col): FX SEL ENV LFO EDIT GLO / HOME SAVE ARP SEQ PLAY REC
+  const BMAP = [[1, 2], [0, 2], [0, 3], [0, 1], [1, 1], [0, 4], [1, 0], [0, 5], [0, 0], [1, 3], [1, 4], [1, 5]];
+  const FWHITE = (i) => [215 + i * 71.33, 672];
+  const FUP = [251, 322, 394, 537, 608, 750, 821, 892, 1034, 1105, 1247];
+  const UPJ = [3, 4, 5, 7, 8, 10, 11, 12, 14, 15, 17];   // the SMK black key (left white index) each upper FM-1 key becomes
+  const SW = 66.09;
+  let GX = 1, GZ = 1, NCREF = null;
+
+  function build(m, t, settle) {
+    E = [];
+    const em = ease(m);
+    const nc = mix([255, 255, 255], NEW, .55 + settle * .45);
+    NCREF = nc;
+    const h = lerp(5.7, 6.4, em);
+    // body (rounded)
+    const bw = lerp(32.3, 105, em) / 2, bd = lerp(19.3, 41.4, em) / 2, br = lerp(2.4, 1.6, em);
+    GX = bw / 52.5; GZ = bd / 20.7;
+    let e = el(FMC, 1, 0);
+    const p0 = roundRect(e, -bw, bw, -bd, bd, br, 0); roundRect(e, -bw, bw, -bd, bd, br, h);
+    for (let i = 0; i < p0.length; i += 5) seg(e, p0[i][0], 0, p0[i][1], p0[i][0], h, p0[i][1]);
+    // the keybed well
+    const kw = rr([750, 612, 1170, 273], [805, 602, 1454, 280], em);
+    e = el(FMC, .55, .5); rect(e, kw[0] - kw[2] / 2, kw[0] + kw[2] / 2, h + .01, kw[1] - kw[3] / 2, kw[1] + kw[3] / 2);
+    // keys: the FM-1's 16 lower pills -> SMK white keys 3..18, its 11 upper pills -> black keys; the rest is new
+    for (let j = 0; j < 22; j++) {
+      const s = [78 + (j + .5) * SW, 602, SW - 4, 280];
+      const old = j >= 3 && j <= 18;
+      const g = old ? 1 : sst(.25 + (j < 3 ? 3 - j : j - 18) * .08, .55 + (j < 3 ? 3 - j : j - 18) * .08, m);
+      if (g <= .01) continue;
+      const c = old ? rr([...FWHITE(j - 3), 62, 113], s, em) : rr(null, s, em);
+      const ke = el(old ? FMC : nc, g, 1 + j * .02);
+      rbox(ke, c, h, h + lerp(.9, 1.3, old ? em : 1), g);
+    }
+    const BL = [0, 1, 3, 4, 5, 7, 8, 10, 11, 12, 14, 15, 17, 18, 19];
+    for (const j of BL) {
+      const s = [78 + (j + 1) * SW, 547, 40, 170];
+      const k = UPJ.indexOf(j), old = k >= 0;
+      const g = old ? 1 : sst(.35, .7, m);
+      if (g <= .01) continue;
+      const c = old ? rr([FUP[k], 551, 62, 108], s, em) : rr(null, s, em);
+      const be = el(old ? FMC : nc, g, 1.6 + j * .02);
+      rbox(be, c, h + lerp(.1, 1.3, old ? em : 1), h + lerp(1, 2.6, old ? em : 1), g);
+    }
+    // display: bezel and screen
+    const dz = rr([595, 250, 296, 295], [300, 222, 124, 115], em), sc = rr([595, 251, 216, 213], [298, 226, 105, 103], em);
+    e = el(FMC, 1, 2);
+    rbox(e, dz, h, h + .4);
+    rect(e, sc[0] - sc[2] / 2, sc[0] + sc[2] / 2, h + .42, sc[1] - sc[3] / 2, sc[1] + sc[3] / 2);
+    if (m > .85) {                                      // a waveform on the screen
+      const se = el(NEW, sst(.85, 1, m), 9), n = 22;
+      for (let i = 0; i < n; i++) {
+        const u0 = i / n, u1 = (i + 1) / n, f = (u) => Math.sin(u * 13 + t * 3) * Math.sin(u * 3.1 + t) * .38;
+        const x = (u) => sc[0] - sc[2] * .42 + u * sc[2] * .84;
+        seg(se, x(u0), h + .44, sc[1] + f(u0) * sc[3], x(u1), h + .44, sc[1] + f(u1) * sc[3]);
+      }
+    }
+    // the 8 knobs
+    for (const [fx, fz, k] of KNOBS) {
+      const [sx, sz] = SK(k);
+      const a = F(fx, fz), b = S(sx, sz);
+      const ke = el(FMC, 1, 2.5 + k * .05);
+      cyl(ke, lerp(a[0], b[0], em), h, h + lerp(1.6, 2.4, em), lerp(a[1], b[1], em), lerp(30 * KF, 30 * KS, em), t * (k % 2 ? .6 : -.4) + k);
+    }
+    // the 12 grid buttons fly to their SMK twins, OCT- / OCT+ to OCTAVE- / OCTAVE+
+    for (let i = 0; i < 12; i++) {
+      const [r, c] = BMAP[i];
+      const bc = rr([FBX[i % 6], FBY[i / 6 | 0], 66, 66], [SBX[c], SBY[r], 48, 21], em);
+      rbox(el(FMC, 1, 3 + i * .03), bc, h, h + .5);
+    }
+    rbox(el(FMC, 1, 3.4), rr([245, 399, 70, 45], [270, 377, 48, 22], em), h, h + .5);
+    rbox(el(FMC, 1, 3.45), rr([341, 399, 70, 45], [323, 377, 48, 22], em), h, h + .5);
+    // new: KNOB BANK, FADER BANK, < and >
+    for (const [x, y, d] of [[270, 323, 0], [323, 323, 1], [270, 350, 2], [323, 350, 3]]) {
+      const g = sst(.55 + d * .05, .8 + d * .05, m); if (g <= .01) continue;
+      rbox(el(nc, g, 4), rr(null, [x, y, 48, 22], em), h, h + .5, g);
+    }
+    // new: 16 pads under K1..K8
+    for (let j = 0; j < 16; j++) {
+      const g = sst(.35 + (j % 8) * .035, .62 + (j % 8) * .035, m); if (g <= .01) continue;
+      const c = rr(null, [453 + (j % 8) * 94, j < 8 ? 277 : 348, 74, 56], em);
+      const pe = el(nc, g, 4);
+      rbox(pe, c, h, h + .55, g);
+      const w = c[2] * g / 2, d = c[3] * g / 2;
+      pe.fill = { x0: c[0] - w, x1: c[0] + w, z0: c[1] - d, z1: c[1] + d, y: h + .57, j };
+    }
+    // new: 4 faders
+    for (let j = 0; j < 4; j++) {
+      const g = sst(.5 + j * .06, .8 + j * .06, m); if (g <= .01) continue;
+      let [fx, z0] = S(1222 + j * 96, 185), z1 = S(0, 300)[1] * GZ;
+      fx *= GX; z0 *= GZ; z1 = lerp(z0, z1, g);
+      const fe = el(nc, g, 4);
+      rect(fe, fx - .3, fx + .3, h + .02, z0, z1);
+      const pz = lerp(z0 + 1, z1 - 1, .5 + .45 * Math.sin(t * .9 + j * 1.3));
+      box(fe, fx - 75 * KS / 2, fx + 75 * KS / 2, h, h + 1.6, pz - 25 * KS / 2, pz + 25 * KS / 2);
+    }
+    // new: pitch and mod wheels
+    for (let j = 0; j < 2; j++) {
+      const g = sst(.4, .75, m); if (g <= .01) continue;
+      const [wx0, wz0] = S(j ? 162 : 84, 278), wx = wx0 * GX, wz = wz0 * GZ, we = el(nc, g, 4);
+      const hw = 55 * KS / 2, hl = 145 * KS / 2;
+      rect(we, wx - hw, wx + hw, h + .01, wz - hl, wz + hl);
+      const r = hl * 1.25 * g, a0 = j ? 0 : Math.sin(t * 1.3) * .3;
+      for (let i = 0; i < 14; i++) {
+        const u0 = .5 + (i / 14 - .5) * 1.2 + a0, u1 = .5 + ((i + 1) / 14 - .5) * 1.2 + a0;
+        for (const xx of [wx - hw * .8, wx + hw * .8])
+          seg(we, xx, h - r * .55 + Math.sin(u0 * Math.PI) * r, wz - Math.cos(u0 * Math.PI) * r,
+                  xx, h - r * .55 + Math.sin(u1 * Math.PI) * r, wz - Math.cos(u1 * Math.PI) * r);
+      }
+      for (let i = 0; i < 6; i++) {                     // grip ribs, rolling
+        const u = (.5 + (i / 6 - .42) * .8 + a0 * 2 + 10) % 1;
+        const yy = h - r * .55 + Math.sin(u * Math.PI) * r, zz = wz - Math.cos(u * Math.PI) * r;
+        if (yy > h) seg(we, wx - hw * .8, yy, zz, wx + hw * .8, yy, zz);
+      }
+    }
+    return E;
+  }
+
+  /* ---- camera and drawing ---- */
+  let cam;
+  function setCam(az, R, Hc, ty) {
+    const ex = Math.sin(az) * R, ez = Math.cos(az) * R, ey = Hc;
+    let fx = -ex, fy = ty - ey, fz = -ez; const fl = Math.hypot(fx, fy, fz); fx /= fl; fy /= fl; fz /= fl;
+    let rx = -fz, rz = fx; const rl = Math.hypot(rx, rz); rx /= rl; rz /= rl;   // right = f x up
+    const ux = -rz * fy, uy = rz * fx - rx * fz, uz = rx * fy;                  // up = right x f
+    const F = Math.min(H, W * .62) / (2 * Math.tan(20 * Math.PI / 180));   // (portrait: fit the width)
+    cam = { ex, ey, ez, fx, fy, fz, rx, rz, ux, uy, uz, F };
+  }
+  function proj(x, y, z, out, o) {
+    const dx = x - cam.ex, dy = y - cam.ey, dz = z - cam.ez;
+    const zc = dx * cam.fx + dy * cam.fy + dz * cam.fz;
+    const xc = dx * cam.rx + dz * cam.rz;
+    const yc = dx * cam.ux + dy * cam.uy + dz * cam.uz;
+    out[o] = W / 2 + xc / zc * cam.F; out[o + 1] = H * .47 - yc / zc * cam.F; out[o + 2] = zc;
+  }
+  const P = new Float32Array(6);
+  function strokeEl(e, frac, glow) {
+    const s = e.s, n = s.length / 6;
+    const c = e.col, a = e.a;
+    cx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const k = i * 6;
+      let x1 = s[k + 3], y1 = s[k + 4], z1 = s[k + 5];
+      if (frac < 1) { x1 = lerp(s[k], x1, frac); y1 = lerp(s[k + 1], y1, frac); z1 = lerp(s[k + 2], z1, frac); }
+      proj(s[k], s[k + 1], s[k + 2], P, 0); proj(x1, y1, z1, P, 3);
+      if (P[2] < 1 || P[5] < 1) continue;
+      cx.moveTo(P[0], P[1]); cx.lineTo(P[3], P[4]);
+    }
+    const rgb = `${c[0] | 0},${c[1] | 0},${c[2] | 0}`;
+    cx.strokeStyle = `rgba(${rgb},${.16 * a * glow})`; cx.lineWidth = 5; cx.stroke();
+    cx.strokeStyle = `rgba(${rgb},${.95 * a})`; cx.lineWidth = 1.1; cx.stroke();
+  }
+  function fillPad(f, rgb, a) {
+    const q = [[f.x0, f.z0], [f.x1, f.z0], [f.x1, f.z1], [f.x0, f.z1]];
+    cx.beginPath();
+    q.forEach(([x, z], i) => { proj(x, f.y, z, P, 0); i ? cx.lineTo(P[0], P[1]) : cx.moveTo(P[0], P[1]); });
+    cx.closePath();
+    cx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`; cx.fill();
+  }
+
+  function floor(t, alpha) {
+    const y = -2.5, step = 8, off = (t * 6) % step;
+    cx.beginPath();
+    for (let k = -22; k <= 22; k++) {
+      proj(k * step, y, -180, P, 0); proj(k * step, y, 90, P, 3);
+      if (P[2] > 1 && P[5] > 1) { cx.moveTo(P[0], P[1]); cx.lineTo(P[3], P[4]); }
+    }
+    for (let j = -22; j <= 11; j++) {
+      const z = j * step + off;
+      proj(-180, y, z, P, 0); proj(180, y, z, P, 3);
+      if (P[2] > 1 && P[5] > 1) { cx.moveTo(P[0], P[1]); cx.lineTo(P[3], P[4]); }
+    }
+    cx.strokeStyle = `rgba(255,60,210,${.22 * alpha})`; cx.lineWidth = 1; cx.stroke();
+  }
+
+  /* ---- timeline ---- */
+  const T_DRAW = 2.4, T_HOLD = 3.1, T_GROW = 6.0;
+  let t0 = performance.now();
+  const FIX = new URLSearchParams(location.search).get("t");   // ?t=6.5 freezes the animation (previews)
+  if (reduce) t0 -= 12000;
+  document.getElementById("replay").onclick = () => { t0 = performance.now(); title.classList.remove("on"); };
+
+  function hudText(m) {
+    const n = (a, b) => Math.round(lerp(a, b, ease(m)));
+    const smk = m > .98;
+    hud.innerHTML =
+      `<span class="k">MODEL</span> ${smk ? '<span class="new">SMK-37 PRO</span>' : m > .02 ? "FM-1 → SMK-37 PRO" : "FM-1"}<br>` +
+      `<span class="k">KEYS&nbsp;&nbsp;</span> ${m > .02 ? '<span class="new">' + n(27, 37) + "</span>" : "27"}<br>` +
+      `<span class="k">PADS&nbsp;&nbsp;</span> ${m > .02 ? '<span class="new">' + n(0, 16) + "</span>" : "0"}<br>` +
+      `<span class="k">FADERS</span> ${m > .02 ? '<span class="new">' + n(0, 4) + "</span>" : "0"}<br>` +
+      `<span class="k">WHEELS</span> ${m > .02 ? '<span class="new">' + n(0, 2) + "</span>" : "0"}<br>` +
+      `<span class="k">BUTTONS</span> ${m > .02 ? '<span class="new">' + n(14, 18) + "</span>" : "14"}<br>` +
+      `<span class="k">CHIP&nbsp;&nbsp;</span> AC791N <span class="k">// same</span>`;
+  }
+
+  let lastHud = -1, heroVisible = true;
+  new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }).observe(cv);
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!heroVisible) return;
+    const t = FIX !== null ? +FIX : (now - t0) / 1000;
+    const draw = clamp(t / T_DRAW);
+    const m = clamp((t - T_HOLD) / (T_GROW - T_HOLD));
+    const settle = clamp((t - T_GROW) / 1.6);
+    const em = ease(m);
+    setCam(-.42 + Math.sin(t * .12) * .3 + em * .2, lerp(90, 112, em), lerp(68, 84, em), lerp(-3, -4, em));
+
+    cx.globalCompositeOperation = "source-over";
+    cx.fillStyle = "#04060c"; cx.fillRect(0, 0, W, H);
+    const g = cx.createRadialGradient(W / 2, H * .5, 0, W / 2, H * .5, Math.max(W, H) * .7);
+    g.addColorStop(0, "rgba(30,60,110,.35)"); g.addColorStop(1, "rgba(4,6,12,0)");
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+
+    cx.globalCompositeOperation = "lighter";
+    floor(t, clamp(t / 1.5));
+    cx.globalCompositeOperation = "source-over";         // the horizon fades into the night
+    const hz = cx.createLinearGradient(0, 0, 0, H * .62);
+    hz.addColorStop(0, "rgba(4,6,12,1)"); hz.addColorStop(.45, "rgba(4,6,12,.85)"); hz.addColorStop(1, "rgba(4,6,12,0)");
+    cx.fillStyle = hz; cx.fillRect(0, 0, W, H * .62);
+    cx.globalCompositeOperation = "lighter";
+    const els = build(m, t, settle, draw);
+    // the big flash when it lands
+    const flash = Math.exp(-Math.pow((t - T_GROW) * 3.2, 2));
+    for (const e of els) {
+      const frac = clamp(draw * 1.8 - e.order * .18);
+      if (frac <= 0) continue;
+      // the parts the SMK adds pulse with light once it has landed (a wave running left to right)
+      let glow = 1 + flash * 2.5;
+      if (e.col === NCREF && settle > 0) {
+        const x = e.s.length ? e.s[0] : 0;
+        glow += settle * 2.6 * (.5 + .5 * Math.sin(t * 3.2 - x * .06));
+      }
+      strokeEl(e, frac, glow);
+    }
+    // the pads: a step sequencer in the four track colours
+    if (settle > 0) {
+      const step = Math.floor(t * 4) % 8, track = Math.floor(t / 2) % 4;
+      for (const e of els) if (e.fill) {
+        const f = e.fill, row = f.j < 8 ? 0 : 1, col = f.j % 8;
+        const on = ((col * 3 + row * 5 + track) % 3) === 0;
+        const a = settle * (col === step ? .85 : on ? .3 : 0);
+        if (a > 0) fillPad(f, TRK[(track + row) % 4], a);
+      }
+    }
+    // a scan line sweeping along the body as it lands
+    if (t > T_GROW - .2 && t < T_GROW + 1.4) {
+      const u = clamp((t - T_GROW + .2) / 1.6), x = lerp(-55, 55, u);
+      const se = { s: [x, 0, -17, x, 3.2, -17, x, 3.2, -17, x, 3.2, 17, x, 3.2, 17, x, 0, 17], col: [255, 255, 255], a: 1 - u };
+      strokeEl(se, 1, 3);
+    }
+    cx.globalCompositeOperation = "source-over";
+
+    if (Math.abs(m - lastHud) > .004 || (m >= 1 && lastHud < 1)) { hudText(m); lastHud = m; }
+    if (t > T_GROW + .4) title.classList.add("on");
+  }
+  hudText(0);
+  requestAnimationFrame(frame);
+
+  /* ---- the knob caps turn: drag or scroll ---- */
+  document.querySelectorAll(".knobs img").forEach((k) => {
+    let a = 0, last = null;
+    const set = () => { k.style.rotate = a + "deg"; };
+    k.addEventListener("pointerdown", (e) => { last = [e.clientX, e.clientY]; k.setPointerCapture(e.pointerId); k.classList.add("drag"); });
+    k.addEventListener("pointermove", (e) => {
+      if (!last) return;
+      a += (e.clientX - last[0]) - (e.clientY - last[1]); last = [e.clientX, e.clientY]; set();
+    });
+    const up = () => { last = null; k.classList.remove("drag"); };
+    k.addEventListener("pointerup", up); k.addEventListener("pointercancel", up);
+    k.addEventListener("wheel", (e) => { e.preventDefault(); a += e.deltaY > 0 ? 15 : -15; set(); }, { passive: false });
+  });
+
+  /* ---- reveal on scroll ---- */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll(".reveal").forEach(n => io.observe(n));
+})();
+</script>
+<script type="module">
+/* the installer: fm1pkg.js and fm1ota.js (Felucca / SLOOP, GPL-3.0) inlined by tools/make_launch_site.py */
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments
+//
+// FM-1 (and M-Vave SMK-37 Pro) .fwsc packages in the browser: the package identity and the image the
+// device reads during an update.
+
+const BLOCKS = 20, BLK = 0x30, KEEP = 0x2F, MAX_BLOCKS = 64;
+
+// the package identity ("FM-1_904", "SMK-37 Pro_016"): one marker byte after each of the first 20 blocks
+function productOf(fwsc) {
+  if (fwsc.length < BLOCKS * BLK) throw new Error("not an FM-1 package (too short)");
+  let s = "";
+  for (let i = 0; i < BLOCKS; i++) {
+    const m = fwsc[i * BLK + KEEP];
+    if (m !== 0x7D) s += String.fromCharCode((m - i - 1) & 0xFF);
+  }
+  return s;
+}
+
+// interleave blocks: 20, then more while the marker is the unused 0x7D (the stock SMK-37 Pro v016 has 36)
+function blockCount(fwsc) {
+  let n = BLOCKS;
+  while (n < MAX_BLOCKS && (n + 1) * BLK <= fwsc.length && fwsc[n * BLK + KEEP] === 0x7D) n++;
+  return n;
+}
+
+function deinterleave(fwsc, blocks) {
+  const out = new Uint8Array(fwsc.length - blocks);
+  for (let i = 0; i < blocks; i++) out.set(fwsc.subarray(i * BLK, i * BLK + KEEP), i * KEEP);
+  out.set(fwsc.subarray(blocks * BLK), blocks * KEEP);
+  return out;
+}
+
+function crc16(d, c = 0) {                 // CRC-16/XMODEM, as the package and the device use
+  for (const b of d) {
+    c ^= b << 8;
+    for (let k = 0; k < 8; k++) c = c & 0x8000 ? ((c << 1) ^ 0x1021) & 0xFFFF : (c << 1) & 0xFFFF;
+  }
+  return c;
+}
+
+function jlDec(b) {                        // JieLi ENC stream cipher (its own inverse)
+  const out = Uint8Array.from(b);
+  let key = 0xFFFF;
+  for (let i = 0; i < out.length; i++) {
+    out[i] ^= key & 0xFF;
+    key = ((key << 1) ^ (key & 0x8000 ? 0x1021 : 0)) & 0xFFFF;
+  }
+  return out;
+}
+
+// the logical image's flash.bin (type 0) and ota.bin (type 100) match their CRCs (as fm1_install.py)
+function filesOk(img) {
+  if (img.length < 0x40) return false;
+  const h = jlDec(img.subarray(0, 0x40)), rd = (a, o, n) => a.slice(o, o + n).reduce((v, x, i) => v + x * 2 ** (8 * i), 0);
+  if (crc16(h.subarray(2, 0x40)) !== rd(h, 0, 2)) return false;
+  const count = rd(h, 8, 2);
+  if (count < 1 || count > 8 || img.length < 0x40 + 0x50 * count) return false;
+  for (let i = 0; i < count; i++) {
+    const e = jlDec(img.subarray(0x40 + i * 0x50, 0x90 + i * 0x50));
+    const typ = rd(e, 0, 2), off = rd(e, 8, 4), size = rd(e, 12, 4);
+    if (off + size > img.length) return false;
+    if ((typ === 0 || typ === 100) && crc16(img.subarray(off, off + size)) !== rd(e, 4, 2)) return false;
+  }
+  return true;
+}
+
+// the image the device addresses during an update: the .fwsc without the marker bytes (20 blocks, or the
+// detected count when the files' CRCs agree: a 20-block package can have 0x7D after block 20 by chance)
+function logicalImage(fwsc) {
+  const n = blockCount(fwsc);
+  if (n !== BLOCKS) {
+    const img = deinterleave(fwsc, n);
+    if (filesOk(img) || !filesOk(deinterleave(fwsc, BLOCKS))) return img;
+  }
+  return deinterleave(fwsc, BLOCKS);
+}
+
+// The official FM-1 V15 (M-VAVE Downloads -> PC Firmware -> FM-1 V15, FM-1.fwsc), for the return to the
+// official firmware: only that exact file is accepted (its SHA-256 pins every byte: the loader, the app, the
+// layout; the name of the file proves nothing). The digest is the one Felucca 1.0 pins.
+const STOCK_V15_SHA256 = "db1642b2b6fa5c2cccb11ffd13878068bb28601678d3644049f99dc40e7edb8a";
+const STOCK_V15_SIZE = 699956;
+const STOCK_V15_PRODUCT = "FM-1_015";
+// The official SMK-37 Pro V016 (SMK-37_Pro_016.fwsc, 36 interleave blocks), for the return of an SMK-37 Pro.
+const STOCK_SMK016_SHA256 = "2d98ce72530e71d617384963423820536f094501299e2cfec0a8d3c3fb6bcfb0";
+const STOCK_SMK016_SIZE = 705252;
+const STOCK_SMK016_PRODUCT = "SMK-37 Pro_016";
+
+async function sha256hex(bytes) {
+  const d = await crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(d)].map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+async function validateStockPackage(bytes) {
+  for (const [size, sha, product] of [[STOCK_V15_SIZE, STOCK_V15_SHA256, STOCK_V15_PRODUCT],
+                                      [STOCK_SMK016_SIZE, STOCK_SMK016_SHA256, STOCK_SMK016_PRODUCT]])
+    if (bytes.length === size && await sha256hex(bytes) === sha && productOf(bytes) === product)
+      return { product, image: logicalImage(bytes) };
+  throw new Error("select the unmodified official FM-1 V15 file (FM-1.fwsc) or SMK-37 Pro V016 file (SMK-37_Pro_016.fwsc)");
+}
+
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments
+//
+// The FM-1 USB-MIDI update protocol (M-UPGRADE compatible) over WebMIDI.
+// Step 1: the running firmware reads parts of the package and stages the update
+// loader. Step 2: the loader reads the whole image and writes it. In both steps
+// the device sends cmd 0x30 read requests on the logical image and we answer.
+
+const HS_QUERY = [0xF0, 0x00, 0x32, 0x45, 0x00, 0x00, 0x00, 0x40, 0x7F, 0xF7];
+const UPGRADE = [0xF0, 0x22, 0x24, 0x35, 0x7F, 0xF7];
+const MAXDATA = 512;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const IS_OTA = (id) => /^ota-/i.test(id.model);
+// the update loader of SLOOP / Felucca packages ("ota-FM-1_9XX", "ota-SMK-37 Pro_9XX"). A device left in the update
+// mode of another firmware (the stock updater's loader) is never written: its loader may lay the image out differently.
+const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro)_9\d\d$/i.test(id.text);
+
+// errors carry a code the pages translate: notfound, model, stopped, noloader, lost, noreturn,
+// mismatch (detail: the identity the device reports), badreq, foreign (detail: the loader's identity)
+function fail(code, msg, detail = "") { const e = new Error(msg); e.code = code; e.detail = detail; return e; }
+
+function pack7(data) {
+  const out = []; let acc = 0, nb = 0;
+  for (const b of data) {
+    acc |= b << nb; nb += 8;
+    while (nb >= 7) { out.push(acc & 0x7F); acc >>>= 7; nb -= 7; }
+  }
+  if (nb) out.push(acc & 0x7F);
+  return out;
+}
+
+function unpack7(s) {
+  const out = []; let acc = 0, nb = 0;
+  for (const b of s) {
+    acc |= (b & 0x7F) << nb; nb += 7;
+    while (nb >= 8) { out.push(acc & 0xFF); acc >>>= 8; nb -= 8; }
+  }
+  return out;
+}
+
+function response(addr, data, fl = 0) {
+  const len = data.length;
+  const body = [0x00, 0x59, 0x30, (len + 8) & 0xFF, ((len + 8) >> 8) & 0xFF, 0, fl,
+    addr & 0xFF, (addr >>> 8) & 0xFF, (addr >>> 16) & 0xFF, (addr >>> 24) & 0xFF,
+    len & 0xFF, (len >> 8) & 0xFF, 0, ...data];
+  let s = 0;
+  for (let i = 6; i < body.length; i++) s += body[i];
+  body.push(~s & 0xFF);
+  return [0xF0, ...pack7(body), 0xF7];
+}
+
+function parseRequest(pkt) {
+  if (pkt[0] !== 0xF0 || pkt[pkt.length - 1] !== 0xF7) return null;
+  const u = unpack7(pkt.slice(1, -1));
+  if (u.length !== 15 || u[0] !== 0 || u[1] !== 0x59 || u[2] !== 0x30) return null;
+  let s = 0;
+  for (let i = 6; i < 14; i++) s += u[i];
+  if ((~s & 0xFF) !== u[14]) return null;
+  return { fl: u[6], addr: (u[7] | (u[8] << 8) | (u[9] << 16) | (u[10] << 24)) >>> 0, len: u[11] | (u[12] << 8) | (u[13] << 16) };
+}
+
+function parseIdentity(pkt) {
+  const d = unpack7(pkt.slice(1, -1));
+  if (d.length !== 34 || d[0] !== 0 || d[1] !== 0x59 || d[2] !== 0x11) return null;
+  const txt = String.fromCharCode(...d.slice(6, 33)).replace(/\0+$/, "");
+  const m = /^([^_]+)_(\d+)$/.exec(txt);
+  return m ? { text: txt, model: m[1], version: parseInt(m[2], 10) } : null;
+}
+
+// one MIDI in/out pair with a SysEx queue
+class Link {
+  constructor(input, output) {
+    this.input = input; this.output = output; this.q = []; this.waiter = null;
+    input.onmidimessage = (ev) => {
+      if (ev.data[0] !== 0xF0) return;
+      this.q.push(Array.from(ev.data));
+      if (this.waiter) { const w = this.waiter; this.waiter = null; w(); }
+    };
+  }
+  get lost() { return this.input.state === "disconnected" || this.output.state === "disconnected"; }
+  // false when the port is gone (unplugged): WebMIDI throws on a disconnected output
+  send(bytes) {
+    try { this.output.send(bytes); return true; } catch (_) { return false; }
+  }
+  drain() { this.q.length = 0; }
+  async read(ms) {
+    if (!this.q.length) {
+      let tm;
+      await Promise.race([new Promise((r) => { this.waiter = r; }), new Promise((r) => { tm = setTimeout(r, ms); })]);
+      clearTimeout(tm);
+      this.waiter = null;
+    }
+    return this.q.shift() || null;
+  }
+  close() { this.input.onmidimessage = null; }
+}
+
+async function handshake(link, tries = 3) {
+  link.drain();
+  for (let t = 0; t < tries; t++) {
+    if (!link.send(HS_QUERY)) return null;
+    const end = Date.now() + 1000;
+    while (Date.now() < end) {
+      const p = await link.read(end - Date.now());
+      if (!p) break;
+      const id = parseIdentity(p);
+      if (id) return id;
+    }
+  }
+  return null;
+}
+
+class Updater {
+  constructor(access, log) {
+    this.access = access;
+    this.log = log || (() => {});
+  }
+
+  // every in/out pair with the same port name that answers the handshake
+  async find(filter) {
+    const outs = [...this.access.outputs.values()];
+    for (const input of this.access.inputs.values()) {
+      if (input.state === "disconnected") continue;
+      if (!/fm-1|smk|felucca|melodee|fomni|x0x|makkuro|ota|composite|sinco|usb-midi/i.test(input.name || "")) continue;   // never probe other gear
+      const output = outs.find((o) => o.name === input.name) || (outs.length === 1 ? outs[0] : null);
+      if (!output) continue;
+      try { await input.open(); await output.open(); } catch (_) { continue; }
+      const link = new Link(input, output);
+      const id = await handshake(link, 2);
+      if (id && (!filter || filter(id))) return { link, id, name: input.name };
+      link.close();
+    }
+    return null;
+  }
+
+  async waitFor(filter, ms) {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      const dev = await this.find(filter);
+      if (dev) return dev;
+      await sleep(1000);
+    }
+    return null;
+  }
+
+  // serve read requests until the device asks for one of the finish addresses; stops early
+  // when the port disappears (lost: true) instead of waiting out idleMs
+  async serve(link, image, finishAddr, idleMs, onProgress) {
+    let served = 0, last = Date.now();
+    for (;;) {
+      const pkt = await link.read(1000);
+      if (!pkt) {
+        if (link.lost) return { served, finished: false, lost: true };
+        if (Date.now() - last > idleMs) return { served, finished: false };
+        continue;
+      }
+      const r = parseRequest(pkt);
+      if (!r) continue;
+      last = Date.now();
+      if (r.addr === 0xE0000000 || r.addr === 0xF0000000) {
+        link.send(response(r.addr, [...new TextEncoder().encode("success"), 0]));
+        if (r.addr === finishAddr) return { served, finished: true };
+        continue;
+      }
+      if (r.len > MAXDATA || r.addr + r.len > image.length) throw fail("badreq", `bad request ${r.addr.toString(16)}+${r.len}`);
+      await sleep(10);
+      if (!link.send(response(r.addr, Array.from(image.subarray(r.addr, r.addr + r.len)), r.fl))) {
+        return { served, finished: false, lost: true };
+      }
+      served++;
+      if (onProgress) onProgress(served, r.addr);
+    }
+  }
+
+  // full install: running firmware -> loader -> new firmware
+  async install(image, product, onStep) {
+    const step = onStep || (() => {});
+    const dev = await this.find((id) => !IS_OTA(id));
+    if (!dev) throw fail("notfound", "FM-1 not found (USB cable, and no other app using it?)");
+    const [model] = product.split("_");
+    if (dev.id.model !== model) { dev.link.close(); throw fail("model", `the device is ${dev.id.text}, the package is for ${product}`); }
+    step("start", dev.id.text);
+    dev.link.send(UPGRADE);
+    await sleep(2000);
+    const s1 = await this.serve(dev.link, image, 0xE0000000, 8000, (n) => step("verify", n));
+    dev.link.close();
+    if (!s1.finished) throw fail(s1.lost ? "lost" : "stopped", `the device ${s1.lost ? "was disconnected" : "stopped"} after ${s1.served} requests: nothing was written`);
+    step("loader");
+    await sleep(3000);
+    const ota = await this.waitFor(IS_OTA, 30000);
+    if (!ota) throw fail("noloader", "the update loader did not appear. Replug the USB cable and press Install again: the device stays in update mode until it is finished.");
+    const s2 = await this.write(ota, image, step);
+    if (!s2.finished) throw fail(s2.lost ? "lost" : "stopped", `the loader ${s2.lost ? "was disconnected" : "stopped"} after ${s2.served} requests. Replug and press Install again to resume.`);
+    step("reboot");
+    await sleep(3000);
+    const back = await this.waitFor((id) => !IS_OTA(id), 40000);
+    if (!back) throw fail("noreturn", "the device did not come back: power-cycle it");
+    back.link.close();
+    if (back.id.text !== product) throw fail("mismatch", `installed, but the device reports ${back.id.text}`, back.id.text);
+    step("done", back.id.text);
+    return back.id.text;
+  }
+
+  // step 2 with the loader found by find()/waitFor()
+  async write(ota, image, step) {
+    ota.link.send(UPGRADE);
+    await sleep(2000);
+    const s2 = await this.serve(ota.link, image, 0xF0000000, 180000, (n) => step("write", n));
+    ota.link.close();
+    return s2;
+  }
+
+  // resume: the device is already in update mode (loader) -> true when the write finished. Only SLOOP's
+  // own loader is resumed, except for the return to the official firmware (opts.product: the official
+  // package, its identity checked once the FM-1 is back, after Felucca 1.0): that one is the official
+  // loader's own image, as M-UPGRADE would write it
+  async resume(image, onStep, opts = {}) {
+    const ota = await this.find(IS_OTA);
+    if (!ota) return false;
+    if (!OUR_LOADER(ota.id) && !opts.product) {
+      ota.link.close();
+      throw fail("foreign", `the FM-1 is in the update mode of another firmware (${ota.id.text}): finish that update with its own updater`, ota.id.text);
+    }
+    const step = onStep || (() => {});
+    if (!(await this.write(ota, image, step)).finished) return false;
+    if (opts.product) {
+      step("reboot");
+      await sleep(3000);
+      const back = await this.waitFor((id) => !IS_OTA(id), 40000);
+      if (!back) throw fail("noreturn", "the FM-1 did not come back after the write: power-cycle it");
+      back.link.close();
+      if (back.id.text !== opts.product) throw fail("mismatch", `written, but the FM-1 reports ${back.id.text}`, back.id.text);
+      step("done", back.id.text);
+    }
+    return true;
+  }
+}
+
+const FW = [{"id": "snoop37", "name": "Snoop37", "version": "0.1", "col": "var(--mag)", "product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-0.1.fwsc", "sha256": "a4d211b7e56545d2a75d2780df0b12ef4232471c6df0817f6bcc5d4f456db8c0", "size": 651190}, {"id": "makkuro37", "name": "Makkuro37", "version": "0.1", "col": "var(--mag)", "product": "SMK-37 Pro_700", "pkg": "firmware/makkuro37-0.1.fwsc", "sha256": "759bbea1e601ce1a3d1d453a233921f06b54009544badf294bd854de817aba36", "size": 651195}, {"id": "x0x37", "name": "X0X37", "version": "0.1", "col": "var(--t3)", "product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.1.fwsc", "sha256": "19a7f763f001e7af14f6a692aa2641b95f7017e4c6b39ba22c05e80bd5d0afb5", "size": 650816}, {"id": "fomni37", "name": "FoMni37", "version": "0.1", "col": "var(--t4)", "product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.1.fwsc", "sha256": "87b6539e60486458711e6ecbb2715171eccef03d4653ca8b1b463ec0dace6448", "size": 650795}];
+const $ = (id) => document.getElementById(id);
+const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
+const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
+const store = {
+  get: () => { try { return localStorage.getItem(PENDING); } catch (_) { return null; } },
+  set: (v) => { try { v ? localStorage.setItem(PENDING, v) : localStorage.removeItem(PENDING); } catch (_) {} },
+};
+let midi = null, busy = false, connected = false;
+const pkgs = {};
+
+function led(state, name, sub) {
+  $("led").className = "led " + (state || "");
+  if (name !== undefined) $("devname").textContent = name;
+  if (sub !== undefined) $("devsub").textContent = sub;
+}
+function running(dev) {                                  // what the keyboard runs, from its port name and identity
+  const n = dev.name || "", id = dev.id.text;
+  if (IS_OTA_ID(dev.id)) return "update mode (" + id + ")";
+  if (/_016$/.test(id)) return "the stock firmware V016";
+  if (/melodee/i.test(n)) return "Melodee37";
+  if (/fomni/i.test(n)) return "FoMni37";
+  if (/x0x/i.test(n)) return "X0X37";
+  if (/makkuro/i.test(n)) return "Makkuro37";
+  if (/felucca/i.test(n)) return "Snoop37, SLOOP or another Felucca-based firmware";
+  return id;
+}
+function lockCards() {
+  document.querySelectorAll(".inst").forEach((b) => { b.disabled = busy || !midi; });
+  $("conn").disabled = busy || connected || !navigator.requestMIDIAccess;
+  $("conn").textContent = connected ? "Connected" : "Connect";
+}
+
+async function access() {
+  if (midi) return midi;
+  if (!navigator.requestMIDIAccess) throw new Error("This browser has no Web MIDI. Open the page in Chrome or Edge.");
+  try { midi = await navigator.requestMIDIAccess({ sysex: true }); }
+  catch (e) { throw new Error("MIDI (SysEx) access was not allowed. Allow MIDI in the site settings (address bar) and try again."); }
+  midi.onstatechange = () => { if (!busy) { clearTimeout(access.t); access.t = setTimeout(scan, 1200); } };
+  return midi;
+}
+async function scan() {
+  if (busy) return;
+  led("busy", "Looking for the SMK-37 Pro…", "");
+  try {
+    const up = new Updater(await access(), () => {});
+    const dev = await up.find();
+    connected = false;
+    if (!dev) { led("err", "No SMK-37 Pro found", "Check the USB cable (a data cable), close other apps that use MIDI, then press Connect."); return; }
+    dev.link.close();
+    if (!/^(ota-)?SMK-37 Pro$/i.test(dev.id.model)) { led("err", dev.id.text + ": not an SMK-37 Pro", "These packages are for the M-Vave SMK-37 Pro only."); return; }
+    const what = running(dev);
+    led("on", "SMK-37 Pro connected", "Running " + what + " · port " + dev.name);
+    connected = true;
+    document.querySelectorAll(".card.fw").forEach((c) => c.classList.toggle("running", c.dataset.name === what));
+  } catch (e) { connected = false; led("err", "Cannot connect", e.message); }
+  finally { lockCards(); }
+}
+$("conn").addEventListener("click", scan);
+if (!navigator.requestMIDIAccess) led("err", "Chrome or Edge needed", "This browser has no Web MIDI, so it cannot install firmware.");
+
+async function load(fw) {
+  if (!pkgs[fw.id]) pkgs[fw.id] = (async () => {
+    const r = await fetch(fw.pkg);
+    if (!r.ok) throw new Error(fw.pkg + ": HTTP " + r.status);
+    const raw = new Uint8Array(await r.arrayBuffer());
+    const h = [...new Uint8Array(await crypto.subtle.digest("SHA-256", raw))].map((b) => b.toString(16).padStart(2, "0")).join("");
+    if (h !== fw.sha256 || productOf(raw) !== fw.product) throw new Error("The download is damaged (SHA-256 mismatch). Reload the page.");
+    return logicalImage(raw);
+  })().catch((e) => { delete pkgs[fw.id]; throw e; });
+  return pkgs[fw.id];
+}
+
+/* the overlay */
+const ORDER = ["start", "verify", "loader", "write", "reboot", "done"];
+const SAY = { start: "Talking to the keyboard", verify: "The keyboard checks the package", loader: "Switching to update mode",
+              write: "Writing the firmware. Do not unplug.", reboot: "Restarting", done: "Done. Enjoy!" };
+function ov(title, sub, col) {
+  $("ovtitle").textContent = title; $("ovfw").textContent = "// " + sub;
+  document.querySelector(".ovbox").style.borderColor = col || "var(--cyan)";
+  $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true;
+  document.querySelectorAll("#ovsteps li").forEach((li) => { li.className = ""; });
+  $("ovl").hidden = false;
+}
+function mark(k) {
+  const i = ORDER.indexOf(k);
+  document.querySelectorAll("#ovsteps li").forEach((li, j) => { li.className = j < i ? "ok" : j === i ? (k === "done" ? "ok" : "on") : ""; });
+  $("ovstatus").textContent = SAY[k];
+}
+const logln = (t) => { $("ovlog").textContent += t + "\n"; };
+function stepper(image) {
+  return (k, a) => {
+    logln(k + " " + (a ?? ""));
+    if (ORDER.includes(k)) mark(k);
+    if (k === "verify") $("ovbar").style.width = Math.min(12, a / 8) + "%";
+    if (k === "write") $("ovbar").style.width = Math.min(97, 12 + (a * 512 / image.length) * 85) + "%";
+    if (k === "reboot") $("ovbar").style.width = "98%";
+    if (k === "done") $("ovbar").style.width = "100%";
+  };
+}
+function finish(ok, msg) {
+  $("ovstatus").textContent = msg;
+  $("ovclose").hidden = false;
+  if (!ok) document.querySelector(".ovbox").style.borderColor = "#ff3c5a";
+  busy = false; lockCards();
+}
+$("ovclose").addEventListener("click", () => { $("ovl").hidden = true; scan(); });
+addEventListener("beforeunload", (e) => { if (busy) { e.preventDefault(); e.returnValue = "Writing. Do not close the page."; } });
+
+async function install(fw) {
+  if (busy) return;
+  busy = true; lockCards();
+  ov("Installing " + fw.name, fw.name + " " + fw.version, fw.col);
+  mark("start");
+  try {
+    const image = await load(fw);
+    const up = new Updater(await access(), logln);
+    const step = stepper(image);
+    const ota = await up.find(IS_OTA_ID);
+    if (ota) {                                         // an interrupted install: only the same firmware finishes it
+      const pend = store.get();
+      if (ota.id.text !== "ota-" + fw.product || (pend && pend !== fw.id)) {
+        ota.link.close();
+        const p = FW.find((f) => f.id === pend);
+        throw new Error("The keyboard is in update mode (" + ota.id.text + ") from an interrupted install" +
+          (p ? " of " + p.name + ". Press Install on " + p.name + " to finish it first." : ". Finish it with the firmware that was being installed, or with M-UPGRADE."));
+      }
+      store.set(fw.id);
+      if (!(await up.write(ota, image, step)).finished) throw new Error("Stopped. Replug the USB cable and press Install again.");
+      step("reboot");
+      const back = await up.waitFor((id) => !IS_OTA_ID(id), 40000);
+      if (!back) throw new Error("The keyboard did not come back. Switch it off and on.");
+      back.link.close();
+      step("done", back.id.text);
+    } else {
+      store.set(fw.id);
+      await up.install(image, fw.product, step);
+    }
+    store.set(null);
+    finish(true, fw.name + " is running. Enjoy!");
+  } catch (e) {
+    logln(String((e && e.stack) || e));
+    finish(false, (e && e.message) || String(e));
+  }
+}
+document.querySelectorAll(".inst").forEach((b) => b.addEventListener("click", () => install(FW.find((f) => f.id === b.dataset.fw))));
+
+lockCards();
+</script>
+</body>
+</html>
