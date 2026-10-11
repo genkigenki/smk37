@@ -115,6 +115,9 @@ a.card:hover { text-shadow: none; }
 .card h3 { margin: 0; font: 900 24px Orbitron, sans-serif; letter-spacing: .04em; color: #f2fdff; }
 .card h3 small { font: 500 11px "JetBrains Mono", monospace; letter-spacing: .12em; color: var(--c, var(--cyan)); margin-left: 8px; vertical-align: middle; }
 .card .from { margin: 4px 0 14px; font: 12px "JetBrains Mono", monospace; color: var(--dim); }
+.card h3 a { color: inherit; }
+.card .from a { color: inherit; border-bottom: 1px dotted currentColor; }
+.card .from a:hover, .card h3 a:hover { color: var(--c, var(--cyan)); }
 .card p { margin: 0 0 14px; color: #c3d8e3; font-size: 15px; }
 .card ul { margin: 0 0 16px; padding: 0; list-style: none; font-size: 14px; color: #a9c2cf; }
 .card li { padding-left: 18px; position: relative; margin: 4px 0; }
@@ -258,12 +261,12 @@ label.file input { display: none; }
     <div class="cards">
       <article class="card flag fw reveal" data-fw="makkuro37" data-name="Makkuro37" style="--c: var(--mag)">
         <div>
-          <h3>Makkuro37</h3>
+          <h3><a href="https://github.com/genkigenki/Makkuro37">Makkuro37</a></h3>
           <div class="from">new firmware · genkigenki</div>
           <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
           <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li><li>A CHAOS pad, a filter on every knob</li></ul>
           <div class="foot"><span class="tag ">experimental</span>
-          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">code</a></span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">github.com/genkigenki/Makkuro37</a></span>
           <button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></div>
         </div>
         <div class="screenbox">
@@ -272,32 +275,32 @@ label.file input { display: none; }
       </article>
       <article class="card fw reveal" data-fw="snoop37" data-name="Snoop37" style="--c: var(--cyan)">
         <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 on the display"></div>
-        <h3>Snoop37</h3>
-        <div class="from">based on SLOOP by isod89</div>
+        <h3><a href="https://github.com/genkigenki/Snoop37">Snoop37</a></h3>
+        <div class="from"><a href="https://github.com/isod89/sloop-fm1">based on SLOOP by isod89</a></div>
         <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37 Pro.</p>
         <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li><a href="https://makerworld.com/en/models/3425326-m-vave-smk37-colorful-knobs">3D-printable knob caps to match</a></li></ul>
         <div class="foot"><span class="tag ">experimental</span>
-          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Snoop37">code</a></span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Snoop37">github.com/genkigenki/Snoop37</a></span>
           <button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></div>
       </article>
       <article class="card fw reveal" data-fw="x0x37" data-name="X0X37" style="--c: var(--t3)">
         <div class="screen"><img src="assets/shot-x0x37.png" width="240" height="240" alt="X0X37 on the display"></div>
-        <h3>X0X37</h3>
-        <div class="from">from charlesvestal/fm1-x0x · Charles Vestal</div>
+        <h3><a href="https://github.com/genkigenki/X0X37">X0X37</a></h3>
+        <div class="from"><a href="https://github.com/charlesvestal/fm1-x0x">from charlesvestal/fm1-x0x · Charles Vestal</a></div>
         <p>A 909, an 808, two 303s with a line generator and a breakbeat player, all at once.</p>
         <ul><li>Shared reverb, tape delay, master compressor</li></ul>
         <div class="foot"><span class="tag ">experimental</span>
-          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/X0X37">code</a></span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/X0X37">github.com/genkigenki/X0X37</a></span>
           <button class="btn inst" type="button" data-fw="x0x37" disabled>Install</button></div>
       </article>
       <article class="card fw reveal" data-fw="fomni37" data-name="FoMni37" style="--c: var(--t4)">
         <div class="screen"><img src="assets/shot-fomni37.png" width="240" height="240" alt="FoMni37 on the display"></div>
-        <h3>FoMni37</h3>
-        <div class="from">from charlesvestal/fm1-fomni · Charles Vestal</div>
+        <h3><a href="https://github.com/genkigenki/FoMni37">FoMni37</a></h3>
+        <div class="from"><a href="https://github.com/charlesvestal/fm1-fomni">from charlesvestal/fm1-fomni · Charles Vestal</a></div>
         <p>An Omnichord-style chord harp: the 16 pads become the strum plate, the keybed holds the chords.</p>
         <ul><li>Strum the pads, play chords on the keys</li></ul>
         <div class="foot"><span class="tag ">experimental</span>
-          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/FoMni37">code</a></span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/FoMni37">github.com/genkigenki/FoMni37</a></span>
           <button class="btn inst" type="button" data-fw="fomni37" disabled>Install</button></div>
       </article>
       
