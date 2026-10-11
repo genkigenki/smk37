@@ -254,29 +254,29 @@ label.file input { display: none; }
     </div>
 
     <div class="cards">
-      <article class="card flag fw reveal" data-fw="snoop37" data-name="Snoop37" style="--c: var(--mag)">
+      <article class="card flag fw reveal" data-fw="makkuro37" data-name="Makkuro37" style="--c: var(--mag)">
         <div>
-          <h3>Snoop37</h3>
-          <div class="from">based on SLOOP by isod89</div>
-          <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37 Pro.</p>
-          <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li>3D-printable knob caps to match</li></ul>
+          <h3>Makkuro37</h3>
+          <div class="from">new firmware · genkigenki</div>
+          <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
+          <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li><li>A CHAOS pad, a filter on every knob</li></ul>
           <div class="foot"><span class="tag ">experimental</span>
-          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Snoop37">code</a></span>
-          <button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></div>
-        </div>
-        <div class="screenbox">
-          <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 boot intro on the SMK-37 Pro display"></div>
-        </div>
-      </article>
-      <article class="card fw reveal" data-fw="makkuro37" data-name="Makkuro37" style="--c: var(--mag)">
-        <div class="screen"><img src="assets/shot-makkuro37.png" width="240" height="240" alt="Makkuro37 on the display"></div>
-        <h3>Makkuro37</h3>
-        <div class="from">new firmware · genkigenki</div>
-        <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
-        <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li></ul>
-        <div class="foot"><span class="tag ">experimental</span>
           <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">code</a></span>
           <button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></div>
+        </div>
+        <div class="screenbox">
+          <div class="screen"><img src="assets/makkuro-intro.webp" width="240" height="240" alt="Makkuro37 boot intro on the SMK-37 Pro display"></div>
+        </div>
+      </article>
+      <article class="card fw reveal" data-fw="snoop37" data-name="Snoop37" style="--c: var(--cyan)">
+        <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 on the display"></div>
+        <h3>Snoop37</h3>
+        <div class="from">based on SLOOP by isod89</div>
+        <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37 Pro.</p>
+        <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li>3D-printable knob caps to match</li></ul>
+        <div class="foot"><span class="tag ">experimental</span>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Snoop37">code</a></span>
+          <button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></div>
       </article>
       <article class="card fw reveal" data-fw="x0x37" data-name="X0X37" style="--c: var(--t3)">
         <div class="screen"><img src="assets/shot-x0x37.png" width="240" height="240" alt="X0X37 on the display"></div>
@@ -1062,7 +1062,7 @@ class Updater {
   }
 }
 
-const FW = [{"id": "snoop37", "name": "Snoop37", "version": "0.1", "col": "var(--mag)", "product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-0.1.fwsc", "sha256": "a4d211b7e56545d2a75d2780df0b12ef4232471c6df0817f6bcc5d4f456db8c0", "size": 651190}, {"id": "makkuro37", "name": "Makkuro37", "version": "0.1", "col": "var(--mag)", "product": "SMK-37 Pro_700", "pkg": "firmware/makkuro37-0.1.fwsc", "sha256": "759bbea1e601ce1a3d1d453a233921f06b54009544badf294bd854de817aba36", "size": 651195}, {"id": "x0x37", "name": "X0X37", "version": "0.1", "col": "var(--t3)", "product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.1.fwsc", "sha256": "19a7f763f001e7af14f6a692aa2641b95f7017e4c6b39ba22c05e80bd5d0afb5", "size": 650816}, {"id": "fomni37", "name": "FoMni37", "version": "0.1", "col": "var(--t4)", "product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.1.fwsc", "sha256": "87b6539e60486458711e6ecbb2715171eccef03d4653ca8b1b463ec0dace6448", "size": 650795}];
+const FW = [{"id": "makkuro37", "name": "Makkuro37", "version": "0.1", "col": "var(--mag)", "product": "SMK-37 Pro_700", "pkg": "firmware/makkuro37-0.1.fwsc", "sha256": "759bbea1e601ce1a3d1d453a233921f06b54009544badf294bd854de817aba36", "size": 651195}, {"id": "snoop37", "name": "Snoop37", "version": "0.1", "col": "var(--cyan)", "product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-0.1.fwsc", "sha256": "a4d211b7e56545d2a75d2780df0b12ef4232471c6df0817f6bcc5d4f456db8c0", "size": 651190}, {"id": "x0x37", "name": "X0X37", "version": "0.1", "col": "var(--t3)", "product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.1.fwsc", "sha256": "19a7f763f001e7af14f6a692aa2641b95f7017e4c6b39ba22c05e80bd5d0afb5", "size": 650816}, {"id": "fomni37", "name": "FoMni37", "version": "0.1", "col": "var(--t4)", "product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.1.fwsc", "sha256": "87b6539e60486458711e6ecbb2715171eccef03d4653ca8b1b463ec0dace6448", "size": 650795}];
 const $ = (id) => document.getElementById(id);
 const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
 const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
