@@ -202,12 +202,6 @@ label.file input { display: none; }
 .ovbox details summary { cursor: pointer; color: var(--dim); font-size: 12px; }
 .ovbox pre { max-height: 160px; overflow: auto; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: pre-wrap; }
 .ovbox #ovclose { margin-top: 14px; cursor: pointer; }
-.ask .ovbox { border-color: var(--amber); }
-.ask p { color: #c3d8e3; font-size: 15px; margin: 0 0 16px; }
-.ask label { display: flex; gap: 10px; align-items: center; font: 600 14px "JetBrains Mono", monospace; letter-spacing: .1em; color: var(--amber); cursor: pointer; }
-.ask .row { display: flex; gap: 12px; margin-top: 20px; }
-.ask .btn { cursor: pointer; }
-.ask .btn:disabled { opacity: .35; cursor: not-allowed; }
 @media (max-width: 720px) { .ovsteps { grid-template-columns: repeat(3, 1fr); } .connect { flex-wrap: wrap; } }
 
 @media (max-width: 720px) {
@@ -319,16 +313,6 @@ label.file input { display: none; }
 </section>
 
 
-<div class="ovl ask" id="ask" hidden>
-  <div class="ovbox">
-    <div class="eyebrow" id="askdev">// other keyboard</div>
-    <h3>Are you sure?</h3>
-    <p>Are you sure you want to flash this firmware? It's only for the SMK37 range.</p>
-    <p>Please only check FLASH if you know what you are doing!</p>
-    <label><input type="checkbox" id="askok"> FLASH</label>
-    <div class="row"><button class="btn" id="askgo" type="button" disabled>Flash</button><button class="btn" id="askno" type="button">Cancel</button></div>
-  </div>
-</div>
 <div class="ovl" id="ovl" hidden>
   <div class="ovbox">
     <div class="eyebrow" id="ovfw">// installing</div>
@@ -1093,17 +1077,9 @@ const store = {
   get: () => { try { return localStorage.getItem(PENDING); } catch (_) { return null; } },
   set: (v) => { try { v ? localStorage.setItem(PENDING, v) : localStorage.removeItem(PENDING); } catch (_) {} },
 };
-let midi = null, busy = false, connected = false, other = "";   // other: the identity of a non-Pro SMK37 keyboard
+let midi = null, busy = false, connected = false, other = "";   // other: an SMK37-range keyboard that is not a Pro
 const SMK_PRO = (id) => /^(ota-)?SMK-37 Pro$/i.test(id.model);
 const SMK_RANGE = (id) => /smk|elite|starry|\+va/i.test(id.model) && !/^(ota-)?FM-1/i.test(id.model);   // the Elite, other firmwares on an SMK
-function askFlash(dev) {                               // -> true when the owner ticked FLASH and pressed Flash
-  $("askdev").textContent = "// " + dev; $("askok").checked = false; $("askgo").disabled = true; $("ask").hidden = false;
-  return new Promise((res) => {
-    const done = (v) => { $("ask").hidden = true; $("askgo").onclick = $("askno").onclick = null; res(v); };
-    $("askgo").onclick = () => done(true); $("askno").onclick = () => done(false);
-  });
-}
-$("askok").addEventListener("change", () => { $("askgo").disabled = !$("askok").checked; });
 const pkgs = {};
 
 function led(state, name, sub) {
@@ -1148,7 +1124,7 @@ async function scan() {
     other = "";
     if (!SMK_PRO(dev.id) && !IS_OTA_ID(dev.id) && SMK_RANGE(dev.id)) {
       other = dev.id.text;
-      led("on", dev.id.text + " connected", "Not tested with these packages: Install asks first. Port " + dev.name);
+      led("on", dev.id.text + " connected", "SMK37 range · port " + dev.name);
       connected = true; return;
     }
     if (!SMK_PRO(dev.id)) { led("err", dev.id.text + ": not an SMK-37 Pro", "These packages are for the M-Vave SMK-37 Pro only."); return; }
@@ -1212,7 +1188,6 @@ addEventListener("beforeunload", (e) => { if (busy) { e.preventDefault(); e.retu
 
 async function install(fw) {
   if (busy) return;
-  if (other && !(await askFlash(other))) return;
   busy = true; lockCards();
   ov("Installing " + fw.name, fw.name + " " + fw.version, fw.col);
   mark("start");
