@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>SMK37 — FM-1 firmwares, unleashed</title>
-<meta name="description" content="Open FM-1 firmwares, ported to the M-Vave SMK-37 Pro: 37 velocity keys, 16 RGB pads, 4 faders, pitch and mod wheels.">
+<meta name="description" content="Open FM-1 firmwares, ported to the M-Vave SMK-37: 37 velocity keys, 16 RGB pads, 4 faders, pitch and mod wheels.">
 <meta name="theme-color" content="#04060c">
 <link rel="stylesheet" href="fonts/fonts.css">
 <style>
@@ -186,6 +186,22 @@ footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing:
 .ports span { flex: 1; min-width: 220px; overflow-wrap: anywhere; }
 .ports .btn { padding: 9px 14px; font-size: 11px; cursor: pointer; }
 .card.running { --line-c: #46f0a0; }
+.stock { margin-top: 34px; max-width: 760px; }
+.stock ol { margin: 6px 0 16px; padding-left: 22px; color: #c3d8e3; font-size: 15px; }
+.stock ol li { padding-left: 2px; margin: 4px 0; }
+.stock ol li::before { display: none; }
+.drop { display: block; padding: 22px 16px; border: 1px dashed var(--c); text-align: center; cursor: pointer; color: var(--dim);
+  font: 13px "JetBrains Mono", monospace; overflow-wrap: anywhere; }
+.drop:hover, .drop.over { color: var(--ink); background: rgba(255, 176, 42, .06); }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.stock .sinfo { margin: 12px 0 0; font-size: 14px; }
+.sinfo b { color: var(--ink); }
+.sinfo.warn { color: var(--amber); }
+.sinfo.err { color: #ff3c5a; }
+.sinfo[hidden], .sconfirm[hidden] { display: none; }
+.sconfirm { display: block; margin: 10px 0 0; font-size: 14px; cursor: pointer; }
+.sconfirm input { accent-color: var(--amber); margin: 0 8px 0 0; vertical-align: -2px; }
+.stock .note { margin: 14px 0 0; }
 .card.running .meta::after { content: " · running now"; color: #46f0a0; }
 .tag.soon { color: var(--mag); }
 .card.fw .screen { margin: 4px auto 20px; }
@@ -232,12 +248,12 @@ label.file input { display: none; }
 <body>
 
 <header class="hero">
-  <canvas id="stage" aria-label="A wireframe FM-1 grows into an SMK-37 Pro"></canvas>
+  <canvas id="stage" aria-label="A wireframe FM-1 grows into an SMK-37"></canvas>
   <div class="hud" id="hud" aria-hidden="true"></div>
   <nav class="nav"><a href="#why">Why</a><a href="#firmwares">Firmwares</a><a href="#firmwares">Install</a><a href="#port">Port kit</a></nav>
   <div class="title" id="title">
     <h1>SMK<span>37</span></h1>
-    <p>Open FM-1 firmwares, unleashed on the M-Vave SMK-37 Pro.<br>Same chip. Ten more keys, 16 pads, 4 faders, two wheels.</p>
+    <p>Open FM-1 firmwares, unleashed on the M-Vave SMK-37.<br>Same chip. Ten more keys, 16 pads, 4 faders, two wheels.</p>
     <div class="btns"><a class="btn" href="#firmwares">Install a firmware</a><a class="btn alt" href="#port">Port your own</a></div>
   </div>
   <button class="replay mono" id="replay" type="button">↻ replay</button>
@@ -248,7 +264,7 @@ label.file input { display: none; }
   <div class="wrap reveal">
     <div class="eyebrow">// same brain, twice the hands</div>
     <h2>The FM-1 has <em>grown up</em>.</h2>
-    <p class="lead">The M-Vave FM-1 and the SMK-37 Pro run the same JieLi AC791N chip, the same boot chain and the same
+    <p class="lead">The M-Vave FM-1 and the SMK-37 run the same JieLi AC791N chip, the same boot chain and the same
       update loader. Only the panel is wired differently. So every open FM-1 firmware can run on the
       bigger keyboard, once it learns the new panel: a thin board layer adds the keys, pads, faders,
       wheels, LEDs and flash map.</p>
@@ -261,13 +277,13 @@ label.file input { display: none; }
       <div class="eyebrow">// the lineup · install from the browser</div>
       <h2>Pick a firmware. <em>Press install.</em></h2>
       <p class="lead">Each port keeps its sound and workflow, but utilizes the extra hardware.
-        Connect the SMK-37 Pro by USB, open this page in Chrome or Edge, and switch firmwares in about a minute.
+        Connect the SMK-37 by USB, open this page in Chrome or Edge, and switch firmwares in about a minute.
        </p>
     </div>
 
     <div class="connect" id="connect">
       <span class="led" id="led"></span>
-      <div class="ctext"><b id="devname">Not connected</b><span id="devsub">Use Chrome or Edge. Plug the SMK-37 Pro into this computer, then press Connect.</span></div>
+      <div class="ctext"><b id="devname">Not connected</b><span id="devsub">Use Chrome or Edge. Plug the SMK-37 into this computer, then press Connect.</span></div>
       <button class="btn" id="conn" type="button">Connect</button>
     </div>
     <div class="ports" id="ports" hidden><span id="portlist"></span>
@@ -290,14 +306,14 @@ label.file input { display: none; }
           </details>
         </div>
         <div class="screenbox">
-          <div class="screen"><img src="assets/makkuro37-anim.webp" width="240" height="240" alt="Makkuro37 boot intro on the SMK-37 Pro display"></div>
+          <div class="screen"><img src="assets/makkuro37-anim.webp" width="240" height="240" alt="Makkuro37 boot intro on the SMK-37 display"></div>
         </div>
       </article>
       <article class="card fw reveal" data-fw="snoop37" data-name="Snoop37" style="--c: var(--cyan)">
         <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 on the display"></div>
         <h3><a href="https://github.com/genkigenki/Snoop37">Snoop37</a></h3>
         <div class="from"><a href="https://github.com/isod89/sloop-fm1">based on SLOOP by isod89</a></div>
-        <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37 Pro.</p>
+        <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37.</p>
         <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li><a href="https://makerworld.com/en/models/3425326-m-vave-smk37-colorful-knobs">3D-printable knob caps to match</a></li></ul>
         <div class="foot"><span class="tag ">experimental</span>
           <span class="meta">v0.1.1 · 635 KB · <a href="https://github.com/genkigenki/Snoop37">github.com/genkigenki/Snoop37</a></span>
@@ -357,8 +373,25 @@ label.file input { display: none; }
     </div>
 
     <p class="small note reveal">Unofficial firmware, at your own risk. Do not unplug the keyboard while it writes; an interrupted
-      install resumes when you press Install again. Back to the stock firmware: M-Vave's own updater, M-UPGRADE, with the official
-      V016 of your model (SMK-37 Pro, Elite or MKE-P37).</p>
+      install resumes when you press Install again.</p>
+
+    <div class="card stock" id="stock" style="--c: var(--amber)">
+      <h3>Back to the M-Vave firmware</h3>
+      <p>Our firmwares keep your keyboard's model name, so <b>M-Vave's own updater, M-UPGRADE, works directly</b>
+        (tested: Snoop37 back to V016). If the keyboard runs another firmware that M-UPGRADE refuses, use this:</p>
+      <ol>
+        <li>Download the official SMK-37 firmware (.fwsc) for <b>your</b> keyboard from
+          <a href="https://www.m-vave.com/download" target="_blank" rel="noopener">M-Vave's download page</a> (PC Firmware).</li>
+        <li>Drop it here.</li>
+        <li>Install.</li>
+      </ol>
+      <label class="drop" id="sdrop"><input type="file" id="sfile" accept=".fwsc"><span id="sdroptext">Drop the .fwsc file here, or click to choose it</span></label>
+      <p class="sinfo" id="sinfo" hidden></p>
+      <label class="sconfirm" id="sconfirmrow" hidden><input type="checkbox" id="sconfirm">This is the firmware for my keyboard</label>
+      <div class="foot"><span class="meta">The file stays on your computer. Only M-Vave's official packages are accepted (SHA-256).</span>
+        <button class="btn inst" id="sinst" type="button" disabled>Install</button></div>
+      <p class="small note">Your keyboard's calibration and pairing are never touched. Afterwards M-Vave's updater, M-UPGRADE, works again.</p>
+    </div>
   </div>
 </section>
 
@@ -383,7 +416,7 @@ label.file input { display: none; }
     <div class="reveal">
       <div class="eyebrow">// fm1-to-smk37</div>
       <h2>Port <em>your</em> firmware.</h2>
-      <p class="lead"><a href="https://github.com/genkigenki/fm1-to-smk37">The port guide</a> walks an FM-1 firmware onto the SMK-37 Pro step by step: the board switch,
+      <p class="lead"><a href="https://github.com/genkigenki/fm1-to-smk37">The port guide</a> walks an FM-1 firmware onto the SMK-37 step by step: the board switch,
         the input and LED layer, the flash map, the update path and the controls. Written so you can follow it with
         a coding assistant such as Claude, without any vendor code. The FM-1 build stays byte-identical, so the SMK target can live upstream.</p>
       <div class="btns left"><a class="btn" href="kit.html">How it works</a><a class="btn alt" href="https://github.com/genkigenki/fm1-to-smk37">The kit on GitHub</a></div>
@@ -691,7 +724,7 @@ label.file input { display: none; }
     const n = (a, b) => Math.round(lerp(a, b, ease(m)));
     const smk = m > .98;
     hud.innerHTML =
-      `<span class="k">MODEL</span> ${smk ? '<span class="new">SMK-37 PRO</span>' : m > .02 ? "FM-1 → SMK-37 PRO" : "FM-1"}<br>` +
+      `<span class="k">MODEL</span> ${smk ? '<span class="new">SMK-37</span>' : m > .02 ? "FM-1 → SMK-37" : "FM-1"}<br>` +
       `<span class="k">KEYS&nbsp;&nbsp;</span> ${m > .02 ? '<span class="new">' + n(27, 37) + "</span>" : "27"}<br>` +
       `<span class="k">PADS&nbsp;&nbsp;</span> ${m > .02 ? '<span class="new">' + n(0, 16) + "</span>" : "0"}<br>` +
       `<span class="k">FADERS</span> ${m > .02 ? '<span class="new">' + n(0, 4) + "</span>" : "0"}<br>` +
@@ -794,22 +827,35 @@ label.file input { display: none; }
 
 const BLOCKS = 20, BLK = 0x30, KEEP = 0x2F, MAX_BLOCKS = 64;
 
-// the package identity ("FM-1_904", "SMK-37 Pro_016"): one marker byte after each of the first 20 blocks
+const printable = (m, i) => { const c = (m - i - 1) & 0xFF; return c >= 0x20 && c < 0x7F; };
+
+// the identity blocks: 20, or more when the identity is longer (the Starrykey 37 Play V016's "STARRYKEY-37 PLAY_016"
+// takes 21): further identity markers count only when unused 0x7D markers follow them (the 36-block layout)
+function identityBlocks(fwsc) {
+  let n = BLOCKS;
+  while (n < MAX_BLOCKS && (n + 1) * BLK <= fwsc.length && fwsc[n * BLK + KEEP] !== 0x7D && printable(fwsc[n * BLK + KEEP], n)) n++;
+  return n > BLOCKS && (n + 1) * BLK <= fwsc.length && fwsc[n * BLK + KEEP] === 0x7D ? n : BLOCKS;
+}
+
+// interleave blocks: the identity blocks, then more while the marker is the unused 0x7D (the stock SMK-37 Pro,
+// MKE-P37 and Starrykey 37 Play V016 have 36)
+function blockCount(fwsc) {
+  let n = identityBlocks(fwsc);
+  while (n < MAX_BLOCKS && (n + 1) * BLK <= fwsc.length && fwsc[n * BLK + KEEP] === 0x7D) n++;
+  return n;
+}
+
+// the package identity ("FM-1_904", "SMK-37 Pro_016"): one marker byte after each identity block (0x7D: none);
+// past the first 20 only when the package really has those blocks (logicalImage's count)
 function productOf(fwsc) {
   if (fwsc.length < BLOCKS * BLK) throw new Error("not an FM-1 package (too short)");
+  const ib = identityBlocks(fwsc), n = ib === BLOCKS ? BLOCKS : Math.min(ib, layout(fwsc).blocks);
   let s = "";
-  for (let i = 0; i < BLOCKS; i++) {
+  for (let i = 0; i < n; i++) {
     const m = fwsc[i * BLK + KEEP];
     if (m !== 0x7D) s += String.fromCharCode((m - i - 1) & 0xFF);
   }
   return s;
-}
-
-// interleave blocks: 20, then more while the marker is the unused 0x7D (the stock SMK-37 Pro v016 has 36)
-function blockCount(fwsc) {
-  let n = BLOCKS;
-  while (n < MAX_BLOCKS && (n + 1) * BLK <= fwsc.length && fwsc[n * BLK + KEEP] === 0x7D) n++;
-  return n;
 }
 
 function deinterleave(fwsc, blocks) {
@@ -855,14 +901,15 @@ function filesOk(img) {
 
 // the image the device addresses during an update: the .fwsc without the marker bytes (20 blocks, or the
 // detected count when the files' CRCs agree: a 20-block package can have 0x7D after block 20 by chance)
-function logicalImage(fwsc) {
+function layout(fwsc) {
   const n = blockCount(fwsc);
   if (n !== BLOCKS) {
     const img = deinterleave(fwsc, n);
-    if (filesOk(img) || !filesOk(deinterleave(fwsc, BLOCKS))) return img;
+    if (filesOk(img) || !filesOk(deinterleave(fwsc, BLOCKS))) return { blocks: n, image: img };
   }
-  return deinterleave(fwsc, BLOCKS);
+  return { blocks: BLOCKS, image: deinterleave(fwsc, BLOCKS) };
 }
+function logicalImage(fwsc) { return layout(fwsc).image; }
 
 // The official FM-1 V15 (M-VAVE Downloads -> PC Firmware -> FM-1 V15, FM-1.fwsc), for the return to the
 // official firmware: only that exact file is accepted (its SHA-256 pins every byte: the loader, the app, the
@@ -880,12 +927,43 @@ async function sha256hex(bytes) {
   return [...new Uint8Array(d)].map((x) => x.toString(16).padStart(2, "0")).join("");
 }
 
+// The official SMK-37 range packages M-Vave publishes (Downloads -> PC Firmware), for the return to the M-Vave
+// firmware: only these exact files (SHA-256; the files themselves are never shipped, the user downloads them from
+// M-Vave). product: the identity the keyboard reports once it runs the package (the Starrykey's 21 characters do
+// not fit the 20 identity blocks of its V015 package: that one carries "STARRYKEY-37 PLAY_01").
+const STOCK_SMK = [
+  { name: "SMK-37 Pro", version: "016", product: "SMK-37 Pro_016", size: 705252, sha256: STOCK_SMK016_SHA256 },
+  { name: "SMK-37 Pro", version: "015", product: "SMK-37 Pro_015", size: 701140, sha256: "f7f1831cd7c9ad8b4831b6e71ea0bdbcdff9ae4c4077276b3c965511bf4d4fff" },
+  { name: "SMK-37 Elite", version: "016", product: "SMK-37 Elite_016", size: 705236, sha256: "b2ee38abfef3ae922e4eecdb8a551e14345300ae6f270265feacd33b6ef99cb6" },
+  { name: "SMK-37 Elite", version: "015", product: "SMK-37 Elite_015", size: 701140, sha256: "6cb061bda6fc4a285a1a1014e4fc30782278fa62bdc3add75d14b29d4d76253e" },
+  { name: "MKE-P37", version: "016", product: "MKE-P37_016", size: 705252, sha256: "4306ae5b765ab9afb790edf6d02fa75e872897dbd319049e3956ddd283a51429" },
+  { name: "MKE-P37", version: "015", product: "MKE-P37_015", size: 701140, sha256: "280ee7aae59a17c38bc2e854802c7d08f076e51afff13eb5315ad3748476491f" },
+  { name: "Starrykey 37 Play", version: "016", product: "STARRYKEY-37 PLAY_016", size: 705252, sha256: "3cd57cdd90ee60501c549b9dde53503ef468122e2f34dc110876eefdaf9be3b3" },
+  { name: "Starrykey 37 Play", version: "015", product: "STARRYKEY-37 PLAY_015", size: 701140, sha256: "3ef5d835e88324a925593e1e6959106e16abeabbabf824263803bb236b09224b" },
+];
+
+function badPackage(code, msg) { const e = new Error(msg); e.code = code; return e; }
+
+// an official SMK-37 range package -> { name, version, product, model, image } (image: the logical image the
+// loader writes, as fm1_install.py --force: the detected block count, the files' CRCs checked); anything else is
+// refused (code "unknown"; "fm1": the official FM-1 V15, another device)
+async function identifyStockPackage(bytes) {
+  const sha = await sha256hex(bytes);
+  if (bytes.length === STOCK_V15_SIZE && sha === STOCK_V15_SHA256)
+    throw badPackage("fm1", "this is the official FM-1 firmware: it is for the FM-1, not for an SMK-37 keyboard");
+  const k = STOCK_SMK.find((x) => x.size === bytes.length && x.sha256 === sha);
+  if (!k) throw badPackage("unknown", "not an official M-Vave SMK-37 firmware we know");
+  const image = logicalImage(bytes);
+  if (!k.product.startsWith(productOf(bytes)) || !filesOk(image))
+    throw badPackage("unknown", "not an official M-Vave SMK-37 firmware we know");
+  return { ...k, model: k.product.split("_")[0], image };
+}
+
 async function validateStockPackage(bytes) {
-  for (const [size, sha, product] of [[STOCK_V15_SIZE, STOCK_V15_SHA256, STOCK_V15_PRODUCT],
-                                      [STOCK_SMK016_SIZE, STOCK_SMK016_SHA256, STOCK_SMK016_PRODUCT]])
-    if (bytes.length === size && await sha256hex(bytes) === sha && productOf(bytes) === product)
-      return { product, image: logicalImage(bytes) };
-  throw new Error("select the unmodified official FM-1 V15 file (FM-1.fwsc) or SMK-37 Pro V016 file (SMK-37_Pro_016.fwsc)");
+  if (bytes.length === STOCK_V15_SIZE && await sha256hex(bytes) === STOCK_V15_SHA256 && productOf(bytes) === STOCK_V15_PRODUCT)
+    return { product: STOCK_V15_PRODUCT, image: logicalImage(bytes) };
+  try { const k = await identifyStockPackage(bytes); return { product: k.product, image: k.image }; } catch (_) { /* below */ }
+  throw new Error("select the unmodified official FM-1 V15 file (FM-1.fwsc) or an official SMK-37 firmware (.fwsc) from M-Vave");
 }
 
 // SPDX-License-Identifier: GPL-3.0-only
@@ -906,9 +984,20 @@ const IS_OTA = (id) => /^ota-/i.test(id.model);
 // stock updater's loader) is never written: its loader may lay the image out differently.
 const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[789]\d\d$/i.test(id.text);
 // the SMK-37 Pro, SMK-37 Elite, MKE-P37, Starrykey 37 Play and the SMK-37+VA mod: one keyboard under several model
-// names, so a package for one runs on all of them; an FM-1 is another device
-const SMK_FAMILY = /^(ota-)?(SMK-37[ +].*|MKE-P37|STARRYKEY-37.*)$/i;
+// names, so a package for one runs on all of them (also "SMK-37", the name other firmwares report); an FM-1 is
+// another device
+const SMK_FAMILY = /^(ota-)?(SMK-37([ +].*)?|MKE-P37|STARRYKEY-37.*)$/i;
 const sameKeyboard = (a, b) => a === b || (SMK_FAMILY.test(a) && SMK_FAMILY.test(b));   // two models
+// an official package on the connected keyboard (the return to the M-Vave firmware): "same" (its model), "other"
+// (another model of the same keyboard: allowed, the page warns), "unknown" (the keyboard does not name its model,
+// as "SMK-37" or "SMK-37+VA": allowed, the page warns), "refuse" (another device: FM-1 and SMK never mix)
+const NAMED = /^(SMK-37 Pro|SMK-37 Elite|MKE-P37|STARRYKEY-37 PLAY)$/i;
+function stockFit(deviceModel, product) {
+  const dm = deviceModel.replace(/^ota-/i, ""), pm = product.split("_")[0];
+  if (!sameKeyboard(dm, pm)) return "refuse";
+  if (dm.toLowerCase() === pm.toLowerCase()) return "same";
+  return NAMED.test(dm) ? "other" : "unknown";
+}
 // the MIDI ports find() probes: the FM-1 / SMK models' and the firmwares' names; other gear is never sent anything
 const PORT_RE = /fm-1|smk|elite|mke-p37|starry|felucca|melodee|fomni|x0x|makkuro|snoop|vector|vox|ota|composite|sinco|usb-midi/i;
 // a port name without its in / out part (Windows names a device's second port pair "MIDIIN2 (X)" / "MIDIOUT2 (X)")
@@ -1165,7 +1254,8 @@ let midi = null, busy = false, connected = false, allPorts = false;   // allPort
 const MODELS = { pro: "SMK-37 Pro", elite: "SMK-37 Elite", mke: "MKE-P37" };
 const SMK = (id) => sameKeyboard(id.model, "SMK-37 Pro");                  // any SMK-37 model, our firmwares too
 const modelOf = (id) => ({ "SMK-37 Elite": "elite", "MKE-P37": "mke" })[id.model.replace(/^ota-/i, "")] || "pro";
-let detected = "pro";                                  // the connected unit's model (Starrykey, +VA: the Pro build)
+let detected = "pro";
+let lastId = null;                                     // the connected keyboard's identity (the M-Vave return checks it)                                  // the connected unit's model (Starrykey, +VA: the Pro build)
 const chosen = {};                                     // fw id -> a model picked under "Flash another keyboard version"
 const modelFor = (fw) => chosen[fw.id] || detected;
 const pkgs = {};
@@ -1207,6 +1297,7 @@ function lockCards() {
   document.querySelectorAll(".inst").forEach((b) => { b.disabled = busy || !midi; });
   $("conn").disabled = busy || connected || !navigator.requestMIDIAccess;
   $("conn").textContent = connected ? "Connected" : "Connect";
+  stockLock();
 }
 
 async function access() {
@@ -1219,19 +1310,21 @@ async function access() {
 }
 async function scan() {
   if (busy) return;
-  led("busy", "Looking for the SMK-37 Pro…", "");
+  led("busy", "Looking for the SMK-37…", "");
   try {
     const up = new Updater(await access(), () => {}, { all: allPorts });
     const dev = await up.find();
     connected = false;
     if (!dev) {
-      led("err", "No SMK-37 Pro found", "Check the USB cable (a data cable), close other apps that use MIDI, then press Connect.");
+      lastId = null; stockShow();
+      led("err", "No SMK-37 found", "Check the USB cable (a data cable), close other apps that use MIDI, then press Connect.");
       portList([...midi.inputs.values()].filter((i) => i.state !== "disconnected").map((i) => i.name || "(no name)"));
       return;
     }
     dev.link.close();
     $("ports").hidden = true;
-    if (!SMK(dev.id)) { led("err", dev.id.text + ": not an SMK-37 Pro", "These packages are for the M-Vave SMK-37 Pro only."); return; }
+    lastId = dev.id; stockShow();
+    if (!SMK(dev.id)) { led("err", dev.id.text + ": not an SMK-37", "These packages are for the M-Vave SMK-37 keyboards only (SMK-37 Pro, Elite, MKE-P37)."); return; }
     detected = modelOf(dev.id);
     showModels();
     const model = dev.id.model.replace(/^ota-/i, "");
@@ -1315,7 +1408,9 @@ async function install(fw) {
         ota.link.close();
         const p = FW.find((f) => f.id === pend);
         throw new Error("The keyboard is in update mode (" + ota.id.text + ") from an interrupted install" +
-          (p ? " of " + p.name + ". Press Install on " + p.name + " to finish it first." : ". Finish it with the firmware that was being installed, or with M-UPGRADE."));
+          (p ? " of " + p.name + ". Press Install on " + p.name + " to finish it first."
+             : pend === "stock" ? ". Finish it under Back to the M-Vave firmware."
+             : ". Finish it with the firmware that was being installed, or under Back to the M-Vave firmware."));
       }
       store.set(fw.id);
       if (!(await up.write(ota, image, step)).finished) throw new Error("Stopped. Replug the USB cable and press Install again.");
@@ -1336,6 +1431,82 @@ async function install(fw) {
   }
 }
 document.querySelectorAll(".inst").forEach((b) => b.addEventListener("click", () => install(FW.find((f) => f.id === b.dataset.fw))));
+
+/* back to the M-Vave firmware: an official package the user downloaded from M-Vave (never shipped here), its
+   SHA-256 checked (STOCK_SMK), written as any install; afterwards the keyboard reports the official identity */
+let stockPkg = null, stockFitNow = null;
+function stockSay(cls, html) { const p = $("sinfo"); p.className = "sinfo " + (cls || ""); p.innerHTML = html; p.hidden = !html; }
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+function stockShow() {
+  stockFitNow = null;
+  $("sconfirmrow").hidden = true;
+  if (!stockPkg) { stockLock(); return; }
+  const k = stockPkg, what = "<b>M-Vave " + esc(k.name) + " firmware V" + k.version + "</b>, official (SHA-256 checked).";
+  if (!lastId) stockSay("", what + " Connect the keyboard above.");
+  else {
+    stockFitNow = stockFit(lastId.model, k.product);
+    const kb = esc(lastId.text);
+    if (stockFitNow === "refuse") stockSay("err", what + " The connected device reports " + kb + ": not an SMK-37 keyboard. Refused.");
+    else if (stockFitNow === "same") stockSay("", what + " It matches your keyboard (" + kb + ").");
+    else {
+      stockSay("warn", what + " Your keyboard reports " + kb + (stockFitNow === "other"
+        ? ", this file is for the " + esc(k.name) + ". A firmware installed under another model name reports that name: pick the file for the model printed on your keyboard."
+        : " and does not say its model. Make sure this file is for the model printed on your keyboard (" + esc(k.name) + ")."));
+      $("sconfirmrow").hidden = false;
+    }
+  }
+  stockLock();
+}
+function stockLock() {
+  const f = stockFitNow;
+  $("sinst").disabled = busy || !midi || !connected || !stockPkg || !f || f === "refuse" || (f !== "same" && !$("sconfirm").checked);
+}
+async function stockFile(file) {
+  if (!file || busy) return;
+  stockPkg = null; $("sconfirm").checked = false;
+  $("sdroptext").textContent = file.name;
+  stockSay("", "Checking…");
+  try { stockPkg = await identifyStockPackage(new Uint8Array(await file.arrayBuffer())); }
+  catch (e) {
+    stockSay("err", e.code === "fm1" ? esc(e.message) + "."
+      : "Not an official M-Vave SMK-37 firmware we know. Download the firmware for your keyboard from M-Vave and drop that file, unchanged.");
+  }
+  stockShow();
+}
+$("sfile").addEventListener("change", (e) => stockFile(e.target.files[0]));
+$("sconfirm").addEventListener("change", stockLock);
+const sdrop = $("sdrop");
+sdrop.addEventListener("dragover", (e) => { e.preventDefault(); sdrop.classList.add("over"); });
+sdrop.addEventListener("dragleave", () => sdrop.classList.remove("over"));
+sdrop.addEventListener("drop", (e) => { e.preventDefault(); sdrop.classList.remove("over"); stockFile(e.dataTransfer.files[0]); });
+
+async function stockInstall() {
+  const k = stockPkg;
+  if (busy || !k) return;
+  busy = true; lockCards();
+  ov("Back to the M-Vave firmware", "M-Vave " + k.name + " V" + k.version + " · official", "var(--amber)");
+  mark("start");
+  try {
+    logln("package " + k.product + " (official, SHA-256 checked)");
+    const up = new Updater(await access(), logln, { all: allPorts });
+    const step = stepper(k.image);
+    const ota = await up.find(IS_OTA_ID);
+    store.set("stock");
+    if (ota) {                                         // already in update mode: the official package finishes it
+      ota.link.close();
+      if (!(await up.resume(k.image, step, { product: k.product, anyModel: true })))
+        throw new Error("Stopped. Replug the USB cable and press Install again.");
+    } else await up.install(k.image, k.product, step, true);   // (any model of the SMK-37 keyboard, never an FM-1)
+    store.set(null);
+    finish(true, "Done: the keyboard runs the M-Vave firmware " + k.product + ". M-UPGRADE works again.");
+  } catch (e) {
+    logln(String((e && e.stack) || e));
+    finish(false, e && e.code === "mismatch" ? "Written, but the keyboard reports " + e.detail + " instead of " + k.product + ". Switch it off and on, then connect again."
+      : e && e.code === "model" ? "This file is not for this device (" + e.message + "). Nothing was written."
+      : (e && e.message) || String(e));
+  }
+}
+$("sinst").addEventListener("click", stockInstall);
 
 showModels();
 lockCards();
