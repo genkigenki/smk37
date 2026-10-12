@@ -1015,9 +1015,11 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const IS_OTA = (id) => /^ota-/i.test(id.model);
 // the update loader of SLOOP / Felucca packages ("ota-FM-1_9XX", "ota-SMK-37 Pro_9XX"; the SMK ports also under the
 // Elite's and the MKE-P37's model name, Makkuro37 _7XX). A device left in the update mode of another firmware (the
-// stock updater's loader) is never written: its loader may lay the image out differently. Other SMK ports of these
-// firmwares report the bare "SMK-37" ("ota-SMK-37_931"): the same loader, so ours too.
-const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[789]\d\d$/i.test(id.text);
+// stock updater's loader) is never written: its loader may lay the image out differently. The bare "SMK-37" name
+// ("ota-SMK-37_931") is ChanceTheMaker's SMK firmwares' RAM updater: another package format, so not ours.
+const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[789]\d\d$/i.test(id.text);
+// ChanceTheMaker's SMK firmwares (Felucca SMK, Sloop SMK, Melodee SMK, Doom): "SMK-37_9NN", their own updater
+const OTHER_SMK = (id) => /^(ota-)?SMK-37_9\d\d$/i.test(id.text);
 // the SMK-37 Pro, SMK-37 Elite, MKE-P37, Starrykey 37 Play and the SMK-37+VA mod: one keyboard under several model
 // names, so a package for one runs on all of them (also "SMK-37", the name other firmwares report); an FM-1 is
 // another device
@@ -1209,6 +1211,7 @@ class Updater {
     const step = onStep || (() => {});
     const dev = await this.find((id) => !IS_OTA(id));
     if (!dev) throw fail("notfound", "FM-1 not found (USB cable, and no other app using it?)");
+    if (OTHER_SMK(dev.id)) { dev.link.close(); throw fail("other", `the keyboard runs a firmware with its own updater (${dev.id.text}): nothing was sent`, dev.id.text); }
     const [model] = product.split("_");
     if (dev.id.model !== model && !(anyModel && sameKeyboard(dev.id.model, model))) { dev.link.close(); throw fail("model", `the device is ${dev.id.text}, the package is for ${product}`); }
     step("start", dev.id.text);
@@ -1301,6 +1304,7 @@ let lastId = null;                                     // the connected keyboard
 const chosen = {};                                     // fw id -> a model picked under "Flash another keyboard version"
 const modelFor = (fw) => chosen[fw.id] || detected;
 const pkgs = {};
+const OTHER_MSG = "This keyboard runs one of ChanceTheMaker's SMK firmwares (Felucca SMK, Sloop SMK, Melodee SMK, Doom). They have their own updater, which takes only their packages, so these firmwares cannot be installed over them from here. Nothing was written.";
 
 function led(state, name, sub) {
   $("led").className = "led " + (state || "");
@@ -1367,6 +1371,12 @@ async function scan() {
     dev.link.close();
     $("ports").hidden = true;
     lastId = dev.id; stockShow();
+    if (OTHER_SMK(dev.id)) {
+      led("err", dev.id.text + ": another firmware family", IS_OTA_ID(dev.id)
+        ? "Its update mode is open. Switch the keyboard off and on: its firmware starts again, nothing was written."
+        : "It runs one of ChanceTheMaker's SMK firmwares, with their own updater: these packages cannot be installed over it from here.");
+      return;
+    }
     if (!SMK(dev.id)) { led("err", dev.id.text + ": not an SMK-37", "These packages are for the M-Vave SMK-37 keyboards only (SMK-37 Pro, Elite, MKE-P37)."); return; }
     detected = modelOf(dev.id);
     showModels();
@@ -1449,6 +1459,7 @@ async function install(fw) {
       const lm = ota.id.model.replace(/^ota-/i, "");
       // the loader's model: this card's, or a bare "SMK-37" (other ports) for any model of the keyboard
       const fits = lm === MODELS[model] || (!Object.values(MODELS).includes(lm) && sameKeyboard(lm, MODELS[model]));
+      if (OTHER_SMK(ota.id)) { ota.link.close(); throw new Error("The keyboard is in the update mode of one of ChanceTheMaker's SMK firmwares (" + ota.id.text + "). It takes only their packages. Switch the keyboard off and on: its firmware starts again, nothing was written."); }
       if (!OUR_LOADER(ota.id) || !fits) {
         ota.link.close();
         throw new Error("The keyboard is in update mode (" + ota.id.text + ") from an interrupted install. " +
@@ -1470,7 +1481,7 @@ async function install(fw) {
     finish(true, fw.name + " is running. Enjoy!");
   } catch (e) {
     logln(String((e && e.stack) || e));
-    finish(false, (e && e.message) || String(e));
+    finish(false, e && e.code === "other" ? OTHER_MSG : (e && e.message) || String(e));
   }
 }
 document.querySelectorAll(".inst").forEach((b) => b.addEventListener("click", () => install(FW.find((f) => f.id === b.dataset.fw))));
@@ -1547,6 +1558,7 @@ async function stockInstall() {
   } catch (e) {
     logln(String((e && e.stack) || e));
     finish(false, e && e.code === "mismatch" ? "Written, but the keyboard reports " + e.detail + " instead of " + k.product + ". Switch it off and on, then connect again."
+      : e && e.code === "other" ? OTHER_MSG
       : e && e.code === "model" ? "This file is not for this device (" + e.message + "). Nothing was written."
       : (e && e.message) || String(e));
   }
