@@ -60,6 +60,7 @@ a:hover { text-shadow: 0 0 12px var(--cyan); }
 .title h1 span { color: #ffe9fb; text-shadow: 0 0 6px var(--mag), 0 0 24px rgba(255, 60, 210, .85), 0 0 60px rgba(255, 60, 210, .5); }
 .title p { margin: 10px auto 22px; max-width: 640px; font-size: clamp(15px, 2.2vw, 19px); color: #bfe9f5; }
 .btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btns.left { justify-content: flex-start; margin-top: 26px; }
 .btn {
   display: inline-block; padding: 12px 22px; border: 1px solid var(--cyan); border-radius: 2px;
   font: 700 13px/1 Orbitron, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--ink);
@@ -172,6 +173,18 @@ footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing:
   box-shadow: 0 0 14px -4px var(--c), inset 0 0 12px -6px var(--c); }
 .connect .btn:disabled { opacity: .45; cursor: default; border-color: #46f0a0; color: #46f0a0; box-shadow: none; background: transparent; }
 .card .inst:disabled { opacity: .35; cursor: default; box-shadow: none; }
+.card details.model { margin-top: 12px; color: var(--dim); }
+.card details.model summary { width: max-content; cursor: pointer; font: 11px "JetBrains Mono", monospace; letter-spacing: .06em; }
+.card details.model summary:hover { color: var(--c, var(--cyan)); }
+.card .models { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 10px 0 6px; font-size: 14px; color: var(--ink); }
+.card .models label { cursor: pointer; }
+.card .models input { accent-color: var(--c, var(--cyan)); margin: 0 6px 0 0; vertical-align: -2px; }
+.card details.model p { margin: 0; font-size: 12px; color: var(--dim); }
+.ports { margin: 10px 0 0; padding: 12px 18px; border: 1px dashed var(--line); display: flex; flex-wrap: wrap; align-items: center;
+  gap: 10px 16px; font-size: 13px; color: var(--dim); }
+.ports[hidden] { display: none; }
+.ports span { flex: 1; min-width: 220px; overflow-wrap: anywhere; }
+.ports .btn { padding: 9px 14px; font-size: 11px; cursor: pointer; }
 .card.running { --line-c: #46f0a0; }
 .card.running .meta::after { content: " · running now"; color: #46f0a0; }
 .tag.soon { color: var(--mag); }
@@ -257,6 +270,8 @@ label.file input { display: none; }
       <div class="ctext"><b id="devname">Not connected</b><span id="devsub">Use Chrome or Edge. Plug the SMK-37 Pro into this computer, then press Connect.</span></div>
       <button class="btn" id="conn" type="button">Connect</button>
     </div>
+    <div class="ports" id="ports" hidden><span id="portlist"></span>
+      <button class="btn alt" id="allports" type="button">Search all MIDI ports</button></div>
 
     <div class="cards">
       <article class="card flag fw reveal" data-fw="makkuro37" data-name="Makkuro37" style="--c: var(--mag)">
@@ -268,6 +283,11 @@ label.file input { display: none; }
           <div class="foot"><span class="tag ">experimental</span>
           <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">github.com/genkigenki/Makkuro37</a></span><a class="btn alt" href="makkuro37-sim/">Simulator</a>
           <button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></div>
+          <details class="model"><summary>Flash another keyboard version</summary>
+            <div class="models"><label><input type="radio" name="model-makkuro37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-makkuro37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-makkuro37" value="mke"> MKE-P37</label></div>
+            <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
+              reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
+          </details>
         </div>
         <div class="screenbox">
           <div class="screen"><img src="assets/makkuro37-anim.webp" width="240" height="240" alt="Makkuro37 boot intro on the SMK-37 Pro display"></div>
@@ -282,6 +302,11 @@ label.file input { display: none; }
         <div class="foot"><span class="tag ">experimental</span>
           <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Snoop37">github.com/genkigenki/Snoop37</a></span>
           <button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></div>
+          <details class="model"><summary>Flash another keyboard version</summary>
+            <div class="models"><label><input type="radio" name="model-snoop37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-snoop37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-snoop37" value="mke"> MKE-P37</label></div>
+            <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
+              reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
+          </details>
       </article>
       <article class="card fw reveal" data-fw="x0x37" data-name="X0X37" style="--c: var(--t3)">
         <div class="screen"><img src="assets/shot-x0x37.png" width="240" height="240" alt="X0X37 on the display"></div>
@@ -292,6 +317,11 @@ label.file input { display: none; }
         <div class="foot"><span class="tag ">experimental</span>
           <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/X0X37">github.com/genkigenki/X0X37</a></span>
           <button class="btn inst" type="button" data-fw="x0x37" disabled>Install</button></div>
+          <details class="model"><summary>Flash another keyboard version</summary>
+            <div class="models"><label><input type="radio" name="model-x0x37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-x0x37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-x0x37" value="mke"> MKE-P37</label></div>
+            <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
+              reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
+          </details>
       </article>
       <article class="card fw reveal" data-fw="fomni37" data-name="FoMni37" style="--c: var(--t4)">
         <div class="screen"><img src="assets/shot-fomni37.png" width="240" height="240" alt="FoMni37 on the display"></div>
@@ -302,13 +332,18 @@ label.file input { display: none; }
         <div class="foot"><span class="tag ">experimental</span>
           <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/FoMni37">github.com/genkigenki/FoMni37</a></span>
           <button class="btn inst" type="button" data-fw="fomni37" disabled>Install</button></div>
+          <details class="model"><summary>Flash another keyboard version</summary>
+            <div class="models"><label><input type="radio" name="model-fomni37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-fomni37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-fomni37" value="mke"> MKE-P37</label></div>
+            <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
+              reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
+          </details>
       </article>
       
     </div>
 
     <p class="small note reveal">Unofficial firmware, at your own risk. Do not unplug the keyboard while it writes; an interrupted
       install resumes when you press Install again. Back to the stock firmware: M-Vave's own updater, M-UPGRADE, with the official
-      SMK-37 Pro V016.</p>
+      V016 of your model (SMK-37 Pro, Elite or MKE-P37).</p>
   </div>
 </section>
 
@@ -336,6 +371,7 @@ label.file input { display: none; }
       <p class="lead"><a href="https://github.com/genkigenki/fm1-to-smk37">The port guide</a> walks an FM-1 firmware onto the SMK-37 Pro step by step: the board switch,
         the input and LED layer, the flash map, the update path and the controls. Written so you can follow it with
         a coding assistant such as Claude, without any vendor code. The FM-1 build stays byte-identical, so the SMK target can live upstream.</p>
+      <div class="btns left"><a class="btn" href="kit.html">How it works</a><a class="btn alt" href="https://github.com/genkigenki/fm1-to-smk37">The kit on GitHub</a></div>
     </div>
     <div class="duo">
       <a class="card reveal" href="https://github.com/genkigenki/fm1-to-smk37" style="--c: var(--cyan)">
@@ -850,9 +886,18 @@ const UPGRADE = [0xF0, 0x22, 0x24, 0x35, 0x7F, 0xF7];
 const MAXDATA = 512;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const IS_OTA = (id) => /^ota-/i.test(id.model);
-// the update loader of SLOOP / Felucca packages ("ota-FM-1_9XX", "ota-SMK-37 Pro_9XX"). A device left in the update
-// mode of another firmware (the stock updater's loader) is never written: its loader may lay the image out differently.
-const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro)_9\d\d$/i.test(id.text);
+// the update loader of SLOOP / Felucca packages ("ota-FM-1_9XX", "ota-SMK-37 Pro_9XX"; the SMK ports also under the
+// Elite's and the MKE-P37's model name, Makkuro37 _7XX). A device left in the update mode of another firmware (the
+// stock updater's loader) is never written: its loader may lay the image out differently.
+const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[789]\d\d$/i.test(id.text);
+// the SMK-37 Pro, SMK-37 Elite, MKE-P37, Starrykey 37 Play and the SMK-37+VA mod: one keyboard under several model
+// names, so a package for one runs on all of them; an FM-1 is another device
+const SMK_FAMILY = /^(ota-)?(SMK-37[ +].*|MKE-P37|STARRYKEY-37.*)$/i;
+const sameKeyboard = (a, b) => a === b || (SMK_FAMILY.test(a) && SMK_FAMILY.test(b));   // two models
+// the MIDI ports find() probes: the FM-1 / SMK models' and the firmwares' names; other gear is never sent anything
+const PORT_RE = /fm-1|smk|elite|mke-p37|starry|felucca|melodee|fomni|x0x|makkuro|snoop|vector|vox|ota|composite|sinco|usb-midi/i;
+// a port name without its in / out part (Windows names a device's second port pair "MIDIIN2 (X)" / "MIDIOUT2 (X)")
+const portBase = (n) => n.replace(/^MIDI(?:IN|OUT)(\d*) \((.*)\)$/i, "$2 $1").replace(/[ -](?:in|out|input|output)$/i, "").trim().toLowerCase();
 
 // errors carry a code the pages translate: notfound, model, stopped, noloader, lost, noreturn,
 // mismatch (detail: the identity the device reports), badreq, foreign (detail: the loader's identity)
@@ -950,22 +995,30 @@ async function handshake(link, tries = 3) {
 }
 
 class Updater {
-  constructor(access, log) {
+  // opts.all: probe every MIDI port, not only PORT_RE's (the handshake query is harmless to other gear)
+  constructor(access, log, opts = {}) {
     this.access = access;
     this.log = log || (() => {});
+    this.all = !!opts.all;
+    this.said = new Set();
   }
+
+  say(t) { if (!this.said.has(t)) { this.said.add(t); this.log(t); } }   // each port line once
 
   // every in/out pair with the same port name that answers the handshake
   async find(filter) {
     const outs = [...this.access.outputs.values()];
     for (const input of this.access.inputs.values()) {
       if (input.state === "disconnected") continue;
-      if (!/fm-1|smk|felucca|melodee|fomni|x0x|makkuro|ota|composite|sinco|usb-midi/i.test(input.name || "")) continue;   // never probe other gear
-      const output = outs.find((o) => o.name === input.name) || (outs.length === 1 ? outs[0] : null);
-      if (!output) continue;
-      try { await input.open(); await output.open(); } catch (_) { continue; }
+      const name = input.name || "";
+      if (!this.all && !PORT_RE.test(name)) { this.say(`port "${name}": not probed`); continue; }   // never probe other gear
+      const output = outs.find((o) => o.name === input.name) ||
+        outs.find((o) => portBase(o.name || "") === portBase(name)) || (outs.length === 1 ? outs[0] : null);
+      if (!output) { this.say(`port "${name}": no output of that name`); continue; }
+      try { await input.open(); await output.open(); } catch (_) { this.say(`port "${name}": cannot open (in use?)`); continue; }
       const link = new Link(input, output);
       const id = await handshake(link, 2);
+      this.say(`port "${name}" / "${output.name}": ${id ? id.text : "no answer"}`);
       if (id && (!filter || filter(id))) return { link, id, name: input.name };
       link.close();
     }
@@ -1011,13 +1064,14 @@ class Updater {
     }
   }
 
-  // full install: running firmware -> loader -> new firmware
+  // full install: running firmware -> loader -> new firmware. anyModel: the package may be for another model of the
+  // same keyboard (an SMK-37 Elite package on a unit that reports SMK-37 Pro); never an FM-1 one on an SMK, nor back
   async install(image, product, onStep, anyModel = false) {
     const step = onStep || (() => {});
     const dev = await this.find((id) => !IS_OTA(id));
     if (!dev) throw fail("notfound", "FM-1 not found (USB cable, and no other app using it?)");
     const [model] = product.split("_");
-    if (dev.id.model !== model && !anyModel) { dev.link.close(); throw fail("model", `the device is ${dev.id.text}, the package is for ${product}`); }
+    if (dev.id.model !== model && !(anyModel && sameKeyboard(dev.id.model, model))) { dev.link.close(); throw fail("model", `the device is ${dev.id.text}, the package is for ${product}`); }
     step("start", dev.id.text);
     dev.link.send(UPGRADE);
     await sleep(2000);
@@ -1075,7 +1129,7 @@ class Updater {
   }
 }
 
-const FW = [{"id": "makkuro37", "name": "Makkuro37", "version": "0.1", "col": "var(--mag)", "product": "SMK-37 Pro_700", "pkg": "firmware/makkuro37-0.1.fwsc", "sha256": "759bbea1e601ce1a3d1d453a233921f06b54009544badf294bd854de817aba36", "size": 651195}, {"id": "snoop37", "name": "Snoop37", "version": "0.1", "col": "var(--cyan)", "product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-0.1.fwsc", "sha256": "a4d211b7e56545d2a75d2780df0b12ef4232471c6df0817f6bcc5d4f456db8c0", "size": 651190}, {"id": "x0x37", "name": "X0X37", "version": "0.1", "col": "var(--t3)", "product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.1.fwsc", "sha256": "19a7f763f001e7af14f6a692aa2641b95f7017e4c6b39ba22c05e80bd5d0afb5", "size": 650816}, {"id": "fomni37", "name": "FoMni37", "version": "0.1", "col": "var(--t4)", "product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.1.fwsc", "sha256": "87b6539e60486458711e6ecbb2715171eccef03d4653ca8b1b463ec0dace6448", "size": 650795}];
+const FW = [{"id": "makkuro37", "name": "Makkuro37", "version": "0.1", "col": "var(--mag)", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/makkuro37-0.1.fwsc", "sha256": "759bbea1e601ce1a3d1d453a233921f06b54009544badf294bd854de817aba36", "size": 651195}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/makkuro37-0.1-elite.fwsc", "sha256": "b6c07ac7c003f7c01475b7893b690fef105848fa5a5b212d541df7d274982d36", "size": 651199}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/makkuro37-0.1-mke.fwsc", "sha256": "e6cd03f629f9dd92659624f1db494d6443b60bd2bbeb34a68876114879088add", "size": 651191}}}, {"id": "snoop37", "name": "Snoop37", "version": "0.1", "col": "var(--cyan)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-0.1.fwsc", "sha256": "a4d211b7e56545d2a75d2780df0b12ef4232471c6df0817f6bcc5d4f456db8c0", "size": 651190}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/snoop37-0.1-elite.fwsc", "sha256": "59df6e2cad7e7dbbe49ef013abc786983db4dd470e38297c66942d3da99ca047", "size": 651194}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/snoop37-0.1-mke.fwsc", "sha256": "3abf393789e91e82588cf1945aa760709614873dad37516c3c1d51bac3fe236f", "size": 651186}}}, {"id": "x0x37", "name": "X0X37", "version": "0.1", "col": "var(--t3)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.1.fwsc", "sha256": "19a7f763f001e7af14f6a692aa2641b95f7017e4c6b39ba22c05e80bd5d0afb5", "size": 650816}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/x0x37-0.1-elite.fwsc", "sha256": "70d07f138b3c23b9475417f6fbd9e2dfa3f7f54378fc9d3a415f8e4d4e87ef51", "size": 650820}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/x0x37-0.1-mke.fwsc", "sha256": "2453af33cb0100b61182c96c70c0db7ce2c8a64e2fe815759693434552846993", "size": 650812}}}, {"id": "fomni37", "name": "FoMni37", "version": "0.1", "col": "var(--t4)", "v": {"pro": {"product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.1.fwsc", "sha256": "87b6539e60486458711e6ecbb2715171eccef03d4653ca8b1b463ec0dace6448", "size": 650795}, "elite": {"product": "SMK-37 Elite_800", "pkg": "firmware/fomni37-0.1-elite.fwsc", "sha256": "c4355b7a937e43fe8cf1cc94e1b082179b78b717a006f5bdecdbf1d0bf9fc7c9", "size": 650799}, "mke": {"product": "MKE-P37_800", "pkg": "firmware/fomni37-0.1-mke.fwsc", "sha256": "b35f9a1653f47905d8854fbffaf462825a05cb2532cd772c7f330f77e5d63596", "size": 650791}}}];
 const $ = (id) => document.getElementById(id);
 const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
 const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
@@ -1083,9 +1137,14 @@ const store = {
   get: () => { try { return localStorage.getItem(PENDING); } catch (_) { return null; } },
   set: (v) => { try { v ? localStorage.setItem(PENDING, v) : localStorage.removeItem(PENDING); } catch (_) {} },
 };
-let midi = null, busy = false, connected = false, other = "";   // other: an SMK37-range keyboard that is not a Pro
-const SMK_PRO = (id) => /^(ota-)?SMK-37 Pro$/i.test(id.model);
-const SMK_RANGE = (id) => /smk|elite|starry|\+va/i.test(id.model) && !/^(ota-)?FM-1/i.test(id.model);   // the Elite, other firmwares on an SMK
+let midi = null, busy = false, connected = false, allPorts = false;   // allPorts: probe every MIDI port (the user asked)
+// the keyboard models a package is built for (one hardware): the connected unit's own, or the one picked on the card
+const MODELS = { pro: "SMK-37 Pro", elite: "SMK-37 Elite", mke: "MKE-P37" };
+const SMK = (id) => sameKeyboard(id.model, "SMK-37 Pro");                  // any SMK-37 model, our firmwares too
+const modelOf = (id) => ({ "SMK-37 Elite": "elite", "MKE-P37": "mke" })[id.model.replace(/^ota-/i, "")] || "pro";
+let detected = "pro";                                  // the connected unit's model (Starrykey, +VA: the Pro build)
+const chosen = {};                                     // fw id -> a model picked under "Flash another keyboard version"
+const modelFor = (fw) => chosen[fw.id] || detected;
 const pkgs = {};
 
 function led(state, name, sub) {
@@ -1104,6 +1163,22 @@ function running(dev) {                                  // what the keyboard ru
   if (/felucca/i.test(n)) return "Snoop37, SLOOP or another Felucca-based firmware";
   return id;
 }
+function showModels() {                              // the cards' radios follow the unit until one is picked
+  for (const fw of FW) {
+    const r = document.querySelector(`input[name="model-${fw.id}"][value="${modelFor(fw)}"]`);
+    if (r) r.checked = true;
+  }
+}
+document.querySelectorAll(".models input").forEach((r) => r.addEventListener("change", () => {
+  chosen[r.name.slice(6)] = r.value;
+}));
+function portList(names) {                             // nothing answered: what the browser sees
+  $("ports").hidden = false;
+  $("portlist").textContent = names.length ? "MIDI inputs this browser sees: " + names.join(", ") +
+    (allPorts ? ". None of them answered." : ".") : "This browser sees no MIDI input at all (driver, cable, or another app holds the port).";
+  $("allports").hidden = allPorts || !names.length;
+}
+$("allports").addEventListener("click", () => { allPorts = true; scan(); });
 function lockCards() {
   document.querySelectorAll(".inst").forEach((b) => { b.disabled = busy || !midi; });
   $("conn").disabled = busy || connected || !navigator.requestMIDIAccess;
@@ -1122,20 +1197,26 @@ async function scan() {
   if (busy) return;
   led("busy", "Looking for the SMK-37 Pro…", "");
   try {
-    const up = new Updater(await access(), () => {});
+    const up = new Updater(await access(), () => {}, { all: allPorts });
     const dev = await up.find();
     connected = false;
-    if (!dev) { led("err", "No SMK-37 Pro found", "Check the USB cable (a data cable), close other apps that use MIDI, then press Connect."); return; }
+    if (!dev) {
+      led("err", "No SMK-37 Pro found", "Check the USB cable (a data cable), close other apps that use MIDI, then press Connect.");
+      portList([...midi.inputs.values()].filter((i) => i.state !== "disconnected").map((i) => i.name || "(no name)"));
+      return;
+    }
     dev.link.close();
-    other = "";
-    if (!SMK_PRO(dev.id) && !IS_OTA_ID(dev.id) && SMK_RANGE(dev.id)) {
-      other = dev.id.text;
+    $("ports").hidden = true;
+    if (!SMK(dev.id)) { led("err", dev.id.text + ": not an SMK-37 Pro", "These packages are for the M-Vave SMK-37 Pro only."); return; }
+    detected = modelOf(dev.id);
+    showModels();
+    const model = dev.id.model.replace(/^ota-/i, "");
+    if (!Object.values(MODELS).includes(model)) {          // Starrykey 37 Play, the SMK-37+VA mod: the Pro build
       led("on", dev.id.text + " connected", "SMK37 range · port " + dev.name);
       connected = true; return;
     }
-    if (!SMK_PRO(dev.id)) { led("err", dev.id.text + ": not an SMK-37 Pro", "These packages are for the M-Vave SMK-37 Pro only."); return; }
     const what = running(dev);
-    led("on", "SMK-37 Pro connected", "Running " + what + " · port " + dev.name);
+    led("on", model + " connected", "Running " + what + " · port " + dev.name);
     connected = true;
     document.querySelectorAll(".card.fw").forEach((c) => c.classList.toggle("running", c.dataset.name === what));
   } catch (e) { connected = false; led("err", "Cannot connect", e.message); }
@@ -1144,16 +1225,16 @@ async function scan() {
 $("conn").addEventListener("click", scan);
 if (!navigator.requestMIDIAccess) led("err", "Chrome or Edge needed", "This browser has no Web MIDI, so it cannot install firmware.");
 
-async function load(fw) {
-  if (!pkgs[fw.id]) pkgs[fw.id] = (async () => {
-    const r = await fetch(fw.pkg);
-    if (!r.ok) throw new Error(fw.pkg + ": HTTP " + r.status);
+async function load(pkg) {                              // pkg: one model's package (fw.v[model])
+  if (!pkgs[pkg.pkg]) pkgs[pkg.pkg] = (async () => {
+    const r = await fetch(pkg.pkg);
+    if (!r.ok) throw new Error(pkg.pkg + ": HTTP " + r.status);
     const raw = new Uint8Array(await r.arrayBuffer());
     const h = [...new Uint8Array(await crypto.subtle.digest("SHA-256", raw))].map((b) => b.toString(16).padStart(2, "0")).join("");
-    if (h !== fw.sha256 || productOf(raw) !== fw.product) throw new Error("The download is damaged (SHA-256 mismatch). Reload the page.");
+    if (h !== pkg.sha256 || productOf(raw) !== pkg.product) throw new Error("The download is damaged (SHA-256 mismatch). Reload the page.");
     return logicalImage(raw);
-  })().catch((e) => { delete pkgs[fw.id]; throw e; });
-  return pkgs[fw.id];
+  })().catch((e) => { delete pkgs[pkg.pkg]; throw e; });
+  return pkgs[pkg.pkg];
 }
 
 /* the overlay */
@@ -1195,16 +1276,18 @@ addEventListener("beforeunload", (e) => { if (busy) { e.preventDefault(); e.retu
 async function install(fw) {
   if (busy) return;
   busy = true; lockCards();
-  ov("Installing " + fw.name, fw.name + " " + fw.version, fw.col);
+  const model = modelFor(fw), pkg = fw.v[model];
+  ov("Installing " + fw.name, fw.name + " " + fw.version + " · for the " + MODELS[model], fw.col);
   mark("start");
   try {
-    const image = await load(fw);
-    const up = new Updater(await access(), logln);
+    const image = await load(pkg);
+    logln("package " + pkg.product);
+    const up = new Updater(await access(), logln, { all: allPorts });
     const step = stepper(image);
     const ota = await up.find(IS_OTA_ID);
     if (ota) {                                         // an interrupted install: only the same firmware finishes it
       const pend = store.get();
-      if (ota.id.text !== "ota-" + fw.product || (pend && pend !== fw.id)) {
+      if (!OUR_LOADER(ota.id) || ota.id.model !== "ota-" + MODELS[model] || (pend && pend !== fw.id)) {
         ota.link.close();
         const p = FW.find((f) => f.id === pend);
         throw new Error("The keyboard is in update mode (" + ota.id.text + ") from an interrupted install" +
@@ -1219,7 +1302,7 @@ async function install(fw) {
       step("done", back.id.text);
     } else {
       store.set(fw.id);
-      await up.install(image, fw.product, step, !!other);
+      await up.install(image, pkg.product, step, true);   // (another model of the same keyboard only)
     }
     store.set(null);
     finish(true, fw.name + " is running. Enjoy!");
@@ -1230,6 +1313,7 @@ async function install(fw) {
 }
 document.querySelectorAll(".inst").forEach((b) => b.addEventListener("click", () => install(FW.find((f) => f.id === b.dataset.fw))));
 
+showModels();
 lockCards();
 </script>
 </body>

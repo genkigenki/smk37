@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMK37 Port Kit</title>
+<meta name="description" content="Migrate FM-1 firmwares to the M-Vave SMK-37 Pro with a coding agent such as Claude Code: board patch series, playbook, mapping patterns, setup file.">
+<meta name="theme-color" content="#04060c">
+<link rel="stylesheet" href="fonts/fonts.css">
+<style>
+:root {
+  --bg: #04060c;
+  --bg2: #070b16;
+  --ink: #dff8ff;
+  --dim: #7f9bb0;
+  --cyan: #3cf0ff;
+  --mag: #ff3cd2;
+  --amber: #ffb02a;
+  --line: rgba(60, 240, 255, .18);
+  --card: rgba(10, 20, 36, .72);
+  --t1: #287cff; --t2: #1ecc70; --t3: #ffc618; --t4: #ff621a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 Inter, system-ui, sans-serif; overflow-x: hidden;
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-shadow: 0 0 12px var(--cyan); }
+.mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; height: 100vh; min-height: 560px; overflow: hidden; }
+#stage { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hud {
+  position: absolute; left: 24px; top: 20px; z-index: 2;
+  font: 12px/1.7 "JetBrains Mono", monospace; color: var(--cyan); letter-spacing: .08em;
+  text-shadow: 0 0 8px rgba(60, 240, 255, .7); pointer-events: none;
+}
+.hud .k { color: var(--dim); }
+.hud .new { color: #5ad2ff; text-shadow: 0 0 8px rgba(90, 210, 255, .8); }
+.nav {
+  position: absolute; right: 24px; top: 18px; z-index: 3; display: flex; gap: 22px;
+  font: 600 12px/1 Orbitron, sans-serif; letter-spacing: .14em; text-transform: uppercase;
+}
+.nav a { color: var(--ink); opacity: .75; }
+.nav a:hover { opacity: 1; color: var(--cyan); }
+.title {
+  position: absolute; left: 0; right: 0; bottom: 9vh; z-index: 2; text-align: center;
+  opacity: 0; transform: translateY(18px); transition: opacity 1.2s ease, transform 1.2s ease;
+  pointer-events: none; padding: 0 16px;
+}
+.title.on { opacity: 1; transform: none; pointer-events: auto; }
+.title h1 {
+  margin: 0; font: 900 clamp(48px, 11vw, 132px)/1 Orbitron, sans-serif; letter-spacing: .06em;
+  color: #effcff;
+  text-shadow: 0 0 6px var(--cyan), 0 0 22px rgba(60, 240, 255, .8), 0 0 60px rgba(60, 240, 255, .45);
+}
+.title h1 span { color: #ffe9fb; text-shadow: 0 0 6px var(--mag), 0 0 24px rgba(255, 60, 210, .85), 0 0 60px rgba(255, 60, 210, .5); }
+.title p { margin: 10px auto 22px; max-width: 640px; font-size: clamp(15px, 2.2vw, 19px); color: #bfe9f5; }
+.btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-block; padding: 12px 22px; border: 1px solid var(--cyan); border-radius: 2px;
+  font: 700 13px/1 Orbitron, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--ink);
+  background: rgba(60, 240, 255, .08); box-shadow: 0 0 18px rgba(60, 240, 255, .25), inset 0 0 14px rgba(60, 240, 255, .12);
+}
+.btn.alt { border-color: var(--mag); background: rgba(255, 60, 210, .08); box-shadow: 0 0 18px rgba(255, 60, 210, .25), inset 0 0 14px rgba(255, 60, 210, .12); }
+.btn:hover { color: #fff; text-shadow: 0 0 10px var(--cyan); }
+.replay {
+  position: absolute; right: 24px; bottom: 22px; z-index: 3; background: none; border: 1px solid var(--line);
+  color: var(--dim); font: 11px "JetBrains Mono", monospace; letter-spacing: .1em; padding: 6px 10px; cursor: pointer;
+}
+.replay:hover { color: var(--cyan); border-color: var(--cyan); }
+.scrollcue { position: absolute; left: 50%; bottom: 14px; z-index: 2; width: 1px; height: 40px; background: linear-gradient(var(--cyan), transparent); opacity: .6; }
+
+/* ---------- sections ---------- */
+section { position: relative; padding: 110px 24px; }
+#why { padding-bottom: 20px; }
+#firmwares { padding-top: 40px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.eyebrow { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .24em; color: var(--mag); text-transform: uppercase; }
+h2 { margin: 10px 0 18px; font: 700 clamp(28px, 4.6vw, 48px)/1.1 Orbitron, sans-serif; letter-spacing: .03em; }
+h2 em { font-style: normal; color: var(--cyan); text-shadow: 0 0 18px rgba(60, 240, 255, .6); }
+.lead { max-width: 720px; color: #b7cfdc; font-size: 18px; }
+.gridbg {
+  background:
+    linear-gradient(var(--bg) 0, transparent 120px, transparent calc(100% - 120px), var(--bg) 100%),
+    repeating-linear-gradient(0deg, transparent 0 59px, rgba(60, 240, 255, .06) 59px 60px),
+    repeating-linear-gradient(90deg, transparent 0 59px, rgba(60, 240, 255, .06) 59px 60px),
+    var(--bg2);
+}
+
+
+/* firmware cards */
+.cards { margin-top: 44px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 22px; }
+.card {
+  /* chamfered corners: ::before is the outline (the full shape in the line colour), ::after the fill inset by the
+     line width, so the line stays closed around the cut corners; the glow is a drop-shadow that follows the shape */
+  --bw: 2px; --cut: 22px;
+  --line-c: linear-gradient(135deg, var(--c, var(--cyan)) 0 70px, rgba(60, 240, 255, .24) 70px);
+  position: relative; isolation: isolate; padding: 26px 24px 22px;
+  transition: transform .25s, filter .25s;
+}
+a.card { display: block; color: inherit; text-decoration: none; }
+a.card:hover { text-shadow: none; }
+.card::before, .card::after { content: ""; position: absolute; pointer-events: none; }
+.card::before { inset: 0; z-index: -2; background: var(--line-c);
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut))); }
+.card::after { inset: var(--bw); z-index: -1; background: #08111f;
+  clip-path: polygon(0 0, calc(100% - var(--cut) + .6px) 0, 100% calc(var(--cut) - .6px), 100% 100%,
+                     calc(var(--cut) - .6px) 100%, 0 calc(100% - var(--cut) + .6px)); }
+.card:hover { --bw: 3px; --line-c: var(--c, var(--cyan)); transform: translateY(-3px);
+  filter: drop-shadow(0 0 10px var(--c, var(--cyan))); }
+.card h3 { margin: 0; font: 900 24px Orbitron, sans-serif; letter-spacing: .04em; color: #f2fdff; }
+.card h3 small { font: 500 11px "JetBrains Mono", monospace; letter-spacing: .12em; color: var(--c, var(--cyan)); margin-left: 8px; vertical-align: middle; }
+.card .from { margin: 4px 0 14px; font: 12px "JetBrains Mono", monospace; color: var(--dim); }
+.card h3 a { color: inherit; }
+.card .from a { color: inherit; border-bottom: 1px dotted currentColor; }
+.card .from a:hover, .card h3 a:hover { color: var(--c, var(--cyan)); }
+.card p { margin: 0 0 14px; color: #c3d8e3; font-size: 15px; }
+.card ul { margin: 0 0 16px; padding: 0; list-style: none; font-size: 14px; color: #a9c2cf; }
+.card li { padding-left: 18px; position: relative; margin: 4px 0; }
+.card li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--c, var(--cyan)); }
+.tag { display: inline-block; font: 600 10px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; padding: 4px 8px; border: 1px solid currentColor; color: var(--amber); }
+.tag.ok { color: #46f0a0; }
+.card.flag { grid-column: 1 / -1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center; }
+.card.flag h3 { font-size: 34px; }
+.padrow { display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; }
+.padrow i { aspect-ratio: 1; border-radius: 3px; background: #0d1526; border: 1px solid #1b2a44; transition: background .12s, box-shadow .12s; }
+
+/* steps */
+.steps { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; counter-reset: s; }
+.step { border-top: 1px solid var(--line); padding-top: 18px; }
+.step::before { counter-increment: s; content: "0" counter(s); font: 900 34px Orbitron, sans-serif; color: transparent; -webkit-text-stroke: 1px var(--cyan); text-shadow: 0 0 18px rgba(60, 240, 255, .35); }
+.step h4 { margin: 6px 0 6px; font: 700 16px Orbitron, sans-serif; letter-spacing: .04em; }
+.step p { margin: 0; color: #a9c2cf; font-size: 15px; }
+code { font: 13px "JetBrains Mono", monospace; color: var(--cyan); background: rgba(60, 240, 255, .07); padding: 1px 6px; }
+
+/* extras */
+.duo { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+.knobs { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-top: 16px; max-width: 400px; }
+.knobs img { width: 100%; height: auto; aspect-ratio: 1; cursor: grab; touch-action: none; user-select: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .6)); transition: filter .2s; }
+.knobs img:hover { filter: drop-shadow(0 0 8px rgba(60, 240, 255, .55)); }
+.knobs img.drag { cursor: grabbing; }
+
+footer { padding: 60px 24px 50px; border-top: 1px solid var(--line); color: var(--dim); font-size: 13px; }
+footer .wrap { display: grid; gap: 14px; }
+footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing: .08em; }
+
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------- the kit page ---------- */
+.hero { height: 88vh; }
+.title h1 { font-size: clamp(44px, 10vw, 120px); }
+.term { margin-top: 30px; border: 1px solid rgba(255, 176, 42, .7); border-radius: 8px; background: rgba(8, 12, 22, .92);
+  box-shadow: 0 0 24px rgba(255, 176, 42, .25); overflow: hidden; }
+.term .bar { display: flex; align-items: center; gap: 7px; padding: 10px 14px; border-bottom: 1px solid rgba(255, 176, 42, .25);
+  font: 12px "JetBrains Mono", monospace; color: var(--dim); letter-spacing: .1em; }
+.term .bar i { width: 10px; height: 10px; border-radius: 50%; background: #2a3a52; }
+.term .bar span { margin-left: 8px; }
+.term p { margin: 0; padding: 18px 20px 20px; font: 15px/1.7 "JetBrains Mono", monospace; color: #e8f4f8; overflow-wrap: anywhere; }
+.term .p { color: var(--amber); } .term .c { color: var(--cyan); }
+.pats { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 330px), 1fr)); gap: 22px; }
+.pat { margin: 0; background: #08111f; border: 1px solid #1b2a44; border-top: 2px solid var(--c); transition: transform .25s, box-shadow .25s; }
+.pat:hover { transform: translateY(-3px); box-shadow: 0 0 22px -6px var(--c); }
+.pat img { display: block; width: 100%; height: auto; border-bottom: 1px solid #1b2a44; }
+.pat figcaption { padding: 14px 16px 16px; display: grid; gap: 6px; }
+.pat b { font: 700 17px Orbitron, sans-serif; letter-spacing: .04em; color: #f2fdff; }
+.pat span { color: #b7cfdc; font-size: 15px; }
+.pat em { font: normal 11px "JetBrains Mono", monospace; letter-spacing: .08em; color: var(--c); text-transform: uppercase; }
+.ports-grid { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 22px; }
+.ports-grid .card p { margin-bottom: 10px; }
+.card .pr { font: 11px "JetBrains Mono", monospace; color: var(--c); letter-spacing: .04em; border-bottom: 1px dotted currentColor; }
+#what { padding-bottom: 10px; }
+#how { padding-top: 50px; }
+.title .repo { display: inline-block; margin-top: 16px; font-size: 13px; letter-spacing: .06em; color: var(--dim); }
+.title .repo:hover { color: var(--cyan); }
+.duo .col { border-top: 1px solid var(--line); padding-top: 16px; }
+.duo .col b { font: 700 16px Orbitron, sans-serif; letter-spacing: .04em; }
+.duo .col p { margin: 6px 0 0; color: #a9c2cf; font-size: 15px; }
+
+@media (max-width: 720px) {
+  .nav { display: none; }
+  .hud { left: 16px; top: 14px; font-size: 10px; }
+  section { padding: 80px 16px; }
+  .card.flag { grid-template-columns: 1fr; }
+  .replay { right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .title { transition: none; }
+}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <canvas id="stage" aria-label="A wireframe FM-1 grows into an SMK-37 Pro"></canvas>
+  <div class="hud" id="hud" aria-hidden="true"></div>
+  <nav class="nav"><a href="index.html">Firmwares</a><a href="#how">How</a><a href="#patterns">SMK-37</a><a href="#both">Both boards</a><a href="https://github.com/genkigenki/fm1-to-smk37">GitHub</a></nav>
+  <div class="title" id="title">
+    <h1>PORT <span>KIT</span></h1>
+    <p>Migrate FM-1 firmwares to the SMK-37. Develop agnostic of the board.</p>
+    <div class="btns"><a class="btn" href="https://github.com/genkigenki/fm1-to-smk37">Get the kit</a><a class="btn alt" href="#how">How it works</a><a class="btn alt" href="#both">Develop for both</a></div>
+    <a class="repo mono" href="https://github.com/genkigenki/fm1-to-smk37">github.com/genkigenki/fm1-to-smk37</a>
+  </div>
+  <button class="replay mono" id="replay" type="button">↻ replay</button>
+  <div class="scrollcue"></div>
+</header>
+
+<section id="what" class="gridbg">
+  <div class="wrap reveal">
+    <div class="eyebrow">// fm1-to-smk37 · what it is</div>
+    <h2>Same chip. <em>More controls.</em></h2>
+    <p class="lead">The FM-1 and the SMK-37 Pro share the JieLi AC791N, the boot chain and the update loader.
+      The kit holds what a coding agent needs to move an FM-1 firmware across: a board patch series, the hardware map,
+      a playbook with hard rules, mapping patterns from the ports so far, and a setup file for your decisions.</p>
+    <div class="btns" style="justify-content: flex-start"><a class="btn" href="https://github.com/genkigenki/fm1-to-smk37">fm1-to-smk37 on GitHub</a></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">// how it works with Claude</div>
+      <h2>Steps to migrate</h2>
+    </div>
+    <div class="term reveal" role="figure" aria-label="The prompt">
+      <div class="bar"><i></i><i></i><i></i><span>claude</span></div>
+      <p><span class="p">&gt;</span> Clone <span class="c">&lt;firmware repo&gt;</span> and <span class="c">github.com/genkigenki/fm1-to-smk37</span>, then port the firmware to the SMK-37 Pro. Follow <span class="c">fm1-to-smk37/AGENTS.md</span> step by step.
+        Ask me the setup questions first. Keep the FM-1 build byte-identical. Never write the protected flash ranges.
+        Ask me before you flash the SMK-37.</p>
+    </div>
+    <div class="steps reveal">
+      <div class="step"><h4>Start Claude</h4><p>Open <a href="https://claude.com/claude-code">Claude Code</a> in an empty folder on your PC (Windows with WSL, or Linux) and paste the prompt. It clones the firmware and the kit and sets up the toolchain; you approve each command.</p></div>
+      <div class="step"><h4>Extend features</h4><p>Claude asks what the pads, faders, outer keys and wheels should do, and maps them.</p></div>
+      <div class="step"><h4>Automatic build</h4><p>Board layer, both builds and tests.</p></div>
+      <div class="step"><h4>Test</h4><p>You test the build and give feedback; Claude fixes.</p></div>
+      <div class="step"><h4>Publish</h4><p>An upstream pull request and your own release.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="patterns" class="gridbg">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">// mapping patterns</div>
+      <h2>What the SMK-37 adds</h2>
+      <p class="lead">The controls the FM-1 does not have, and how the ports use them.</p>
+    </div>
+    <div class="pats">
+      <figure class="pat reveal" style="--c: var(--t1)"><img src="assets/kit/pads-rgb.svg" width="1570" height="630" alt="16 RGB velocity pads" loading="lazy">
+        <figcaption><b>RGB pads</b><span>16 velocity pads with RGB LEDs: track colours, playhead, state at a glance.</span><em>all ports</em></figcaption></figure>
+      <figure class="pat reveal" style="--c: var(--t1)"><img src="assets/kit/pads-steps.svg" width="1570" height="630" alt="Pads as 16 steps in track colours" loading="lazy">
+        <figcaption><b>Pads as steps</b><span>The FM-1's 16 white keys in reading order, in the track colours.</span><em>Snoop37 · X0X37 · Felucca</em></figcaption></figure>
+      <figure class="pat reveal" style="--c: var(--t2)"><img src="assets/kit/pads-picker.svg" width="1570" height="630" alt="Pad sound picker" loading="lazy">
+        <figcaption><b>Sound picker</b><span>Turn the sound knob: one kind of sound on the pads. Tap to pick and preview.</span><em>Snoop37</em></figcaption></figure>
+      <figure class="pat reveal" style="--c: var(--mag)"><img src="assets/kit/pads-perform.svg" width="1570" height="630" alt="Pads gate voices, a CHAOS pad" loading="lazy">
+        <figcaption><b>Voices + CHAOS</b><span>Pads switch voices on and off; one pad for CHAOS.</span><em>Makkuro37</em></figcaption></figure>
+      <figure class="pat reveal" style="--c: var(--amber)"><img src="assets/kit/pads-strum.svg" width="1570" height="630" alt="Pads as a strum plate" loading="lazy">
+        <figcaption><b>Strum plate</b><span>Hold a chord on the keys, swipe a row of pads.</span><em>FoMni37</em></figcaption></figure>
+      <figure class="pat reveal" style="--c: var(--t3)"><img src="assets/kit/faders-banks.svg" width="1570" height="630" alt="Fader banks" loading="lazy">
+        <figcaption><b>Fader banks</b><span>Level, filter, reverb, delay per track. A fader takes over once moved.</span><em>Snoop37 · Makkuro37 · FoMni37</em></figcaption></figure>
+      <figure class="pat reveal" style="--c: var(--t4)"><img src="assets/kit/keys-outer.svg" width="1570" height="630" alt="Outer keys extend the range and play drums" loading="lazy">
+        <figcaption><b>Ten more keys</b><span>More notes on synth tracks, drums on the drum track.</span><em>Snoop37</em></figcaption></figure>
+      <figure class="pat reveal" style="--c: var(--mag)"><img src="assets/kit/wheels.svg" width="1570" height="630" alt="Pitch and mod wheels" loading="lazy">
+        <figcaption><b>Pitch and mod wheels</b><span>Bend and vibrato, or one macro. Self-calibrating.</span><em>all ports</em></figcaption></figure>
+    </div>
+  </div>
+</section>
+
+<section id="ported">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">// ported with the kit</div>
+      <h2>Examples</h2>
+    </div>
+    <div class="ports-grid">
+      <div class="card reveal" style="--c: var(--mag)"><h3><a href="https://github.com/genkigenki/Makkuro37">Makkuro37</a></h3><div class="from">new firmware · genkigenki</div><p>A microtonal drone synth. Pads switch eight voices.</p></div>
+      <div class="card reveal" style="--c: var(--cyan)"><h3><a href="https://github.com/genkigenki/Snoop37">Snoop37</a></h3><div class="from">SLOOP · the reference port</div><p>Track-colour pads, sound picker, fader banks.</p><a class="pr" href="https://github.com/isod89/sloop-fm1/pull/112">PR isod89/sloop-fm1#112</a></div>
+      <div class="card reveal" style="--c: var(--t3)"><h3><a href="https://github.com/genkigenki/X0X37">X0X37</a></h3><div class="from">fm1-x0x · Charles Vestal</div><p>Drum machines and 303s, pads as the step grid.</p><a class="pr" href="https://github.com/charlesvestal/fm1-x0x/pull/13">PR charlesvestal/fm1-x0x#13</a></div>
+      <div class="card reveal" style="--c: var(--t4)"><h3><a href="https://github.com/genkigenki/FoMni37">FoMni37</a></h3><div class="from">fm1-fomni · Charles Vestal</div><p>A chord harp: strum the pads, chords on the keys.</p><a class="pr" href="https://github.com/charlesvestal/fm1-fomni/pull/2">PR charlesvestal/fm1-fomni#2</a></div>
+    </div>
+    <p class="small note reveal">Also: the SMK-37 Pro as a build target in Felucca, <a href="https://github.com/hugelton/Felucca/pull/237">hugelton/Felucca#237</a>.</p>
+  </div>
+</section>
+
+<section id="both" class="gridbg">
+  <div class="wrap reveal">
+    <div class="eyebrow">// part of the kit</div>
+    <h2>Develop for both</h2>
+    <p class="lead">One source tree builds the FM-1 and the SMK-37. The kit describes how:
+      <a href="https://github.com/genkigenki/fm1-to-smk37/blob/main/docs/07-develop-for-both.md">docs/07-develop-for-both.md</a>.</p>
+    <div class="duo">
+      <div class="col"><b>Capability layer</b><p>Features ask what the board has (pads, faders, wheels, outer keys, RGB), with an FM-1 fallback in the same place.</p></div>
+      <div class="col"><b>Build matrix</b><p>FM-1 byte-identical, SMK per model, host tests, on every change.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div><b>MAKKURO</b> · © 2026 genkigenki · kit and site CC BY-NC 4.0</div>
+    <div>Ports keep their upstream licenses and authors: SLOOP (isod89), built on Felucca (hugelton / kurogedelic);
+      X0X and FoMni (Charles Vestal). Hardware research builds on AL-255/FM-1-RE.</div>
+    <div>Unofficial community project. Not affiliated with or endorsed by M-Vave. All trademarks belong to their owners.</div>
+    <div><a href="index.html">SMK37 firmwares</a> · <a href="legal.html">Legal notice · Privacy</a></div>
+  </div>
+</footer>
+
+<script>
+(() => {
+  "use strict";
+  const cv = document.getElementById("stage"), cx = cv.getContext("2d");
+  const hud = document.getElementById("hud"), title = document.getElementById("title");
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let W = 0, H = 0, DPR = 1;
+  function size() {
+    DPR = Math.min(devicePixelRatio || 1, 2);
+    W = cv.clientWidth; H = cv.clientHeight;
+    cv.width = W * DPR; cv.height = H * DPR;
+    cx.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  addEventListener("resize", size); size();
+
+  const clamp = (x, a = 0, b = 1) => Math.max(a, Math.min(b, x));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const sst = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0)); return t * t * (3 - 2 * t); };
+  const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+  const mix = (a, b, t) => [lerp(a[0], b[0], t), lerp(a[1], b[1], t), lerp(a[2], b[2], t)];
+  const CYAN = [60, 240, 255], MAG = [255, 60, 210], AMB = [255, 176, 42];
+  const TRK = [[40, 124, 255], [30, 204, 112], [255, 198, 24], [255, 98, 26]];
+
+  /* ---- geometry: every element is a list of 3D segments, a colour and an alpha ---- */
+  let E;
+  function el(col, a, order) { const e = { s: [], col, a, order, fill: null }; E.push(e); return e; }
+  function seg(e, x0, y0, z0, x1, y1, z1) { e.s.push(x0, y0, z0, x1, y1, z1); }
+  function box(e, x0, x1, y0, y1, z0, z1) {
+    for (const y of [y0, y1]) {
+      seg(e, x0, y, z0, x1, y, z0); seg(e, x1, y, z0, x1, y, z1);
+      seg(e, x1, y, z1, x0, y, z1); seg(e, x0, y, z1, x0, y, z0);
+    }
+    seg(e, x0, y0, z0, x0, y1, z0); seg(e, x1, y0, z0, x1, y1, z0);
+    seg(e, x1, y0, z1, x1, y1, z1); seg(e, x0, y0, z1, x0, y1, z1);
+  }
+  function rect(e, x0, x1, y, z0, z1) {
+    seg(e, x0, y, z0, x1, y, z0); seg(e, x1, y, z0, x1, y, z1);
+    seg(e, x1, y, z1, x0, y, z1); seg(e, x0, y, z1, x0, y, z0);
+  }
+  function ring(e, x, y, z, r, n = 18) {
+    for (let i = 0; i < n; i++) {
+      const a0 = i / n * 6.2832, a1 = (i + 1) / n * 6.2832;
+      seg(e, x + Math.cos(a0) * r, y, z + Math.sin(a0) * r, x + Math.cos(a1) * r, y, z + Math.sin(a1) * r);
+    }
+  }
+  function cyl(e, x, y0, y1, z, r, rot) {
+    ring(e, x, y0, z, r); ring(e, x, y1, z, r * .86);
+    for (let i = 0; i < 6; i++) {
+      const a = i / 6 * 6.2832 + rot;
+      seg(e, x + Math.cos(a) * r, y0, z + Math.sin(a) * r, x + Math.cos(a) * r * .86, y1, z + Math.sin(a) * r * .86);
+    }
+    seg(e, x, y1 + .02, z, x + Math.cos(rot) * r * .8, y1 + .02, z + Math.sin(rot) * r * .8);
+  }
+
+  /* Both panels measured 1:1 from top-view photos (FM-1 161.5 x 96.5 mm, SMK-37 Pro ~525 x 207 mm), 1 unit = 5 mm.
+     F(): FM-1 photo pixels (1500 x 844, body 125..1375), S(): SMK-37 Pro photo pixels (1600 x 899, body 30..1578). */
+  const KF = 32.3 / 1250, KS = 105 / 1548;
+  const F = (x, y) => [(x - 750) * KF, (y - 421.5) * KF];
+  const S = (x, y) => [(x - 804) * KS, (y - 443) * KS];
+  const FMC = [255, 150, 40], NEW = [90, 210, 255];      // the FM-1's own parts: orange. Everything the SMK adds: light blue
+
+  // an element at FM-1 rect a (centre px, size px) morphing into SMK rect b; null = it does not exist on that side
+  function rr(fa, sb, em) {
+    const a = fa && [...F(fa[0], fa[1]), fa[2] * KF, fa[3] * KF], b = sb && [...S(sb[0], sb[1]), sb[2] * KS, sb[3] * KS];
+    if (a && b) return [lerp(a[0], b[0], em), lerp(a[1], b[1], em), lerp(a[2], b[2], em), lerp(a[3], b[3], em)];
+    return a || [b[0] * GX, b[1] * GZ, b[2], b[3]];   // (new parts ride on the growing body)
+  }
+  function rbox(e, c, y0, y1, g = 1) {                  // a box from a centre rect, scaled by g (appearing parts)
+    const w = c[2] * g / 2, d = c[3] * g / 2;
+    box(e, c[0] - w, c[0] + w, y0, lerp(y0, y1, g), c[1] - d, c[1] + d);
+  }
+  function roundRect(e, x0, x1, z0, z1, r, y) {
+    const pts = [];
+    for (const [cx0, cz0, a0] of [[x1 - r, z0 + r, -90], [x1 - r, z1 - r, 0], [x0 + r, z1 - r, 90], [x0 + r, z0 + r, 180]])
+      for (let i = 0; i <= 4; i++) { const a = (a0 + i * 22.5) * Math.PI / 180; pts.push([cx0 + Math.cos(a) * r, cz0 + Math.sin(a) * r]); }
+    for (let i = 0; i < pts.length; i++) { const p = pts[i], q = pts[(i + 1) % pts.length]; seg(e, p[0], y, p[1], q[0], y, q[1]); }
+    return pts;
+  }
+
+  // FM-1 controls -> where the port puts them on the SMK-37 Pro
+  const KNOBS = [[225, 165, 0], [357, 165, 1], [357, 295, 2], [225, 295, 3], [829, 165, 4], [970, 165, 5], [1112, 165, 6], [1255, 165, 7]];
+  const SK = (i) => [453 + i * 94, 197];                 // K1..K8
+  const FBX = [847, 926, 1005, 1083, 1161, 1240], FBY = [302, 381];
+  const SBX = [1227, 1285, 1342, 1400, 1457, 1514], SBY = [352, 380];
+  // FM grid (row, col) -> SMK grid (row, col): FX SEL ENV LFO EDIT GLO / HOME SAVE ARP SEQ PLAY REC
+  const BMAP = [[1, 2], [0, 2], [0, 3], [0, 1], [1, 1], [0, 4], [1, 0], [0, 5], [0, 0], [1, 3], [1, 4], [1, 5]];
+  const FWHITE = (i) => [215 + i * 71.33, 672];
+  const FUP = [251, 322, 394, 537, 608, 750, 821, 892, 1034, 1105, 1247];
+  const UPJ = [3, 4, 5, 7, 8, 10, 11, 12, 14, 15, 17];   // the SMK black key (left white index) each upper FM-1 key becomes
+  const SW = 66.09;
+  let GX = 1, GZ = 1, NCREF = null;
+
+  function build(m, t, settle) {
+    E = [];
+    const em = ease(m);
+    const nc = mix([255, 255, 255], NEW, .55 + settle * .45);
+    NCREF = nc;
+    const h = lerp(5.7, 6.4, em);
+    // body (rounded)
+    const bw = lerp(32.3, 105, em) / 2, bd = lerp(19.3, 41.4, em) / 2, br = lerp(2.4, 1.6, em);
+    GX = bw / 52.5; GZ = bd / 20.7;
+    let e = el(FMC, 1, 0);
+    const p0 = roundRect(e, -bw, bw, -bd, bd, br, 0); roundRect(e, -bw, bw, -bd, bd, br, h);
+    for (let i = 0; i < p0.length; i += 5) seg(e, p0[i][0], 0, p0[i][1], p0[i][0], h, p0[i][1]);
+    // the keybed well
+    const kw = rr([750, 612, 1170, 273], [805, 602, 1454, 280], em);
+    e = el(FMC, .55, .5); rect(e, kw[0] - kw[2] / 2, kw[0] + kw[2] / 2, h + .01, kw[1] - kw[3] / 2, kw[1] + kw[3] / 2);
+    // keys: the FM-1's 16 lower pills -> SMK white keys 3..18, its 11 upper pills -> black keys; the rest is new
+    for (let j = 0; j < 22; j++) {
+      const s = [78 + (j + .5) * SW, 602, SW - 4, 280];
+      const old = j >= 3 && j <= 18;
+      const g = old ? 1 : sst(.25 + (j < 3 ? 3 - j : j - 18) * .08, .55 + (j < 3 ? 3 - j : j - 18) * .08, m);
+      if (g <= .01) continue;
+      const c = old ? rr([...FWHITE(j - 3), 62, 113], s, em) : rr(null, s, em);
+      const ke = el(old ? FMC : nc, g, 1 + j * .02);
+      rbox(ke, c, h, h + lerp(.9, 1.3, old ? em : 1), g);
+    }
+    const BL = [0, 1, 3, 4, 5, 7, 8, 10, 11, 12, 14, 15, 17, 18, 19];
+    for (const j of BL) {
+      const s = [78 + (j + 1) * SW, 547, 40, 170];
+      const k = UPJ.indexOf(j), old = k >= 0;
+      const g = old ? 1 : sst(.35, .7, m);
+      if (g <= .01) continue;
+      const c = old ? rr([FUP[k], 551, 62, 108], s, em) : rr(null, s, em);
+      const be = el(old ? FMC : nc, g, 1.6 + j * .02);
+      rbox(be, c, h + lerp(.1, 1.3, old ? em : 1), h + lerp(1, 2.6, old ? em : 1), g);
+    }
+    // display: bezel and screen
+    const dz = rr([595, 250, 296, 295], [300, 222, 124, 115], em), sc = rr([595, 251, 216, 213], [298, 226, 105, 103], em);
+    e = el(FMC, 1, 2);
+    rbox(e, dz, h, h + .4);
+    rect(e, sc[0] - sc[2] / 2, sc[0] + sc[2] / 2, h + .42, sc[1] - sc[3] / 2, sc[1] + sc[3] / 2);
+    if (m > .85) {                                      // a waveform on the screen
+      const se = el(NEW, sst(.85, 1, m), 9), n = 22;
+      for (let i = 0; i < n; i++) {
+        const u0 = i / n, u1 = (i + 1) / n, f = (u) => Math.sin(u * 13 + t * 3) * Math.sin(u * 3.1 + t) * .38;
+        const x = (u) => sc[0] - sc[2] * .42 + u * sc[2] * .84;
+        seg(se, x(u0), h + .44, sc[1] + f(u0) * sc[3], x(u1), h + .44, sc[1] + f(u1) * sc[3]);
+      }
+    }
+    // the 8 knobs
+    for (const [fx, fz, k] of KNOBS) {
+      const [sx, sz] = SK(k);
+      const a = F(fx, fz), b = S(sx, sz);
+      const ke = el(FMC, 1, 2.5 + k * .05);
+      cyl(ke, lerp(a[0], b[0], em), h, h + lerp(1.6, 2.4, em), lerp(a[1], b[1], em), lerp(30 * KF, 30 * KS, em), t * (k % 2 ? .6 : -.4) + k);
+    }
+    // the 12 grid buttons fly to their SMK twins, OCT- / OCT+ to OCTAVE- / OCTAVE+
+    for (let i = 0; i < 12; i++) {
+      const [r, c] = BMAP[i];
+      const bc = rr([FBX[i % 6], FBY[i / 6 | 0], 66, 66], [SBX[c], SBY[r], 48, 21], em);
+      rbox(el(FMC, 1, 3 + i * .03), bc, h, h + .5);
+    }
+    rbox(el(FMC, 1, 3.4), rr([245, 399, 70, 45], [270, 377, 48, 22], em), h, h + .5);
+    rbox(el(FMC, 1, 3.45), rr([341, 399, 70, 45], [323, 377, 48, 22], em), h, h + .5);
+    // new: KNOB BANK, FADER BANK, < and >
+    for (const [x, y, d] of [[270, 323, 0], [323, 323, 1], [270, 350, 2], [323, 350, 3]]) {
+      const g = sst(.55 + d * .05, .8 + d * .05, m); if (g <= .01) continue;
+      rbox(el(nc, g, 4), rr(null, [x, y, 48, 22], em), h, h + .5, g);
+    }
+    // new: 16 pads under K1..K8
+    for (let j = 0; j < 16; j++) {
+      const g = sst(.35 + (j % 8) * .035, .62 + (j % 8) * .035, m); if (g <= .01) continue;
+      const c = rr(null, [453 + (j % 8) * 94, j < 8 ? 277 : 348, 74, 56], em);
+      const pe = el(nc, g, 4);
+      rbox(pe, c, h, h + .55, g);
+      const w = c[2] * g / 2, d = c[3] * g / 2;
+      pe.fill = { x0: c[0] - w, x1: c[0] + w, z0: c[1] - d, z1: c[1] + d, y: h + .57, j };
+    }
+    // new: 4 faders
+    for (let j = 0; j < 4; j++) {
+      const g = sst(.5 + j * .06, .8 + j * .06, m); if (g <= .01) continue;
+      let [fx, z0] = S(1222 + j * 96, 185), z1 = S(0, 300)[1] * GZ;
+      fx *= GX; z0 *= GZ; z1 = lerp(z0, z1, g);
+      const fe = el(nc, g, 4);
+      rect(fe, fx - .3, fx + .3, h + .02, z0, z1);
+      const pz = lerp(z0 + 1, z1 - 1, .5 + .45 * Math.sin(t * .9 + j * 1.3));
+      box(fe, fx - 75 * KS / 2, fx + 75 * KS / 2, h, h + 1.6, pz - 25 * KS / 2, pz + 25 * KS / 2);
+    }
+    // new: pitch and mod wheels
+    for (let j = 0; j < 2; j++) {
+      const g = sst(.4, .75, m); if (g <= .01) continue;
+      const [wx0, wz0] = S(j ? 162 : 84, 278), wx = wx0 * GX, wz = wz0 * GZ, we = el(nc, g, 4);
+      const hw = 55 * KS / 2, hl = 145 * KS / 2;
+      rect(we, wx - hw, wx + hw, h + .01, wz - hl, wz + hl);
+      const r = hl * 1.25 * g, a0 = j ? 0 : Math.sin(t * 1.3) * .3;
+      for (let i = 0; i < 14; i++) {
+        const u0 = .5 + (i / 14 - .5) * 1.2 + a0, u1 = .5 + ((i + 1) / 14 - .5) * 1.2 + a0;
+        for (const xx of [wx - hw * .8, wx + hw * .8])
+          seg(we, xx, h - r * .55 + Math.sin(u0 * Math.PI) * r, wz - Math.cos(u0 * Math.PI) * r,
+                  xx, h - r * .55 + Math.sin(u1 * Math.PI) * r, wz - Math.cos(u1 * Math.PI) * r);
+      }
+      for (let i = 0; i < 6; i++) {                     // grip ribs, rolling
+        const u = (.5 + (i / 6 - .42) * .8 + a0 * 2 + 10) % 1;
+        const yy = h - r * .55 + Math.sin(u * Math.PI) * r, zz = wz - Math.cos(u * Math.PI) * r;
+        if (yy > h) seg(we, wx - hw * .8, yy, zz, wx + hw * .8, yy, zz);
+      }
+    }
+    return E;
+  }
+
+  /* ---- camera and drawing ---- */
+  let cam;
+  function setCam(az, R, Hc, ty) {
+    const ex = Math.sin(az) * R, ez = Math.cos(az) * R, ey = Hc;
+    let fx = -ex, fy = ty - ey, fz = -ez; const fl = Math.hypot(fx, fy, fz); fx /= fl; fy /= fl; fz /= fl;
+    let rx = -fz, rz = fx; const rl = Math.hypot(rx, rz); rx /= rl; rz /= rl;   // right = f x up
+    const ux = -rz * fy, uy = rz * fx - rx * fz, uz = rx * fy;                  // up = right x f
+    const F = Math.min(H, W * .62) / (2 * Math.tan(20 * Math.PI / 180));   // (portrait: fit the width)
+    cam = { ex, ey, ez, fx, fy, fz, rx, rz, ux, uy, uz, F };
+  }
+  function proj(x, y, z, out, o) {
+    const dx = x - cam.ex, dy = y - cam.ey, dz = z - cam.ez;
+    const zc = dx * cam.fx + dy * cam.fy + dz * cam.fz;
+    const xc = dx * cam.rx + dz * cam.rz;
+    const yc = dx * cam.ux + dy * cam.uy + dz * cam.uz;
+    out[o] = W / 2 + xc / zc * cam.F; out[o + 1] = H * .47 - yc / zc * cam.F; out[o + 2] = zc;
+  }
+  const P = new Float32Array(6);
+  function strokeEl(e, frac, glow) {
+    const s = e.s, n = s.length / 6;
+    const c = e.col, a = e.a;
+    cx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const k = i * 6;
+      let x1 = s[k + 3], y1 = s[k + 4], z1 = s[k + 5];
+      if (frac < 1) { x1 = lerp(s[k], x1, frac); y1 = lerp(s[k + 1], y1, frac); z1 = lerp(s[k + 2], z1, frac); }
+      proj(s[k], s[k + 1], s[k + 2], P, 0); proj(x1, y1, z1, P, 3);
+      if (P[2] < 1 || P[5] < 1) continue;
+      cx.moveTo(P[0], P[1]); cx.lineTo(P[3], P[4]);
+    }
+    const rgb = `${c[0] | 0},${c[1] | 0},${c[2] | 0}`;
+    cx.strokeStyle = `rgba(${rgb},${.16 * a * glow})`; cx.lineWidth = 5; cx.stroke();
+    cx.strokeStyle = `rgba(${rgb},${.95 * a})`; cx.lineWidth = 1.1; cx.stroke();
+  }
+  function fillPad(f, rgb, a) {
+    const q = [[f.x0, f.z0], [f.x1, f.z0], [f.x1, f.z1], [f.x0, f.z1]];
+    cx.beginPath();
+    q.forEach(([x, z], i) => { proj(x, f.y, z, P, 0); i ? cx.lineTo(P[0], P[1]) : cx.moveTo(P[0], P[1]); });
+    cx.closePath();
+    cx.fillStyle = `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`; cx.fill();
+  }
+
+  function floor(t, alpha) {
+    const y = -2.5, step = 8, off = (t * 6) % step;
+    cx.beginPath();
+    for (let k = -22; k <= 22; k++) {
+      proj(k * step, y, -180, P, 0); proj(k * step, y, 90, P, 3);
+      if (P[2] > 1 && P[5] > 1) { cx.moveTo(P[0], P[1]); cx.lineTo(P[3], P[4]); }
+    }
+    for (let j = -22; j <= 11; j++) {
+      const z = j * step + off;
+      proj(-180, y, z, P, 0); proj(180, y, z, P, 3);
+      if (P[2] > 1 && P[5] > 1) { cx.moveTo(P[0], P[1]); cx.lineTo(P[3], P[4]); }
+    }
+    cx.strokeStyle = `rgba(255,60,210,${.22 * alpha})`; cx.lineWidth = 1; cx.stroke();
+  }
+
+  /* ---- timeline ---- */
+  const T_DRAW = 2.4, T_HOLD = 3.1, T_GROW = 6.0;
+  let t0 = performance.now();
+  const FIX = new URLSearchParams(location.search).get("t");   // ?t=6.5 freezes the animation (previews)
+  if (reduce) t0 -= 12000;
+  document.getElementById("replay").onclick = () => { t0 = performance.now(); title.classList.remove("on"); };
+
+  function hudText(m) {
+    const n = (a, b) => Math.round(lerp(a, b, ease(m)));
+    const smk = m > .98;
+    hud.innerHTML =
+      `<span class="k">MODEL</span> ${smk ? '<span class="new">SMK-37 PRO</span>' : m > .02 ? "FM-1 → SMK-37 PRO" : "FM-1"}<br>` +
+      `<span class="k">KEYS&nbsp;&nbsp;</span> ${m > .02 ? '<span class="new">' + n(27, 37) + "</span>" : "27"}<br>` +
+      `<span class="k">PADS&nbsp;&nbsp;</span> ${m > .02 ? '<span class="new">' + n(0, 16) + "</span>" : "0"}<br>` +
+      `<span class="k">FADERS</span> ${m > .02 ? '<span class="new">' + n(0, 4) + "</span>" : "0"}<br>` +
+      `<span class="k">WHEELS</span> ${m > .02 ? '<span class="new">' + n(0, 2) + "</span>" : "0"}<br>` +
+      `<span class="k">BUTTONS</span> ${m > .02 ? '<span class="new">' + n(14, 18) + "</span>" : "14"}<br>` +
+      `<span class="k">CHIP&nbsp;&nbsp;</span> AC791N <span class="k">// same</span>`;
+  }
+
+  let lastHud = -1, heroVisible = true;
+  new IntersectionObserver(es => { heroVisible = es[0].isIntersecting; }).observe(cv);
+
+  function frame(now) {
+    requestAnimationFrame(frame);
+    if (!heroVisible) return;
+    const t = FIX !== null ? +FIX : (now - t0) / 1000;
+    const draw = clamp(t / T_DRAW);
+    const m = clamp((t - T_HOLD) / (T_GROW - T_HOLD));
+    const settle = clamp((t - T_GROW) / 1.6);
+    const em = ease(m);
+    setCam(-.42 + Math.sin(t * .12) * .3 + em * .2, lerp(90, 112, em), lerp(68, 84, em), lerp(-3, -4, em));
+
+    cx.globalCompositeOperation = "source-over";
+    cx.fillStyle = "#04060c"; cx.fillRect(0, 0, W, H);
+    const g = cx.createRadialGradient(W / 2, H * .5, 0, W / 2, H * .5, Math.max(W, H) * .7);
+    g.addColorStop(0, "rgba(30,60,110,.35)"); g.addColorStop(1, "rgba(4,6,12,0)");
+    cx.fillStyle = g; cx.fillRect(0, 0, W, H);
+
+    cx.globalCompositeOperation = "lighter";
+    floor(t, clamp(t / 1.5));
+    cx.globalCompositeOperation = "source-over";         // the horizon fades into the night
+    const hz = cx.createLinearGradient(0, 0, 0, H * .62);
+    hz.addColorStop(0, "rgba(4,6,12,1)"); hz.addColorStop(.45, "rgba(4,6,12,.85)"); hz.addColorStop(1, "rgba(4,6,12,0)");
+    cx.fillStyle = hz; cx.fillRect(0, 0, W, H * .62);
+    cx.globalCompositeOperation = "lighter";
+    const els = build(m, t, settle, draw);
+    // the big flash when it lands
+    const flash = Math.exp(-Math.pow((t - T_GROW) * 3.2, 2));
+    for (const e of els) {
+      const frac = clamp(draw * 1.8 - e.order * .18);
+      if (frac <= 0) continue;
+      // the parts the SMK adds pulse with light once it has landed (a wave running left to right)
+      let glow = 1 + flash * 2.5;
+      if (e.col === NCREF && settle > 0) {
+        const x = e.s.length ? e.s[0] : 0;
+        glow += settle * 2.6 * (.5 + .5 * Math.sin(t * 3.2 - x * .06));
+      }
+      strokeEl(e, frac, glow);
+    }
+    // the pads: a step sequencer in the four track colours
+    if (settle > 0) {
+      const step = Math.floor(t * 4) % 8, track = Math.floor(t / 2) % 4;
+      for (const e of els) if (e.fill) {
+        const f = e.fill, row = f.j < 8 ? 0 : 1, col = f.j % 8;
+        const on = ((col * 3 + row * 5 + track) % 3) === 0;
+        const a = settle * (col === step ? .85 : on ? .3 : 0);
+        if (a > 0) fillPad(f, TRK[(track + row) % 4], a);
+      }
+    }
+    // a scan line sweeping along the body as it lands
+    if (t > T_GROW - .2 && t < T_GROW + 1.4) {
+      const u = clamp((t - T_GROW + .2) / 1.6), x = lerp(-55, 55, u);
+      const se = { s: [x, 0, -17, x, 3.2, -17, x, 3.2, -17, x, 3.2, 17, x, 3.2, 17, x, 0, 17], col: [255, 255, 255], a: 1 - u };
+      strokeEl(se, 1, 3);
+    }
+    cx.globalCompositeOperation = "source-over";
+
+    if (Math.abs(m - lastHud) > .004 || (m >= 1 && lastHud < 1)) { hudText(m); lastHud = m; }
+    if (t > T_GROW + .4) title.classList.add("on");
+  }
+  hudText(0);
+  requestAnimationFrame(frame);
+
+  /* ---- the knob caps turn: drag or scroll ---- */
+  document.querySelectorAll(".knobs").forEach((n) => n.addEventListener("click", (e) => e.preventDefault()));   /* turning a cap is not a click on its card */
+  document.querySelectorAll(".knobs img").forEach((k) => {
+    let a = 0, last = null;
+    const set = () => { k.style.rotate = a + "deg"; };
+    k.addEventListener("pointerdown", (e) => { last = [e.clientX, e.clientY]; k.setPointerCapture(e.pointerId); k.classList.add("drag"); });
+    k.addEventListener("pointermove", (e) => {
+      if (!last) return;
+      a += (e.clientX - last[0]) - (e.clientY - last[1]); last = [e.clientX, e.clientY]; set();
+    });
+    const up = () => { last = null; k.classList.remove("drag"); };
+    k.addEventListener("pointerup", up); k.addEventListener("pointercancel", up);
+    k.addEventListener("wheel", (e) => { e.preventDefault(); a += e.deltaY > 0 ? 15 : -15; set(); }, { passive: false });
+  });
+
+  /* ---- reveal on scroll ---- */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll(".reveal").forEach(n => io.observe(n));
+})();
+</script>
+</body>
+</html>
