@@ -231,7 +231,34 @@ label.file input { display: none; }
 .ovbox details summary { cursor: pointer; color: var(--dim); font-size: 12px; }
 .ovbox pre { max-height: 160px; overflow: auto; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: pre-wrap; }
 .ovbox #ovclose { margin-top: 14px; cursor: pointer; }
-@media (max-width: 720px) { .ovsteps { grid-template-columns: repeat(3, 1fr); } .connect { flex-wrap: wrap; } }
+/* before you install, the firmware groups, the confirmation */
+.warnbox { margin: 34px 0 0; max-width: 860px; padding: 18px 22px 16px; border: 1px solid rgba(255, 176, 42, .45);
+  border-left: 3px solid var(--amber); background: rgba(255, 176, 42, .05); }
+.warnbox h3 { margin: 0 0 8px; font: 700 16px Orbitron, sans-serif; letter-spacing: .06em; color: var(--amber); }
+.warnbox ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 14px; color: #c3d8e3; }
+.warnbox li { padding-left: 18px; position: relative; }
+.warnbox li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--amber); }
+.warnbox b { color: var(--ink); }
+.fwgroup { margin-top: 64px; scroll-margin-top: 90px; }
+.fwgroup + .fwgroup { margin-top: 80px; }
+.ghead { border-top: 1px solid var(--line); padding-top: 18px; }
+.ghead h3 { margin: 0; font: 900 clamp(22px, 3.2vw, 30px)/1.15 Orbitron, sans-serif; letter-spacing: .04em; }
+.ghead p { margin: 6px 0 0; max-width: 720px; color: #b7cfdc; font-size: 16px; }
+.fwgroup .cards { margin-top: 26px; }
+#stock { scroll-margin-top: 90px; }
+.cfbox { border-color: var(--amber); box-shadow: 0 0 60px -14px var(--amber), inset 0 0 40px -24px var(--amber); }
+.cfbox h3 { margin-bottom: 12px; font-size: 24px; overflow-wrap: anywhere; }
+.cfq { margin: 0 0 12px; color: var(--ink); overflow-wrap: anywhere; }
+.cfwarn { margin: 0 0 12px; color: var(--amber); font-size: 14px; }
+.cfwarn[hidden] { display: none; }
+.cfrisk { margin: 0 0 22px; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; color: #a9c2cf; }
+.cfrisk li { padding-left: 18px; position: relative; }
+.cfrisk li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--amber); }
+.cfbtns { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
+.cfbtns .btn { cursor: pointer; }
+.cfbtns .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 720px) { .ovsteps { grid-template-columns: repeat(3, 1fr); } .connect { flex-wrap: wrap; }
+  .ovbox { padding: 24px 18px 20px; } .cfbtns .btn { flex: 1; text-align: center; } .warnbox { padding: 16px 16px 14px; } }
 
 @media (max-width: 720px) {
   .nav { display: none; }
@@ -276,10 +303,29 @@ label.file input { display: none; }
     <div class="reveal">
       <div class="eyebrow">// the lineup · install from the browser</div>
       <h2>Pick a firmware. <em>Press install.</em></h2>
-      <p class="lead">Each port keeps its sound and workflow, but utilizes the extra hardware.
+      <p class="lead">Firmwares made for the SMK-37, and FM-1 firmwares ported to it.
         Connect the SMK-37 by USB, open this page in Chrome or Edge, and switch firmwares in about a minute.
        </p>
     </div>
+
+    <aside class="warnbox" id="before" aria-labelledby="before-h">
+      <h3 id="before-h">Before you install</h3>
+      <ul>
+        <li><b>Unofficial.</b> These are community firmwares. They are not made, tested or supported by M-Vave, and this
+          site is not affiliated with M-Vave. You install them at your own risk.</li>
+        <li><b>Experimental.</b> Expect bugs. An install can fail and leave the keyboard in update mode; it then needs
+          another install or a return to the M-Vave firmware (below).</li>
+        <li><b>What is lost, what is kept.</b> The firmware on the keyboard is replaced, and with it the sounds, patterns
+          and settings it saved. Save anything you want to keep first. This page cannot back up the current firmware;
+          the official one can be downloaded from M-Vave again. The keyboard's model name, calibration and pairing are kept.</li>
+        <li><b>Check your model.</b> The page installs the build for the model your keyboard reports (SMK-37 Pro, SMK-37
+          Elite or MKE-P37). Change it only if you know your keyboard reports the wrong one.</li>
+        <li><b>While it writes,</b> keep the USB cable connected, keep this tab open and the computer awake. If it is
+          interrupted, plug the keyboard in again and press Install again: it continues.</li>
+        <li><b>Going back.</b> M-Vave's updater, M-UPGRADE, installs the official firmware again, or use
+          <a href="#stock">Back to the M-Vave firmware</a> on this page.</li>
+      </ul>
+    </aside>
 
     <div class="connect" id="connect">
       <span class="led" id="led"></span>
@@ -289,8 +335,13 @@ label.file input { display: none; }
     <div class="ports" id="ports" hidden><span id="portlist"></span>
       <button class="btn alt" id="allports" type="button">Search all MIDI ports</button></div>
 
-    <div class="cards">
-      <article class="card flag fw reveal" data-fw="makkuro37" data-name="Makkuro37" style="--c: var(--mag)">
+    <div class="fwgroup" id="own">
+      <div class="ghead reveal">
+        <h3>Own firmwares</h3>
+        <p>Firmwares made for the SMK-37.</p>
+      </div>
+      <div class="cards">
+        <article class="card flag fw reveal" data-fw="makkuro37" data-name="Makkuro37" style="--c: var(--mag)">
         <div>
           <h3><a href="https://github.com/genkigenki/Makkuro37">Makkuro37</a></h3>
           <div class="from">new firmware · genkigenki</div>
@@ -309,7 +360,18 @@ label.file input { display: none; }
           <div class="screen"><img src="assets/makkuro37-anim.webp" width="240" height="240" alt="Makkuro37 boot intro on the SMK-37 display"></div>
         </div>
       </article>
-      <article class="card fw reveal" data-fw="snoop37" data-name="Snoop37" style="--c: var(--cyan)">
+      
+      </div>
+    </div>
+
+    <div class="fwgroup" id="fm1-ports">
+      <div class="ghead reveal">
+        <h3>FM-1 ports</h3>
+        <p>FM-1 firmwares, ported to the SMK-37. All credit to their authors. Each port keeps its sound and workflow
+          and adds the extra hardware. Report problems with a port to its SMK-37 repository, not to the original authors.</p>
+      </div>
+      <div class="cards">
+        <article class="card fw reveal" data-fw="snoop37" data-name="Snoop37" style="--c: var(--cyan)">
         <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 on the display"></div>
         <h3><a href="https://github.com/genkigenki/Snoop37">Snoop37</a></h3>
         <div class="from"><a href="https://github.com/isod89/sloop-fm1">based on SLOOP 2.6 by isod89</a></div>
@@ -385,10 +447,11 @@ label.file input { display: none; }
           </details>
       </article>
       
+      </div>
     </div>
 
-    <p class="small note reveal">Unofficial firmware, at your own risk. Do not unplug the keyboard while it writes; an interrupted
-      install resumes when you press Install again.</p>
+    <p class="small note reveal">Unofficial, experimental firmware, at your own risk. Every install asks for confirmation first.
+      Do not unplug the keyboard while it writes; an interrupted install continues when you press Install again.</p>
 
     <div class="card stock" id="stock" style="--c: var(--amber)">
       <h3>Back to the M-Vave firmware</h3>
@@ -409,7 +472,8 @@ label.file input { display: none; }
       <label class="sconfirm" id="sconfirmrow" hidden><input type="checkbox" id="sconfirm">This is the firmware for my keyboard</label>
       <div class="foot"><span class="meta"></span>
         <button class="btn inst" id="sinst" type="button" disabled>Install</button></div>
-      <p class="small note">Your keyboard's calibration and pairing are never touched. Afterwards, M-UPGRADE should also work again if you need it.</p>
+      <p class="small note">Your keyboard's calibration and pairing are never touched. The firmware on the keyboard, and what it saved, is replaced.
+        Keep the USB cable connected and this tab open until it says Done. Afterwards, M-UPGRADE should also work again if you need it.</p>
     </div>
   </div>
 </section>
@@ -427,6 +491,20 @@ label.file input { display: none; }
     <p id="ovstatus" class="ovstatus">Starting</p>
     <details><summary>Log</summary><pre id="ovlog"></pre></details>
     <button class="btn" id="ovclose" type="button" hidden>Close</button>
+  </div>
+</div>
+
+<div class="ovl" id="cfm" hidden>
+  <div class="ovbox cfbox" role="alertdialog" aria-modal="true" aria-labelledby="cftitle" aria-describedby="cfq cfrisk">
+    <div class="eyebrow">// confirm</div>
+    <h3 id="cftitle">Install?</h3>
+    <p id="cfq" class="cfq"></p>
+    <p id="cfwarn" class="cfwarn" hidden></p>
+    <ul id="cfrisk" class="cfrisk"></ul>
+    <div class="cfbtns">
+      <button class="btn alt" id="cfno" type="button">Cancel</button>
+      <button class="btn" id="cfyes" type="button">Install</button>
+    </div>
   </div>
 </div>
 
@@ -1410,7 +1488,7 @@ async function load(pkg) {                              // pkg: one model's pack
 /* the overlay */
 const ORDER = ["start", "verify", "loader", "write", "reboot", "done"];
 const SAY = { start: "Talking to the keyboard", verify: "The keyboard checks the package", loader: "Switching to update mode",
-              write: "Writing the firmware. Do not unplug.", reboot: "Restarting", done: "Done. Enjoy!" };
+              write: "Writing the firmware. Do not unplug, keep this tab open.", reboot: "Restarting", done: "Done. Enjoy!" };
 function ov(title, sub, col) {
   $("ovtitle").textContent = title; $("ovfw").textContent = "// " + sub;
   document.querySelector(".ovbox").style.borderColor = col || "var(--cyan)";
@@ -1441,12 +1519,52 @@ function finish(ok, msg) {
   busy = false; lockCards();
 }
 $("ovclose").addEventListener("click", () => { $("ovl").hidden = true; scan(); });
+
+/* the confirmation before every install: resolves true (Install) or false (Cancel, Esc, a click outside) */
+const RISKS = ["Unofficial and experimental, at your own risk. The firmware on the keyboard, and the sounds and settings it saved, are replaced.",
+               "Keep the USB cable connected and this tab open until it says Done.",
+               "To go back: M-UPGRADE, or Back to the M-Vave firmware on this page."];
+function confirmInstall(title, question, warn, risks) {
+  return new Promise((resolve) => {
+    const box = $("cfm"), yes = $("cfyes"), no = $("cfno"), back = document.activeElement;
+    $("cftitle").textContent = title;
+    $("cfq").textContent = question;
+    $("cfwarn").textContent = warn || ""; $("cfwarn").hidden = !warn;
+    $("cfrisk").replaceChildren(...risks.map((t) => Object.assign(document.createElement("li"), { textContent: t })));
+    const done = (ok) => {
+      box.hidden = true;
+      document.removeEventListener("keydown", key); box.removeEventListener("click", outside);
+      yes.onclick = no.onclick = null;
+      if (back && back.focus) back.focus();
+      resolve(ok);
+    };
+    const key = (e) => {
+      if (e.key === "Escape") { e.preventDefault(); done(false); }
+      else if (e.key === "Tab") {                        // keep the focus on the two buttons
+        e.preventDefault();
+        (document.activeElement === no ? yes : no).focus();
+      }
+    };
+    const outside = (e) => { if (e.target === box) done(false); };
+    yes.onclick = () => done(true);
+    no.onclick = () => done(false);
+    document.addEventListener("keydown", key); box.addEventListener("click", outside);
+    box.hidden = false;
+    no.focus();
+  });
+}
+const keyboardId = () => lastId ? lastId.text : "not identified";
 addEventListener("beforeunload", (e) => { if (busy) { e.preventDefault(); e.returnValue = "Writing. Do not close the page."; } });
 
 async function install(fw) {
   if (busy) return;
   busy = true; lockCards();
   const model = modelFor(fw), pkg = fw.v[model];
+  const ok = await confirmInstall("Install " + fw.name + "?",
+    "Install " + fw.name + " " + fw.version + " for the " + MODELS[model] + " on the connected keyboard (" + keyboardId() + ")?",
+    model !== detected ? "You picked the " + MODELS[model] + " build under Flash another keyboard version; the keyboard was detected as the " + MODELS[detected] + "." : "",
+    RISKS);
+  if (!ok) { busy = false; lockCards(); return; }
   ov("Installing " + fw.name, fw.name + " " + fw.version + " · for the " + MODELS[model], fw.col);
   mark("start");
   try {
@@ -1484,7 +1602,7 @@ async function install(fw) {
     finish(false, e && e.code === "other" ? OTHER_MSG : (e && e.message) || String(e));
   }
 }
-document.querySelectorAll(".inst").forEach((b) => b.addEventListener("click", () => install(FW.find((f) => f.id === b.dataset.fw))));
+document.querySelectorAll(".inst[data-fw]").forEach((b) => b.addEventListener("click", () => install(FW.find((f) => f.id === b.dataset.fw))));
 
 /* back to the M-Vave firmware: a package the user downloaded from M-Vave (never shipped here), accepted by its
    structure (identifyStockPackage: CRCs, an SMK-37 range identity, a stock version; known SHA-256s only tag it),
@@ -1540,6 +1658,13 @@ async function stockInstall() {
   const k = stockPkg;
   if (busy || !k) return;
   busy = true; lockCards();
+  const ok = await confirmInstall("Back to the M-Vave firmware?",
+    "Install the M-Vave " + k.name + " firmware V" + k.version + " on the connected keyboard (" + keyboardId() + ")?",
+    stockFitNow && stockFitNow !== "same" ? "The keyboard reports " + keyboardId() + ". Make sure this file is for the model printed on your keyboard." : "",
+    ["The firmware on the keyboard, and the sounds and settings it saved, are replaced. Calibration and pairing are kept.",
+     "If it fails, the keyboard stays in update mode: plug it in again and press Install again.",
+     "Keep the USB cable connected and this tab open until it says Done."]);
+  if (!ok) { busy = false; lockCards(); return; }
   ov("Back to the M-Vave firmware", "M-Vave " + k.name + " V" + k.version + (k.known ? " · known release" : ""), "var(--amber)");
   mark("start");
   try {
