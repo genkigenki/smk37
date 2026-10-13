@@ -312,9 +312,12 @@ label.file input { display: none; }
       <h3 id="before-h">Before you install</h3>
       <ul>
         <li><b>Unofficial.</b> These are community firmwares. They are not made, tested or supported by M-Vave, and this
-          site is not affiliated with M-Vave. You install them at your own risk.</li>
+          site is not affiliated with M-Vave. You install them at your own risk, and doing so may void your warranty.</li>
+        <li><b>No M-Vave code.</b> None of these firmwares contains or publishes M-Vave code. The return to the M-Vave
+          firmware uses M-Vave's own file, downloaded from M-Vave.</li>
         <li><b>Experimental.</b> Expect bugs. An install can fail and leave the keyboard in update mode; it then needs
-          another install or a return to the M-Vave firmware (below).</li>
+          another install or a return to the M-Vave firmware (below). Testing is limited: mostly on one SMK-37 Pro, the
+          Elite and MKE-P37 builds by user reports.</li>
         <li><b>What is lost, what is kept.</b> The firmware on the keyboard is replaced, and with it the sounds, patterns
           and settings it saved. Save anything you want to keep first. This page cannot back up the current firmware;
           the official one can be downloaded from M-Vave again. The keyboard's model name, calibration and pairing are kept.</li>
@@ -322,8 +325,12 @@ label.file input { display: none; }
           Elite or MKE-P37). Change it only if you know your keyboard reports the wrong one.</li>
         <li><b>While it writes,</b> keep the USB cable connected, keep this tab open and the computer awake. If it is
           interrupted, plug the keyboard in again and press Install again: it continues.</li>
+        <li><b>If the keyboard seems stuck,</b> unplug it, plug it in again and press Install again. If that does not
+          help, use M-UPGRADE or <a href="#stock">Back to the M-Vave firmware</a>.</li>
         <li><b>Going back.</b> M-Vave's updater, M-UPGRADE, installs the official firmware again, or use
           <a href="#stock">Back to the M-Vave firmware</a> on this page.</li>
+        <li><b>A hobby project,</b> made in free time. Fixes come as time allows. Thanks to M-Vave for the hardware
+          and to the original authors for their firmwares.</li>
       </ul>
     </aside>
 
@@ -367,13 +374,13 @@ label.file input { display: none; }
     <div class="fwgroup" id="fm1-ports">
       <div class="ghead reveal">
         <h3>FM-1 ports</h3>
-        <p>FM-1 firmwares, ported to the SMK-37. All credit to their authors. Each port keeps its sound and workflow
-          and adds the extra hardware. Report problems with a port to its SMK-37 repository, not to the original authors.</p>
+        <p>FM-1 firmwares, built for the SMK-37. All credit to their authors. These are unofficial builds; each is
+          offered upstream as a pull request, and once it is merged this page installs the original project's own release.</p>
       </div>
       <div class="cards">
-        <article class="card fw reveal" data-fw="snoop37" data-name="Snoop37" style="--c: var(--cyan)">
-        <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 on the display"></div>
-        <h3><a href="https://github.com/genkigenki/Snoop37">Snoop37</a></h3>
+        <article class="card fw reveal" data-fw="snoop37" data-name="Snoop37 (SLOOP for the SMK-37)" style="--c: var(--cyan)">
+        <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 (SLOOP for the SMK-37) on the display"></div>
+        <h3><a href="https://github.com/genkigenki/Snoop37">Snoop37 (SLOOP for the SMK-37)</a></h3>
         <div class="from"><a href="https://github.com/isod89/sloop-fm1">based on SLOOP 2.6 by isod89</a></div>
         <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37.</p>
         <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li><a href="https://makerworld.com/en/models/3425326-m-vave-smk37-colorful-knobs">3D-printable knob caps to match</a></li></ul>
@@ -386,9 +393,9 @@ label.file input { display: none; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="x0x37" data-name="X0X37" style="--c: var(--t3)">
-        <div class="screen"><img src="assets/shot-x0x37.png" width="240" height="240" alt="X0X37 on the display"></div>
-        <h3><a href="https://github.com/genkigenki/X0X37">X0X37</a></h3>
+      <article class="card fw reveal" data-fw="x0x37" data-name="X0X — SMK-37 build" style="--c: var(--t3)">
+        <div class="screen"><img src="assets/shot-x0x37.png" width="240" height="240" alt="X0X — SMK-37 build on the display"></div>
+        <h3><a href="https://github.com/genkigenki/X0X37">X0X — SMK-37 build</a></h3>
         <div class="from"><a href="https://github.com/charlesvestal/fm1-x0x">based on X0X 1.0.6 by Charles Vestal</a></div>
         <p>A 909, an 808, two 303s with a line generator and a breakbeat player, all at once.</p>
         <ul><li>Shared reverb, tape delay, master compressor</li></ul>
@@ -401,9 +408,9 @@ label.file input { display: none; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="fomni37" data-name="FoMni37" style="--c: var(--t4)">
-        <div class="screen"><img src="assets/shot-fomni37.png" width="240" height="240" alt="FoMni37 on the display"></div>
-        <h3><a href="https://github.com/genkigenki/FoMni37">FoMni37</a></h3>
+      <article class="card fw reveal" data-fw="fomni37" data-name="FoMni — SMK-37 build" style="--c: var(--t4)">
+        <div class="screen"><img src="assets/shot-fomni37.png" width="240" height="240" alt="FoMni — SMK-37 build on the display"></div>
+        <h3><a href="https://github.com/genkigenki/FoMni37">FoMni — SMK-37 build</a></h3>
         <div class="from"><a href="https://github.com/charlesvestal/fm1-fomni">based on FoMni-1 0.3.2 by Charles Vestal</a></div>
         <p>An Omnichord-style chord harp: the 16 pads become the strum plate, the keybed holds the chords.</p>
         <ul><li>Strum the pads, play chords on the keys</li></ul>
@@ -416,9 +423,9 @@ label.file input { display: none; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="maku37" data-name="MAKU37" style="--c: #ed7962">
-        <div class="screen"><img src="assets/shot-maku37.png" width="240" height="240" alt="MAKU37 on the display"></div>
-        <h3><a href="https://github.com/genkigenki/MAKU37">MAKU37</a></h3>
+      <article class="card fw reveal" data-fw="maku37" data-name="MAKU — SMK-37 build" style="--c: #ed7962">
+        <div class="screen"><img src="assets/shot-maku37.png" width="240" height="240" alt="MAKU — SMK-37 build on the display"></div>
+        <h3><a href="https://github.com/genkigenki/MAKU37">MAKU — SMK-37 build</a></h3>
         <div class="from"><a href="https://github.com/okumurari2/maku">based on MAKU 0.1.0 by okumurari2</a></div>
         <p>An always-on ambience machine: power it on and a new, random, in-key world is already playing.</p>
         <ul><li>The verbs on the top button row and the wheels</li><li>The 16 pads hold your likes</li><li>Faders as standing verb amounts</li></ul>
@@ -431,9 +438,9 @@ label.file input { display: none; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="rainbow37" data-name="RAINBOW37" style="--c: #f7c948">
-        <div class="screen"><img src="assets/shot-rainbow37.webp" width="240" height="240" alt="RAINBOW37 on the display"></div>
-        <h3><a href="https://github.com/genkigenki/RAINBOW37">RAINBOW37</a></h3>
+      <article class="card fw reveal" data-fw="rainbow37" data-name="Rainbow mode — SMK-37 build" style="--c: #f7c948">
+        <div class="screen"><img src="assets/shot-rainbow37.webp" width="240" height="240" alt="Rainbow mode — SMK-37 build on the display"></div>
+        <h3><a href="https://github.com/genkigenki/RAINBOW37">Rainbow mode — SMK-37 build</a></h3>
         <div class="from"><a href="https://github.com/joshbartlettband-web/felucca-rainbow">based on Rainbow mode (Felucca 1.1.5) by joshbartlettband-web</a></div>
         <p>A music toy for kids: colour-coded notes, 40 friends who sing along, no menus.</p>
         <ul><li>The pads light up in the note colours</li><li>Faders: big/small, day/night, echo, wiggle</li><li>A volume cap for grown-ups</li></ul>
@@ -1364,7 +1371,7 @@ class Updater {
   }
 }
 
-const FW = [{"id": "makkuro37", "name": "Makkuro37", "version": "0.1", "col": "var(--mag)", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/makkuro37-0.1.fwsc", "sha256": "759bbea1e601ce1a3d1d453a233921f06b54009544badf294bd854de817aba36", "size": 651195}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/makkuro37-0.1-elite.fwsc", "sha256": "b6c07ac7c003f7c01475b7893b690fef105848fa5a5b212d541df7d274982d36", "size": 651199}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/makkuro37-0.1-mke.fwsc", "sha256": "e6cd03f629f9dd92659624f1db494d6443b60bd2bbeb34a68876114879088add", "size": 651191}}}, {"id": "snoop37", "name": "Snoop37", "version": "2.6", "col": "var(--cyan)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-2.6.fwsc", "sha256": "78f59b3c45d68f16748b2674fb85ebf5ab474255f5f105b655cbcf203582f7c7", "size": 651190}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/snoop37-2.6-elite.fwsc", "sha256": "10f452cd33663722814fd36a30a81b9f9919273c69c28958ca3ebca9bbd4c171", "size": 651194}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/snoop37-2.6-mke.fwsc", "sha256": "4a4409cbeeca56dcb80ddf5120007156dcb922331a52159c62c764246e664e52", "size": 651186}}}, {"id": "x0x37", "name": "X0X37", "version": "0.1", "col": "var(--t3)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.1.fwsc", "sha256": "19a7f763f001e7af14f6a692aa2641b95f7017e4c6b39ba22c05e80bd5d0afb5", "size": 650816}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/x0x37-0.1-elite.fwsc", "sha256": "70d07f138b3c23b9475417f6fbd9e2dfa3f7f54378fc9d3a415f8e4d4e87ef51", "size": 650820}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/x0x37-0.1-mke.fwsc", "sha256": "2453af33cb0100b61182c96c70c0db7ce2c8a64e2fe815759693434552846993", "size": 650812}}}, {"id": "fomni37", "name": "FoMni37", "version": "0.1", "col": "var(--t4)", "v": {"pro": {"product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.1.fwsc", "sha256": "87b6539e60486458711e6ecbb2715171eccef03d4653ca8b1b463ec0dace6448", "size": 650795}, "elite": {"product": "SMK-37 Elite_800", "pkg": "firmware/fomni37-0.1-elite.fwsc", "sha256": "c4355b7a937e43fe8cf1cc94e1b082179b78b717a006f5bdecdbf1d0bf9fc7c9", "size": 650799}, "mke": {"product": "MKE-P37_800", "pkg": "firmware/fomni37-0.1-mke.fwsc", "sha256": "b35f9a1653f47905d8854fbffaf462825a05cb2532cd772c7f330f77e5d63596", "size": 650791}}}, {"id": "maku37", "name": "MAKU37", "version": "0.1", "col": "#ed7962", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/maku37-0.1.fwsc", "sha256": "bcfaf5fb272f748052c03fe1cb60db50dee7bbf6773223b6b174750cce06d13a", "size": 651211}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/maku37-0.1-elite.fwsc", "sha256": "fbd8b881edfd18425b907be559841059c675d95932c3460ed875486bf89fe25e", "size": 651211}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/maku37-0.1-mke.fwsc", "sha256": "568e10bfba8beb2cb1223f29586d2d2b370141dd770efe3ff28d75bae162a944", "size": 651207}}}, {"id": "rainbow37", "name": "RAINBOW37", "version": "0.1", "col": "#f7c948", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/rainbow37-0.1.fwsc", "sha256": "636ca3ffba6476cb627fb82a40d511ef82dc0aeecefd61b865adc028acef6be4", "size": 651211}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/rainbow37-0.1-elite.fwsc", "sha256": "8f021e326378cbbd0201bd37710aa3fb9cca9f38fd9b59615a1afdf62d32ffe5", "size": 651211}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/rainbow37-0.1-mke.fwsc", "sha256": "29cc647c15b0cb5babaad3d8723115cc92f0bf6102c4133bd22b7a3854778ee1", "size": 651207}}}];
+const FW = [{"id": "makkuro37", "name": "Makkuro37", "version": "0.1", "col": "var(--mag)", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/makkuro37-0.1.fwsc", "sha256": "759bbea1e601ce1a3d1d453a233921f06b54009544badf294bd854de817aba36", "size": 651195}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/makkuro37-0.1-elite.fwsc", "sha256": "b6c07ac7c003f7c01475b7893b690fef105848fa5a5b212d541df7d274982d36", "size": 651199}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/makkuro37-0.1-mke.fwsc", "sha256": "e6cd03f629f9dd92659624f1db494d6443b60bd2bbeb34a68876114879088add", "size": 651191}}}, {"id": "snoop37", "name": "Snoop37 (SLOOP for the SMK-37)", "version": "2.6", "col": "var(--cyan)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-2.6.fwsc", "sha256": "78f59b3c45d68f16748b2674fb85ebf5ab474255f5f105b655cbcf203582f7c7", "size": 651190}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/snoop37-2.6-elite.fwsc", "sha256": "10f452cd33663722814fd36a30a81b9f9919273c69c28958ca3ebca9bbd4c171", "size": 651194}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/snoop37-2.6-mke.fwsc", "sha256": "4a4409cbeeca56dcb80ddf5120007156dcb922331a52159c62c764246e664e52", "size": 651186}}}, {"id": "x0x37", "name": "X0X \u2014 SMK-37 build", "version": "0.1", "col": "var(--t3)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.1.fwsc", "sha256": "19a7f763f001e7af14f6a692aa2641b95f7017e4c6b39ba22c05e80bd5d0afb5", "size": 650816}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/x0x37-0.1-elite.fwsc", "sha256": "70d07f138b3c23b9475417f6fbd9e2dfa3f7f54378fc9d3a415f8e4d4e87ef51", "size": 650820}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/x0x37-0.1-mke.fwsc", "sha256": "2453af33cb0100b61182c96c70c0db7ce2c8a64e2fe815759693434552846993", "size": 650812}}}, {"id": "fomni37", "name": "FoMni \u2014 SMK-37 build", "version": "0.1", "col": "var(--t4)", "v": {"pro": {"product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.1.fwsc", "sha256": "87b6539e60486458711e6ecbb2715171eccef03d4653ca8b1b463ec0dace6448", "size": 650795}, "elite": {"product": "SMK-37 Elite_800", "pkg": "firmware/fomni37-0.1-elite.fwsc", "sha256": "c4355b7a937e43fe8cf1cc94e1b082179b78b717a006f5bdecdbf1d0bf9fc7c9", "size": 650799}, "mke": {"product": "MKE-P37_800", "pkg": "firmware/fomni37-0.1-mke.fwsc", "sha256": "b35f9a1653f47905d8854fbffaf462825a05cb2532cd772c7f330f77e5d63596", "size": 650791}}}, {"id": "maku37", "name": "MAKU \u2014 SMK-37 build", "version": "0.1", "col": "#ed7962", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/maku37-0.1.fwsc", "sha256": "bcfaf5fb272f748052c03fe1cb60db50dee7bbf6773223b6b174750cce06d13a", "size": 651211}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/maku37-0.1-elite.fwsc", "sha256": "fbd8b881edfd18425b907be559841059c675d95932c3460ed875486bf89fe25e", "size": 651211}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/maku37-0.1-mke.fwsc", "sha256": "568e10bfba8beb2cb1223f29586d2d2b370141dd770efe3ff28d75bae162a944", "size": 651207}}}, {"id": "rainbow37", "name": "Rainbow mode \u2014 SMK-37 build", "version": "0.1", "col": "#f7c948", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/rainbow37-0.1.fwsc", "sha256": "636ca3ffba6476cb627fb82a40d511ef82dc0aeecefd61b865adc028acef6be4", "size": 651211}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/rainbow37-0.1-elite.fwsc", "sha256": "8f021e326378cbbd0201bd37710aa3fb9cca9f38fd9b59615a1afdf62d32ffe5", "size": 651211}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/rainbow37-0.1-mke.fwsc", "sha256": "29cc647c15b0cb5babaad3d8723115cc92f0bf6102c4133bd22b7a3854778ee1", "size": 651207}}}];
 const $ = (id) => document.getElementById(id);
 const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
 const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
@@ -1394,12 +1401,12 @@ function running(dev) {                                  // what the keyboard ru
   if (IS_OTA_ID(dev.id)) return "update mode (" + id + ")";
   if (/_016$/.test(id)) return "the stock firmware V016";
   if (/melodee/i.test(n)) return "Melodee37";
-  if (/fomni/i.test(n)) return "FoMni37";
-  if (/x0x/i.test(n)) return "X0X37";
+  if (/fomni/i.test(n)) return "FoMni — SMK-37 build";
+  if (/x0x/i.test(n)) return "X0X — SMK-37 build";
   if (/makkuro/i.test(n)) return "Makkuro37";
-  if (/maku/i.test(n)) return "MAKU37";
-  if (/rainbow/i.test(n)) return "RAINBOW37";
-  if (/felucca/i.test(n)) return "Snoop37, MAKU37, RAINBOW37 or another Felucca-based firmware";
+  if (/maku/i.test(n)) return "MAKU — SMK-37 build";
+  if (/rainbow/i.test(n)) return "Rainbow mode — SMK-37 build";
+  if (/felucca/i.test(n)) return "Snoop37 (SLOOP), MAKU, Rainbow mode or another Felucca-based firmware";
   return id;
 }
 function showModels() {                              // the cards' radios follow the unit until one is picked
