@@ -1472,14 +1472,29 @@ const store = {
   set: (v) => { try { v ? localStorage.setItem(PENDING, v) : localStorage.removeItem(PENDING); } catch (_) {} },
 };
 let midi = null, busy = false, connected = false, allPorts = false;   // allPorts: probe every MIDI port (the user asked)
-// the keyboard models a package is built for (one hardware): the connected unit's own, or the one picked on the card
-const MODELS = { pro: "SMK-37 Pro", elite: "SMK-37 Elite", mke: "MKE-P37" };
+/* ---- the package choice (site/test_site.mjs runs this block) ---- */
+// the models a package is built for: the SMK-37 models (one hardware: the connected unit's own, or the one picked on
+// the card) and the FM-1 (another device: only an FM-1 package, and an FM-1 package only on it)
+const MODELS = { pro: "SMK-37 Pro", elite: "SMK-37 Elite", mke: "MKE-P37", fm1: "FM-1" };
 const SMK = (id) => sameKeyboard(id.model, "SMK-37 Pro");                  // any SMK-37 model, our firmwares too
-const modelOf = (id) => ({ "SMK-37 Elite": "elite", "MKE-P37": "mke" })[id.model.replace(/^ota-/i, "")] || "pro";
+const FM1 = (id) => /^(ota-)?FM-1$/i.test(id.model);
+const modelOf = (id) => FM1(id) ? "fm1" : ({ "SMK-37 Elite": "elite", "MKE-P37": "mke" })[id.model.replace(/^ota-/i, "")] || "pro";
+const family = (m) => (m === "fm1" ? "fm1" : "smk");
+// the model a card installs: one picked under "Flash another keyboard version" (SMK models only), else the unit's
+const pickModel = (fw, detected, chosen) => (chosen[fw.id] && family(chosen[fw.id]) === family(detected) ? chosen[fw.id] : detected);
+// -> { model, pkg } or { model, refuse: the reason, nothing is written }
+function choosePackage(fw, detected, chosen) {
+  const model = pickModel(fw, detected, chosen), pkg = fw.v[model];
+  if (pkg && family(model) === family(detected)) return { model, pkg };
+  return { model, refuse: model === "fm1" ? fw.name + " has no FM-1 build: on the FM-1, only the cards marked FM-1 install. Nothing was written."
+    : fw.name + " has no package for the " + MODELS[model] + " yet. Nothing was written." };
+}
+/* ---- end of the package choice ---- */
 let detected = "pro";
 let lastId = null;                                     // the connected keyboard's identity (the M-Vave return checks it)                                  // the connected unit's model (Starrykey, +VA: the Pro build)
 const chosen = {};                                     // fw id -> a model picked under "Flash another keyboard version"
-const modelFor = (fw) => chosen[fw.id] || detected;
+const modelFor = (fw) => pickModel(fw, detected, chosen);
+const FM1_PAGE = FW.some((f) => f.v.fm1);              // this page has FM-1 packages: an FM-1 may connect
 const pkgs = {};
 const OTHER_MSG = "This keyboard runs one of ChanceTheMaker's SMK firmwares (Felucca SMK, Sloop SMK, Melodee SMK, Doom). They have their own updater, which takes only their packages, so these firmwares cannot be installed over them from here. Nothing was written.";
 
@@ -1491,7 +1506,10 @@ function led(state, name, sub) {
 function running(dev) {                                  // what the keyboard runs, from its port name and identity
   const n = dev.name || "", id = dev.id.text;
   if (IS_OTA_ID(dev.id)) return "update mode (" + id + ")";
+  if (FM1(dev.id)) return id;
   if (/_016$/.test(id)) return "the stock firmware V016";
+  if (/vox/i.test(n)) return "Vox37";
+  if (/vector/i.test(n)) return "Vector37";
   if (/melodee/i.test(n)) return "Melodee37";
   if (/fomni/i.test(n)) return "FoMni — SMK-37 build";
   if (/x0x/i.test(n)) return "X0X — SMK-37 build";
@@ -1510,6 +1528,7 @@ function showModels() {                              // the cards' radios follow
     const r = document.querySelector(`input[name="model-${fw.id}"][value="${modelFor(fw)}"]`);
     if (r) r.checked = true;
   }
+  document.querySelectorAll("details.model").forEach((d) => { d.hidden = detected === "fm1"; });   // (SMK models only)
 }
 document.querySelectorAll(".models input").forEach((r) => r.addEventListener("change", () => {
   chosen[r.name.slice(6)] = r.value;
@@ -1558,9 +1577,14 @@ async function scan() {
         : "It runs one of ChanceTheMaker's SMK firmwares, with their own updater: these packages cannot be installed over it from here.");
       return;
     }
-    if (!SMK(dev.id)) { led("err", dev.id.text + ": not an SMK-37", "These packages are for the M-Vave SMK-37 keyboards only (SMK-37 Pro, Elite, MKE-P37)."); return; }
+    if (!SMK(dev.id) && !(FM1_PAGE && FM1(dev.id))) { led("err", dev.id.text + ": not an SMK-37", "These packages are for the M-Vave SMK-37 keyboards only (SMK-37 Pro, Elite, MKE-P37)."); return; }
     detected = modelOf(dev.id);
     showModels();
+    if (detected === "fm1") {                              // (a page with FM-1 packages)
+      led("on", "FM-1 connected", (IS_OTA_ID(dev.id) ? "In update mode (" + dev.id.text + ")" : "Running " + dev.id.text) + " · port " + dev.name +
+        " · FM-1 builds here: " + FW.filter((f) => f.v.fm1).map((f) => f.name).join(", "));
+      connected = true; return;
+    }
     const model = dev.id.model.replace(/^ota-/i, "");
     if (!Object.values(MODELS).includes(model)) {          // Starrykey 37 Play, the SMK-37+VA mod: the Pro build
       led("on", dev.id.text + " connected", "SMK37 range · port " + dev.name);
@@ -1671,7 +1695,8 @@ addEventListener("beforeunload", (e) => { if (busy) { e.preventDefault(); e.retu
 async function install(fw) {
   if (busy) return;
   busy = true; lockCards();
-  const model = modelFor(fw), pkg = fw.v[model];
+  const { model, pkg, refuse } = choosePackage(fw, detected, chosen);
+  if (refuse) { ov(fw.name + ": not installed", fw.name + " · for the " + MODELS[model], fw.col); finish(false, refuse); return; }
   const ok = await confirmInstall("Install " + fw.name + "?",
     "Install " + fw.name + " " + fw.version + " for the " + MODELS[model] + " on the connected keyboard (" + keyboardId() + ")?",
     model !== detected ? "You picked the " + MODELS[model] + " build under Flash another keyboard version; the keyboard was detected as the " + MODELS[detected] + "." : "",
@@ -1694,6 +1719,7 @@ async function install(fw) {
         ota.link.close();
         throw new Error("The keyboard is in update mode (" + ota.id.text + ") from an interrupted install. " +
           (!OUR_LOADER(ota.id) ? "That is another firmware's update mode: finish it under Back to the M-Vave firmware, or with that firmware's own updater."
+             : FM1({ model: lm }) !== (model === "fm1") ? "It is the update mode of " + (FM1({ model: lm }) ? "an FM-1" : "an SMK-37") + ", not of the " + MODELS[model] + ": press Connect, then Install again."
              : "It is the update mode of the " + lm + ": pick that model under Flash another keyboard version and press Install again."));
       }
       store.set(fw.id);

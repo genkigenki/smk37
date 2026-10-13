@@ -1,0 +1,1253 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>SMK37 — early access</title>
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#04060c">
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --bg: #04060c;
+  --bg2: #070b16;
+  --ink: #dff8ff;
+  --dim: #7f9bb0;
+  --cyan: #3cf0ff;
+  --mag: #ff3cd2;
+  --amber: #ffb02a;
+  --line: rgba(60, 240, 255, .18);
+  --card: rgba(10, 20, 36, .72);
+  --t1: #287cff; --t2: #1ecc70; --t3: #ffc618; --t4: #ff621a;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0; background: var(--bg); color: var(--ink);
+  font: 16px/1.6 Inter, system-ui, sans-serif; overflow-x: hidden;
+}
+a { color: var(--cyan); text-decoration: none; }
+a:hover { text-shadow: 0 0 12px var(--cyan); }
+.mono { font-family: "JetBrains Mono", ui-monospace, monospace; }
+
+/* ---------- hero ---------- */
+.hero { position: relative; height: 100vh; min-height: 560px; overflow: hidden; }
+#stage { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hud {
+  position: absolute; left: 24px; top: 20px; z-index: 2;
+  font: 12px/1.7 "JetBrains Mono", monospace; color: var(--cyan); letter-spacing: .08em;
+  text-shadow: 0 0 8px rgba(60, 240, 255, .7); pointer-events: none;
+}
+.hud .k { color: var(--dim); }
+.hud .new { color: #5ad2ff; text-shadow: 0 0 8px rgba(90, 210, 255, .8); }
+.nav {
+  position: absolute; right: 24px; top: 18px; z-index: 3; display: flex; gap: 22px;
+  font: 600 12px/1 Orbitron, sans-serif; letter-spacing: .14em; text-transform: uppercase;
+}
+.nav a { color: var(--ink); opacity: .75; }
+.nav a:hover { opacity: 1; color: var(--cyan); }
+.title {
+  position: absolute; left: 0; right: 0; bottom: 9vh; z-index: 2; text-align: center;
+  opacity: 0; transform: translateY(18px); transition: opacity 1.2s ease, transform 1.2s ease;
+  pointer-events: none; padding: 0 16px;
+}
+.title.on { opacity: 1; transform: none; pointer-events: auto; }
+.title h1 {
+  margin: 0; font: 900 clamp(48px, 11vw, 132px)/1 Orbitron, sans-serif; letter-spacing: .06em;
+  color: #effcff;
+  text-shadow: 0 0 6px var(--cyan), 0 0 22px rgba(60, 240, 255, .8), 0 0 60px rgba(60, 240, 255, .45);
+}
+.title h1 span { color: #ffe9fb; text-shadow: 0 0 6px var(--mag), 0 0 24px rgba(255, 60, 210, .85), 0 0 60px rgba(255, 60, 210, .5); }
+.title p { margin: 10px auto 22px; max-width: 640px; font-size: clamp(15px, 2.2vw, 19px); color: #bfe9f5; }
+.btns { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.btns.left { justify-content: flex-start; margin-top: 26px; }
+.btn {
+  display: inline-block; padding: 12px 22px; border: 1px solid var(--cyan); border-radius: 2px;
+  font: 700 13px/1 Orbitron, sans-serif; letter-spacing: .16em; text-transform: uppercase; color: var(--ink);
+  background: rgba(60, 240, 255, .08); box-shadow: 0 0 18px rgba(60, 240, 255, .25), inset 0 0 14px rgba(60, 240, 255, .12);
+}
+.btn.alt { border-color: var(--mag); background: rgba(255, 60, 210, .08); box-shadow: 0 0 18px rgba(255, 60, 210, .25), inset 0 0 14px rgba(255, 60, 210, .12); }
+.btn:hover { color: #fff; text-shadow: 0 0 10px var(--cyan); }
+.replay {
+  position: absolute; right: 24px; bottom: 22px; z-index: 3; background: none; border: 1px solid var(--line);
+  color: var(--dim); font: 11px "JetBrains Mono", monospace; letter-spacing: .1em; padding: 6px 10px; cursor: pointer;
+}
+.replay:hover { color: var(--cyan); border-color: var(--cyan); }
+.scrollcue { position: absolute; left: 50%; bottom: 14px; z-index: 2; width: 1px; height: 40px; background: linear-gradient(var(--cyan), transparent); opacity: .6; }
+
+/* ---------- sections ---------- */
+section { position: relative; padding: 110px 24px; }
+#why { padding-bottom: 20px; }
+#firmwares { padding-top: 40px; }
+.wrap { max-width: 1120px; margin: 0 auto; }
+.eyebrow { font: 600 12px "JetBrains Mono", monospace; letter-spacing: .24em; color: var(--mag); text-transform: uppercase; }
+h2 { margin: 10px 0 18px; font: 700 clamp(28px, 4.6vw, 48px)/1.1 Orbitron, sans-serif; letter-spacing: .03em; }
+h2 em { font-style: normal; color: var(--cyan); text-shadow: 0 0 18px rgba(60, 240, 255, .6); }
+.lead { max-width: 720px; color: #b7cfdc; font-size: 18px; }
+.video { margin-top: 28px; max-width: 860px; aspect-ratio: 16 / 9; border: 1px solid rgba(120, 220, 255, .25); border-radius: 10px; overflow: hidden; background: #000; }
+.video { display: block; position: relative; width: 100%; padding: 0; cursor: pointer; }
+.video img, .video iframe { width: 100%; height: 100%; border: 0; display: block; object-fit: cover; }
+.video .play { position: absolute; left: 50%; top: 50%; width: 76px; height: 76px; margin: -38px 0 0 -38px; border-radius: 50%;
+  background: rgba(0, 0, 0, .6); border: 2px solid #7fe3ff; }
+.video .play::after { content: ""; position: absolute; left: 30px; top: 22px; border-style: solid; border-width: 16px 0 16px 26px;
+  border-color: transparent transparent transparent #7fe3ff; }
+.video:hover .play { background: rgba(0, 40, 60, .8); }
+.video .vnote { position: absolute; right: 10px; bottom: 8px; font-size: 12px; color: #bfe9f5; background: rgba(0, 0, 0, .55); padding: 2px 6px; border-radius: 4px; }
+.gridbg {
+  background:
+    linear-gradient(var(--bg) 0, transparent 120px, transparent calc(100% - 120px), var(--bg) 100%),
+    repeating-linear-gradient(0deg, transparent 0 59px, rgba(60, 240, 255, .06) 59px 60px),
+    repeating-linear-gradient(90deg, transparent 0 59px, rgba(60, 240, 255, .06) 59px 60px),
+    var(--bg2);
+}
+
+
+/* firmware cards */
+.cards { margin-top: 44px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 22px; }
+.card {
+  /* chamfered corners: ::before is the outline (the full shape in the line colour), ::after the fill inset by the
+     line width, so the line stays closed around the cut corners; the glow is a drop-shadow that follows the shape */
+  --bw: 2px; --cut: 22px;
+  --line-c: linear-gradient(135deg, var(--c, var(--cyan)) 0 70px, rgba(60, 240, 255, .24) 70px);
+  position: relative; isolation: isolate; padding: 26px 24px 22px;
+  transition: transform .25s, filter .25s;
+}
+a.card { display: block; color: inherit; text-decoration: none; }
+a.card:hover { text-shadow: none; }
+.card::before, .card::after { content: ""; position: absolute; pointer-events: none; }
+.card::before { inset: 0; z-index: -2; background: var(--line-c);
+  clip-path: polygon(0 0, calc(100% - var(--cut)) 0, 100% var(--cut), 100% 100%, var(--cut) 100%, 0 calc(100% - var(--cut))); }
+.card::after { inset: var(--bw); z-index: -1; background: #08111f;
+  clip-path: polygon(0 0, calc(100% - var(--cut) + .6px) 0, 100% calc(var(--cut) - .6px), 100% 100%,
+                     calc(var(--cut) - .6px) 100%, 0 calc(100% - var(--cut) + .6px)); }
+.card:hover { --bw: 3px; --line-c: var(--c, var(--cyan)); transform: translateY(-3px);
+  filter: drop-shadow(0 0 10px var(--c, var(--cyan))); }
+.card h3 { margin: 0; font: 900 24px Orbitron, sans-serif; letter-spacing: .04em; color: #f2fdff; }
+.card h3 small { font: 500 11px "JetBrains Mono", monospace; letter-spacing: .12em; color: var(--c, var(--cyan)); margin-left: 8px; vertical-align: middle; }
+.card .from { margin: 4px 0 14px; font: 12px "JetBrains Mono", monospace; color: var(--dim); }
+.card h3 a { color: inherit; }
+.card .from a { color: inherit; border-bottom: 1px dotted currentColor; }
+.card .from a:hover, .card h3 a:hover { color: var(--c, var(--cyan)); }
+.card p { margin: 0 0 14px; color: #c3d8e3; font-size: 15px; }
+.card ul { margin: 0 0 16px; padding: 0; list-style: none; font-size: 14px; color: #a9c2cf; }
+.card li { padding-left: 18px; position: relative; margin: 4px 0; }
+.card li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--c, var(--cyan)); }
+.tag { display: inline-block; font: 600 10px "JetBrains Mono", monospace; letter-spacing: .14em; text-transform: uppercase; padding: 4px 8px; border: 1px solid currentColor; color: var(--amber); }
+.tag.ok { color: #46f0a0; }
+.card.flag { grid-column: 1 / -1; display: grid; grid-template-columns: 1.2fr 1fr; gap: 28px; align-items: center; }
+.card.flag h3 { font-size: 34px; }
+.padrow { display: grid; grid-template-columns: repeat(8, 1fr); gap: 7px; }
+.padrow i { aspect-ratio: 1; border-radius: 3px; background: #0d1526; border: 1px solid #1b2a44; transition: background .12s, box-shadow .12s; }
+
+/* steps */
+.steps { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 26px; counter-reset: s; }
+.step { border-top: 1px solid var(--line); padding-top: 18px; }
+.step::before { counter-increment: s; content: "0" counter(s); font: 900 34px Orbitron, sans-serif; color: transparent; -webkit-text-stroke: 1px var(--cyan); text-shadow: 0 0 18px rgba(60, 240, 255, .35); }
+.step h4 { margin: 6px 0 6px; font: 700 16px Orbitron, sans-serif; letter-spacing: .04em; }
+.step p { margin: 0; color: #a9c2cf; font-size: 15px; }
+code { font: 13px "JetBrains Mono", monospace; color: var(--cyan); background: rgba(60, 240, 255, .07); padding: 1px 6px; }
+
+/* extras */
+.duo { margin-top: 40px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 22px; }
+.knobs { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; margin-top: 16px; max-width: 400px; }
+.knobs img { width: 100%; height: auto; aspect-ratio: 1; cursor: grab; touch-action: none; user-select: none;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, .6)); transition: filter .2s; }
+.knobs img:hover { filter: drop-shadow(0 0 8px rgba(60, 240, 255, .55)); }
+.knobs img.drag { cursor: grabbing; }
+
+footer { padding: 60px 24px 50px; border-top: 1px solid var(--line); color: var(--dim); font-size: 13px; }
+footer .wrap { display: grid; gap: 14px; }
+footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing: .08em; }
+
+.reveal { opacity: 0; transform: translateY(26px); transition: opacity .9s ease, transform .9s ease; }
+.reveal.in { opacity: 1; transform: none; }
+
+/* installer */
+.connect {
+  position: sticky; top: 0; z-index: 20; margin: 34px 0 0; display: flex; align-items: center; gap: 16px;
+  padding: 14px 18px; background: rgba(6, 12, 24, .92); backdrop-filter: blur(8px);
+  border: 1px solid var(--line); border-left: 3px solid var(--cyan);
+}
+.led { flex: none; width: 12px; height: 12px; border-radius: 50%; background: #34404f; box-shadow: 0 0 0 3px rgba(52, 64, 79, .3); }
+.led.on { background: #46f0a0; box-shadow: 0 0 12px #46f0a0, 0 0 0 3px rgba(70, 240, 160, .2); }
+.led.busy { background: var(--amber); box-shadow: 0 0 12px var(--amber); animation: blink .8s infinite; }
+.led.err { background: #ff3c5a; box-shadow: 0 0 12px #ff3c5a; }
+@keyframes blink { 50% { opacity: .35; } }
+.ctext { flex: 1; min-width: 0; display: grid; }
+.ctext b { font: 700 15px Orbitron, sans-serif; letter-spacing: .05em; }
+.ctext span { color: var(--dim); font-size: 13px; overflow-wrap: anywhere; }
+.card .foot { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.card .meta { font: 11px "JetBrains Mono", monospace; color: var(--dim); }
+.card .inst { margin-left: auto; padding: 10px 18px; border-color: var(--c); background: transparent; cursor: pointer;
+  box-shadow: 0 0 14px -4px var(--c), inset 0 0 12px -6px var(--c); }
+.connect .btn:disabled { opacity: .45; cursor: default; border-color: #46f0a0; color: #46f0a0; box-shadow: none; background: transparent; }
+.card .inst:disabled { opacity: .35; cursor: default; box-shadow: none; }
+.card details.model { margin-top: 12px; color: var(--dim); }
+.card details.model summary { width: max-content; cursor: pointer; font: 11px "JetBrains Mono", monospace; letter-spacing: .06em; }
+.card details.model summary:hover { color: var(--c, var(--cyan)); }
+.card .models { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 10px 0 6px; font-size: 14px; color: var(--ink); }
+.card .models label { cursor: pointer; }
+.card .models input { accent-color: var(--c, var(--cyan)); margin: 0 6px 0 0; vertical-align: -2px; }
+.card details.model p { margin: 0; font-size: 12px; color: var(--dim); }
+.ports { margin: 10px 0 0; padding: 12px 18px; border: 1px dashed var(--line); display: flex; flex-wrap: wrap; align-items: center;
+  gap: 10px 16px; font-size: 13px; color: var(--dim); }
+.ports[hidden] { display: none; }
+.ports span { flex: 1; min-width: 220px; overflow-wrap: anywhere; }
+.ports .btn { padding: 9px 14px; font-size: 11px; cursor: pointer; }
+.card.running { --line-c: #46f0a0; }
+.stock { margin-top: 34px; max-width: 760px; }
+.stock ol { margin: 6px 0 16px; padding-left: 22px; color: #c3d8e3; font-size: 15px; }
+.stock ol li { padding-left: 2px; margin: 4px 0; }
+.stock ol li::before { display: none; }
+.drop { display: block; padding: 22px 16px; border: 1px dashed var(--c); text-align: center; cursor: pointer; color: var(--dim);
+  font: 13px "JetBrains Mono", monospace; overflow-wrap: anywhere; }
+.drop:hover, .drop.over { color: var(--ink); background: rgba(255, 176, 42, .06); }
+.drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.stock .sinfo { margin: 12px 0 0; font-size: 14px; }
+.sinfo b { color: var(--ink); }
+.sinfo.warn { color: var(--amber); }
+.sinfo.err { color: #ff3c5a; }
+.sinfo[hidden], .sconfirm[hidden] { display: none; }
+.sconfirm { display: block; margin: 10px 0 0; font-size: 14px; cursor: pointer; }
+.sconfirm input { accent-color: var(--amber); margin: 0 8px 0 0; vertical-align: -2px; }
+.stock .note { margin: 14px 0 0; }
+.card.running .meta::after { content: " · running now"; color: #46f0a0; }
+.tag.soon { color: var(--mag); }
+.card.fw .screen { margin: 4px auto 20px; }
+.screenbox { display: grid; gap: 7px; }
+.screen { width: 260px; height: 260px; justify-self: center; background: #000; overflow: hidden;
+  border: 10px solid #0d1320; border-radius: 8px; box-shadow: 0 0 0 1px #233049, 0 0 40px -10px var(--c, var(--mag)); }
+.screen img { display: block; width: 240px; height: 240px; image-rendering: pixelated; }
+.small { color: var(--dim); font-size: 13px; }
+.note { margin-top: 28px; max-width: 760px; }
+label.file { display: inline-block; padding: 9px 14px; border: 1px dashed var(--line); cursor: pointer; font-size: 14px; }
+label.file input { display: none; }
+.ovl { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; padding: 16px;
+  background: rgba(2, 4, 9, .86); backdrop-filter: blur(6px); }
+.ovl[hidden] { display: none; }
+.ovbox { width: min(560px, 100%); padding: 30px 28px 26px; background: #070d1a; border: 1px solid var(--cyan);
+  box-shadow: 0 0 60px -14px var(--cyan), inset 0 0 40px -24px var(--cyan); }
+.ovbox h3 { margin: 6px 0 18px; font: 900 28px Orbitron, sans-serif; letter-spacing: .04em; }
+.ovsteps { list-style: none; margin: 0 0 18px; padding: 0; display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; }
+.ovsteps li { font: 10px "JetBrains Mono", monospace; letter-spacing: .06em; text-transform: uppercase; color: var(--dim);
+  border-top: 3px solid #1b2a44; padding-top: 6px; }
+.ovsteps li.on { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 -6px 12px -6px var(--cyan); }
+.ovsteps li.ok { color: #46f0a0; border-color: #46f0a0; }
+.bar { height: 8px; background: #0d1526; border: 1px solid #1b2a44; overflow: hidden; }
+.bar i { display: block; height: 100%; width: 0; transition: width .25s linear;
+  background: linear-gradient(90deg, var(--cyan), var(--mag)); box-shadow: 0 0 14px var(--cyan); }
+.ovstatus { min-height: 3.2em; margin: 14px 0 6px; color: #cfeefa; }
+.ovbox details summary { cursor: pointer; color: var(--dim); font-size: 12px; }
+.ovbox pre { max-height: 160px; overflow: auto; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: pre-wrap; }
+.ovbox #ovclose { margin-top: 14px; cursor: pointer; }
+/* before you install, the firmware groups, the confirmation */
+.warnbox { margin: 34px 0 0; max-width: 860px; padding: 18px 22px 16px; border: 1px solid rgba(255, 176, 42, .45);
+  border-left: 3px solid var(--amber); background: rgba(255, 176, 42, .05); }
+.warnbox h3 { margin: 0 0 8px; font: 700 16px Orbitron, sans-serif; letter-spacing: .06em; color: var(--amber); }
+.warnbox ul { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; font-size: 14px; color: #c3d8e3; }
+.warnbox li { padding-left: 18px; position: relative; }
+.warnbox li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--amber); }
+.warnbox b { color: var(--ink); }
+.fwgroup { margin-top: 64px; scroll-margin-top: 90px; }
+.fwgroup + .fwgroup { margin-top: 80px; }
+.ghead { border-top: 1px solid var(--line); padding-top: 18px; }
+.ghead h3 { margin: 0; font: 900 clamp(22px, 3.2vw, 30px)/1.15 Orbitron, sans-serif; letter-spacing: .04em; }
+.ghead p { margin: 6px 0 0; max-width: 720px; color: #b7cfdc; font-size: 16px; }
+.fwgroup .cards { margin-top: 26px; }
+#stock { scroll-margin-top: 90px; }
+.cfbox { max-height: 92vh; overflow-y: auto; border-color: var(--amber); box-shadow: 0 0 60px -14px var(--amber), inset 0 0 40px -24px var(--amber); }
+.cfbox h3 { margin-bottom: 12px; font-size: 24px; overflow-wrap: anywhere; }
+.cfq { margin: 0 0 12px; color: var(--ink); overflow-wrap: anywhere; }
+.cfwarn { margin: 0 0 12px; color: var(--amber); font-size: 14px; }
+.cfwarn[hidden] { display: none; }
+.cfrisk { margin: 0 0 22px; padding: 0; list-style: none; display: grid; gap: 4px; font-size: 14px; color: #a9c2cf; }
+.cfrisk li { padding-left: 18px; position: relative; }
+.cfrisk li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--amber); }
+.cfbtns { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 12px; }
+.cfbtns .btn { cursor: pointer; }
+.cfbtns .btn:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 720px) { .ovsteps { grid-template-columns: repeat(3, 1fr); } .connect { flex-wrap: wrap; }
+  .ovbox { padding: 24px 18px 20px; } .cfbtns .btn { flex: 1; text-align: center; } .warnbox { padding: 16px 16px 14px; } }
+
+@media (max-width: 720px) {
+  .nav { display: none; }
+  .hud { left: 16px; top: 14px; font-size: 10px; }
+  section { padding: 80px 16px; }
+  .card.flag { grid-template-columns: 1fr; }
+  .replay { right: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal, .title { transition: none; }
+}
+</style>
+<style>
+/* the early-access page: a banner instead of the hero (the rest is index.html's style) */
+.eahead { position: relative; padding: 90px 24px 30px; text-align: center; overflow: hidden; }
+.eahead h1 {
+  margin: 0; font: 900 clamp(40px, 9vw, 104px)/1 Orbitron, sans-serif; letter-spacing: .06em; color: #effcff;
+  text-shadow: 0 0 6px var(--cyan), 0 0 22px rgba(60, 240, 255, .8), 0 0 60px rgba(60, 240, 255, .45);
+}
+.eahead h1 span { color: #ffe9fb; text-shadow: 0 0 6px var(--mag), 0 0 24px rgba(255, 60, 210, .85), 0 0 60px rgba(255, 60, 210, .5); }
+.eahead p { margin: 18px auto 0; max-width: 640px; font-size: clamp(15px, 2.2vw, 19px); color: #bfe9f5; }
+.eahead .home { position: absolute; left: 24px; top: 20px; font: 600 12px/1 Orbitron, sans-serif; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink); opacity: .75; }
+.eahead .home:hover { opacity: 1; color: var(--cyan); }
+.srcline { margin-top: 22px; }
+@media (max-width: 720px) { .eahead { padding: 70px 16px 20px; } .eahead .home { left: 16px; top: 16px; } }
+</style>
+</head>
+<body>
+
+<header class="eahead gridbg">
+  <a class="home" href="../">SMK37</a>
+  <h1>EARLY <span>ACCESS</span></h1>
+  <p>No official release — a closed beta to catch critical bugs before the release.</p>
+</header>
+
+<section id="firmwares">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">// closed beta · install from the browser</div>
+      <p class="lead">Connect the keyboard by USB, open this page in Chrome or Edge, press Connect, then Install.
+        Please report what goes wrong, with your keyboard's model and what you did.</p>
+    </div>
+
+    <div class="connect" id="connect">
+      <span class="led" id="led"></span>
+      <div class="ctext"><b id="devname">Not connected</b><span id="devsub">Use Chrome or Edge. Plug the SMK-37 (or an FM-1, for Vox37) into this computer, then press Connect.</span></div>
+      <button class="btn" id="conn" type="button">Connect</button>
+    </div>
+    <div class="ports" id="ports" hidden><span id="portlist"></span>
+      <button class="btn alt" id="allports" type="button">Search all MIDI ports</button></div>
+
+    <div class="fwgroup" id="early">
+      <div class="cards">
+        <article class="card fw reveal" data-fw="vox37" data-name="Vox37" style="--c: #50ff50">
+        <div class="screen"><img src="assets/shot-vox37.png" width="240" height="240" alt="Vox37 on the display"></div>
+        <h3>Vox37</h3>
+        <div class="from">new firmware · genkigenki · SMK-37 and FM-1</div>
+        <p>A vocoder: plug a USB microphone into the keyboard, hold a chord and speak or sing.</p>
+        <ul><li>USB mic in, the keys play the voice</li><li>4 modes, 8 memories, record &amp; play a voice take</li><li>Also for the FM-1 (experimental)</li></ul>
+        <div class="foot"><span class="tag ">early access</span>
+          <span class="meta">v2.3 · 635 KB</span>
+          <button class="btn inst" type="button" data-fw="vox37" disabled>Install</button></div>
+          <details class="model"><summary>Flash another keyboard version</summary>
+            <div class="models"><label><input type="radio" name="model-vox37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vox37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vox37" value="mke"> MKE-P37</label></div>
+            <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
+              reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
+          </details>
+      </article>
+      <article class="card fw reveal" data-fw="vector37" data-name="Vector37" style="--c: #8a7dff">
+        <div class="screen"><img src="assets/shot-vector37.png" width="240" height="240" alt="Vector37 on the display"></div>
+        <h3>Vector37</h3>
+        <div class="from">new firmware · genkigenki</div>
+        <p>An orbiting overtone synth: a moon circles a sun along a path, and where it is decides how much of each of four sounds you hear.</p>
+        <ul><li>Four corners, each two overtone generators, a blend and a filter</li><li>Pads and knobs are the planets, the faders the path</li><li>Eight sounds on &lt; &gt;</li></ul>
+        <div class="foot"><span class="tag ">early access</span>
+          <span class="meta">v0.1 · 635 KB</span>
+          <button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></div>
+          <details class="model"><summary>Flash another keyboard version</summary>
+            <div class="models"><label><input type="radio" name="model-vector37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vector37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vector37" value="mke"> MKE-P37</label></div>
+            <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
+              reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
+          </details>
+      </article>
+      
+      </div>
+      <p class="small srcline">Source (GPL-3.0): on request, and published with the release.</p>
+    </div>
+
+    <p class="small note reveal">Unofficial, experimental firmware, at your own risk. The FM-1 build of Vox37 is untested on a unit.</p>
+
+    <div class="card stock" id="stock" style="--c: var(--amber)">
+      <h3>Back to the M-Vave firmware</h3>
+      <p>These firmwares keep your keyboard's model name, so <b>M-Vave's own updater, M-UPGRADE, works directly</b>
+        (on the FM-1 too).</p>
+      <p>If your SMK-37 runs another firmware that M-UPGRADE refuses:</p>
+      <ol>
+        <li>Download the official firmware (.fwsc) for <b>your</b> keyboard:
+          <br><a href="https://www.m-vave.com/product?id=smk-37-pro" target="_blank" rel="noopener">SMK-37 Pro</a>:
+          <a href="https://yms-file-store.oss-cn-hongkong.aliyuncs.com/software/firmware/SMK-37Pro/SMK-37%20Pro_016.fwsc" download>download V016</a>
+          <br><a href="https://www.m-vave.com/product?id=smk-37-elite" target="_blank" rel="noopener">SMK-37 Elite</a>:
+          <a href="https://yms-file-store.oss-cn-hongkong.aliyuncs.com/software/firmware/SMK-37Elite/SMK-37%20Elite_016.fwsc" download>download V016</a>
+          <br>Other models: <a href="https://www.m-vave.com/download" target="_blank" rel="noopener">M-Vave's download page</a>.</li>
+        <li>Drop it here.</li>
+        <li>Install.</li>
+      </ol>
+      <label class="drop" id="sdrop"><input type="file" id="sfile" accept=".fwsc"><span id="sdroptext">Drop the .fwsc file here, or click to choose it</span></label>
+      <p class="sinfo" id="sinfo" hidden></p>
+      <label class="sconfirm" id="sconfirmrow" hidden><input type="checkbox" id="sconfirm">This is the firmware for my keyboard</label>
+      <div class="foot"><span class="meta"></span>
+        <button class="btn inst" id="sinst" type="button" disabled>Install</button></div>
+      <p class="small note">Your keyboard's calibration and pairing are never touched. The firmware on the keyboard, and what it saved, is replaced.
+        Keep the USB cable connected and this tab open until it says Done. Afterwards, M-UPGRADE should also work again if you need it.</p>
+    </div>
+  </div>
+</section>
+
+
+<div class="ovl" id="ovl" hidden>
+  <div class="ovbox">
+    <div class="eyebrow" id="ovfw">// installing</div>
+    <h3 id="ovtitle">Installing</h3>
+    <ol class="ovsteps" id="ovsteps">
+      <li data-k="start">Connect</li><li data-k="verify">Verify</li><li data-k="loader">Update mode</li>
+      <li data-k="write">Write</li><li data-k="reboot">Restart</li><li data-k="done">Done</li>
+    </ol>
+    <div class="bar"><i id="ovbar"></i></div>
+    <p id="ovstatus" class="ovstatus">Starting</p>
+    <details><summary>Log</summary><pre id="ovlog"></pre></details>
+    <button class="btn" id="ovclose" type="button" hidden>Close</button>
+  </div>
+</div>
+
+<div class="ovl" id="cfm" hidden>
+  <div class="ovbox cfbox" role="alertdialog" aria-modal="true" aria-labelledby="cftitle" aria-describedby="cfq cfrisk">
+    <div class="eyebrow">// confirm</div>
+    <h3 id="cftitle">Install?</h3>
+    <p id="cfq" class="cfq"></p>
+    <p id="cfwarn" class="cfwarn" hidden></p>
+    <ul id="cfrisk" class="cfrisk"></ul>
+    <div class="cfbtns">
+      <button class="btn alt" id="cfno" type="button">Cancel</button>
+      <button class="btn" id="cfyes" type="button">Install</button>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div><b>MAKKURO</b> · © 2026 genkigenki · site CC BY-NC 4.0 · installer code GPL-3.0 (Felucca / SLOOP)</div>
+    <div>Vox37 builds on Felucca's platform layer (hugelton / kurogedelic). Vector37 on SLOOP's board layer (isod89), based on
+      Felucca; its master stage after Melodee (Kerem Kilic). Inspired by the Beetlecrab Vector.</div>
+    <div>Unofficial community project. Not affiliated with or endorsed by M-Vave. All trademarks belong to their owners.</div>
+    <div><a href="../legal.html">Legal notice · Privacy</a></div>
+  </div>
+</footer>
+
+<script>
+(() => {                                               /* reveal on scroll (index.html's hero script does it there) */
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } }), { threshold: .15 });
+  document.querySelectorAll(".reveal").forEach(n => io.observe(n));
+})();
+</script>
+<script type="module">
+/* the installer: fm1pkg.js and fm1ota.js (Felucca / SLOOP, GPL-3.0) inlined by tools/make_launch_site.py */
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments
+//
+// FM-1 (and M-Vave SMK-37 Pro) .fwsc packages in the browser: the package identity and the image the
+// device reads during an update.
+
+const BLOCKS = 20, BLK = 0x30, KEEP = 0x2F, MAX_BLOCKS = 64;
+
+const printable = (m, i) => { const c = (m - i - 1) & 0xFF; return c >= 0x20 && c < 0x7F; };
+
+// the identity blocks: 20, or more when the identity is longer (the Starrykey 37 Play V016's "STARRYKEY-37 PLAY_016"
+// takes 21): further identity markers count only when unused 0x7D markers follow them (the 36-block layout)
+function identityBlocks(fwsc) {
+  let n = BLOCKS;
+  while (n < MAX_BLOCKS && (n + 1) * BLK <= fwsc.length && fwsc[n * BLK + KEEP] !== 0x7D && printable(fwsc[n * BLK + KEEP], n)) n++;
+  return n > BLOCKS && (n + 1) * BLK <= fwsc.length && fwsc[n * BLK + KEEP] === 0x7D ? n : BLOCKS;
+}
+
+// interleave blocks: the identity blocks, then more while the marker is the unused 0x7D (the stock SMK-37 Pro,
+// MKE-P37 and Starrykey 37 Play V016 have 36)
+function blockCount(fwsc) {
+  let n = identityBlocks(fwsc);
+  while (n < MAX_BLOCKS && (n + 1) * BLK <= fwsc.length && fwsc[n * BLK + KEEP] === 0x7D) n++;
+  return n;
+}
+
+// the package identity ("FM-1_904", "SMK-37 Pro_016"): one marker byte after each identity block (0x7D: none);
+// past the first 20 only when the package really has those blocks (logicalImage's count)
+function productOf(fwsc) {
+  if (fwsc.length < BLOCKS * BLK) throw new Error("not an FM-1 package (too short)");
+  const ib = identityBlocks(fwsc), n = ib === BLOCKS ? BLOCKS : Math.min(ib, layout(fwsc).blocks);
+  let s = "";
+  for (let i = 0; i < n; i++) {
+    const m = fwsc[i * BLK + KEEP];
+    if (m !== 0x7D) s += String.fromCharCode((m - i - 1) & 0xFF);
+  }
+  return s;
+}
+
+function deinterleave(fwsc, blocks) {
+  const out = new Uint8Array(fwsc.length - blocks);
+  for (let i = 0; i < blocks; i++) out.set(fwsc.subarray(i * BLK, i * BLK + KEEP), i * KEEP);
+  out.set(fwsc.subarray(blocks * BLK), blocks * KEEP);
+  return out;
+}
+
+function crc16(d, c = 0) {                 // CRC-16/XMODEM, as the package and the device use
+  for (const b of d) {
+    c ^= b << 8;
+    for (let k = 0; k < 8; k++) c = c & 0x8000 ? ((c << 1) ^ 0x1021) & 0xFFFF : (c << 1) & 0xFFFF;
+  }
+  return c;
+}
+
+function jlDec(b) {                        // JieLi ENC stream cipher (its own inverse)
+  const out = Uint8Array.from(b);
+  let key = 0xFFFF;
+  for (let i = 0; i < out.length; i++) {
+    out[i] ^= key & 0xFF;
+    key = ((key << 1) ^ (key & 0x8000 ? 0x1021 : 0)) & 0xFFFF;
+  }
+  return out;
+}
+
+// the logical image's flash.bin (type 0) and ota.bin (type 100) match their CRCs (as fm1_install.py)
+function filesOk(img) {
+  if (img.length < 0x40) return false;
+  const h = jlDec(img.subarray(0, 0x40)), rd = (a, o, n) => a.slice(o, o + n).reduce((v, x, i) => v + x * 2 ** (8 * i), 0);
+  if (crc16(h.subarray(2, 0x40)) !== rd(h, 0, 2)) return false;
+  const count = rd(h, 8, 2);
+  if (count < 1 || count > 8 || img.length < 0x40 + 0x50 * count) return false;
+  for (let i = 0; i < count; i++) {
+    const e = jlDec(img.subarray(0x40 + i * 0x50, 0x90 + i * 0x50));
+    const typ = rd(e, 0, 2), off = rd(e, 8, 4), size = rd(e, 12, 4);
+    if (off + size > img.length) return false;
+    if ((typ === 0 || typ === 100) && crc16(img.subarray(off, off + size)) !== rd(e, 4, 2)) return false;
+  }
+  return true;
+}
+
+// the image the device addresses during an update: the .fwsc without the marker bytes (20 blocks, or the
+// detected count when the files' CRCs agree: a 20-block package can have 0x7D after block 20 by chance)
+function layout(fwsc) {
+  const n = blockCount(fwsc);
+  if (n !== BLOCKS) {
+    const img = deinterleave(fwsc, n);
+    if (filesOk(img) || !filesOk(deinterleave(fwsc, BLOCKS))) return { blocks: n, image: img };
+  }
+  return { blocks: BLOCKS, image: deinterleave(fwsc, BLOCKS) };
+}
+function logicalImage(fwsc) { return layout(fwsc).image; }
+
+// The official FM-1 V15 (M-VAVE Downloads -> PC Firmware -> FM-1 V15, FM-1.fwsc), for the return to the
+// official firmware: only that exact file is accepted (its SHA-256 pins every byte: the loader, the app, the
+// layout; the name of the file proves nothing). The digest is the one Felucca 1.0 pins.
+const STOCK_V15_SHA256 = "db1642b2b6fa5c2cccb11ffd13878068bb28601678d3644049f99dc40e7edb8a";
+const STOCK_V15_SIZE = 699956;
+const STOCK_V15_PRODUCT = "FM-1_015";
+// The official SMK-37 Pro V016 (SMK-37_Pro_016.fwsc, 36 interleave blocks), for the return of an SMK-37 Pro.
+const STOCK_SMK016_SHA256 = "2d98ce72530e71d617384963423820536f094501299e2cfec0a8d3c3fb6bcfb0";
+const STOCK_SMK016_SIZE = 705252;
+const STOCK_SMK016_PRODUCT = "SMK-37 Pro_016";
+
+async function sha256hex(bytes) {
+  const d = await crypto.subtle.digest("SHA-256", bytes);
+  return [...new Uint8Array(d)].map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+// The official SMK-37 range packages known here (M-Vave Downloads -> PC Firmware): informational only (the page
+// tags them "known"); M-Vave's next release is accepted by its structure (identifyStockPackage). The files
+// themselves are never shipped, the user downloads them from M-Vave. product: the identity the keyboard reports
+// once it runs the package (the Starrykey's 21 characters do not fit the 20 identity blocks of its V015 package:
+// that one carries "STARRYKEY-37 PLAY_01", so it is accepted only as this known file).
+const STOCK_SMK = [
+  { name: "SMK-37 Pro", version: "016", product: "SMK-37 Pro_016", size: 705252, sha256: STOCK_SMK016_SHA256 },
+  { name: "SMK-37 Pro", version: "015", product: "SMK-37 Pro_015", size: 701140, sha256: "f7f1831cd7c9ad8b4831b6e71ea0bdbcdff9ae4c4077276b3c965511bf4d4fff" },
+  { name: "SMK-37 Elite", version: "016", product: "SMK-37 Elite_016", size: 705236, sha256: "b2ee38abfef3ae922e4eecdb8a551e14345300ae6f270265feacd33b6ef99cb6" },
+  { name: "SMK-37 Elite", version: "015", product: "SMK-37 Elite_015", size: 701140, sha256: "6cb061bda6fc4a285a1a1014e4fc30782278fa62bdc3add75d14b29d4d76253e" },
+  { name: "MKE-P37", version: "016", product: "MKE-P37_016", size: 705252, sha256: "4306ae5b765ab9afb790edf6d02fa75e872897dbd319049e3956ddd283a51429" },
+  { name: "MKE-P37", version: "015", product: "MKE-P37_015", size: 701140, sha256: "280ee7aae59a17c38bc2e854802c7d08f076e51afff13eb5315ad3748476491f" },
+  { name: "Starrykey 37 Play", version: "016", product: "STARRYKEY-37 PLAY_016", size: 705252, sha256: "3cd57cdd90ee60501c549b9dde53503ef468122e2f34dc110876eefdaf9be3b3" },
+  { name: "Starrykey 37 Play", version: "015", product: "STARRYKEY-37 PLAY_015", size: 701140, sha256: "3ef5d835e88324a925593e1e6959106e16abeabbabf824263803bb236b09224b" },
+];
+
+// the SMK-37 range's model names in a stock identity, and the names the page shows
+const STOCK_MODELS = { "SMK-37 PRO": "SMK-37 Pro", "SMK-37 ELITE": "SMK-37 Elite", "MKE-P37": "MKE-P37", "STARRYKEY-37 PLAY": "Starrykey 37 Play" };
+
+function badPackage(code, msg) { const e = new Error(msg); e.code = code; return e; }
+
+// an M-Vave stock package for the SMK-37 range -> { name, version, product, model, image, known } (image: the
+// logical image the loader writes, as fm1_install.py --force: the detected block count). Accepted by structure, so
+// M-Vave's next release works too: the package parses, its files' CRCs agree, its identity is an SMK-37 range model
+// with a stock version (_000.._099); known: the SHA-256 is one of STOCK_SMK (informational). Refused (code):
+// "fm1" (an FM-1 package, another device), "ours" (one of our firmwares, _7xx/_8xx/_9xx: installed above),
+// "damaged" (the files' CRCs disagree), "unknown" (anything else)
+async function identifyStockPackage(bytes) {
+  const sha = await sha256hex(bytes);
+  if (bytes.length === STOCK_V15_SIZE && sha === STOCK_V15_SHA256)
+    throw badPackage("fm1", "this is the official FM-1 firmware: it is for the FM-1, not for an SMK-37 keyboard");
+  let product, image;
+  try { product = productOf(bytes); image = logicalImage(bytes); }
+  catch (_) { throw badPackage("unknown", "not an M-Vave firmware package for the SMK-37 range"); }
+  const k = STOCK_SMK.find((x) => x.size === bytes.length && x.sha256 === sha);
+  const m = /^(.+)_(\d{3})$/.exec(product);
+  if (/^FM-1(_|$)/i.test(product))
+    throw badPackage("fm1", "this is an FM-1 firmware: it is for the FM-1, not for an SMK-37 keyboard");
+  if (m && /^[789]\d\d$/.test(m[2]) && (STOCK_MODELS[m[1].toUpperCase()] || /^SMK-37/i.test(m[1])))
+    throw badPackage("ours", "this is one of our firmwares (" + product + "): install it above, not here");
+  const known = k && k.product.startsWith(product), name = m && STOCK_MODELS[m[1].toUpperCase()];
+  if (!known && (!name || Number(m[2]) > 99)) throw badPackage("unknown", "not an M-Vave firmware package for the SMK-37 range");
+  if (!filesOk(image)) throw badPackage("damaged", "the package is damaged (its CRCs do not match)");
+  if (known) return { ...k, model: k.product.split("_")[0], image, known: true };
+  return { name, version: m[2], product, model: m[1], image, known: false };
+}
+
+async function validateStockPackage(bytes) {
+  if (bytes.length === STOCK_V15_SIZE && await sha256hex(bytes) === STOCK_V15_SHA256 && productOf(bytes) === STOCK_V15_PRODUCT)
+    return { product: STOCK_V15_PRODUCT, image: logicalImage(bytes) };
+  try { const k = await identifyStockPackage(bytes); return { product: k.product, image: k.image }; } catch (_) { /* below */ }
+  throw new Error("select the unmodified official FM-1 V15 file (FM-1.fwsc) or an official SMK-37 firmware (.fwsc) from M-Vave");
+}
+
+// SPDX-License-Identifier: GPL-3.0-only
+// Copyright (C) 2026 Leo Kuroshita (@kurogedelic), Hügelton Instruments
+//
+// The FM-1 USB-MIDI update protocol (M-UPGRADE compatible) over WebMIDI.
+// Step 1: the running firmware reads parts of the package and stages the update
+// loader. Step 2: the loader reads the whole image and writes it. In both steps
+// the device sends cmd 0x30 read requests on the logical image and we answer.
+
+const HS_QUERY = [0xF0, 0x00, 0x32, 0x45, 0x00, 0x00, 0x00, 0x40, 0x7F, 0xF7];
+const UPGRADE = [0xF0, 0x22, 0x24, 0x35, 0x7F, 0xF7];
+const MAXDATA = 512;
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const IS_OTA = (id) => /^ota-/i.test(id.model);
+// the update loader of SLOOP / Felucca packages ("ota-FM-1_9XX", "ota-SMK-37 Pro_9XX"; the SMK ports also under the
+// Elite's and the MKE-P37's model name, Makkuro37 _7XX). A device left in the update mode of another firmware (the
+// stock updater's loader) is never written: its loader may lay the image out differently. The bare "SMK-37" name
+// ("ota-SMK-37_931") is ChanceTheMaker's SMK firmwares' RAM updater: another package format, so not ours.
+const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[789]\d\d$/i.test(id.text);
+// ChanceTheMaker's SMK firmwares (Felucca SMK, Sloop SMK, Melodee SMK, Doom): "SMK-37_9NN", their own updater
+const OTHER_SMK = (id) => /^(ota-)?SMK-37_9\d\d$/i.test(id.text);
+// the SMK-37 Pro, SMK-37 Elite, MKE-P37, Starrykey 37 Play and the SMK-37+VA mod: one keyboard under several model
+// names, so a package for one runs on all of them (also "SMK-37", the name other firmwares report); an FM-1 is
+// another device
+const SMK_FAMILY = /^(ota-)?(SMK-37([ +].*)?|MKE-P37|STARRYKEY-37.*)$/i;
+const sameKeyboard = (a, b) => a === b || (SMK_FAMILY.test(a) && SMK_FAMILY.test(b));   // two models
+// an official package on the connected keyboard (the return to the M-Vave firmware): "same" (its model), "other"
+// (another model of the same keyboard: allowed, the page warns), "unknown" (the keyboard does not name its model,
+// as "SMK-37" or "SMK-37+VA": allowed, the page warns), "refuse" (another device: FM-1 and SMK never mix)
+const NAMED = /^(SMK-37 Pro|SMK-37 Elite|MKE-P37|STARRYKEY-37 PLAY)$/i;
+function stockFit(deviceModel, product) {
+  const dm = deviceModel.replace(/^ota-/i, ""), pm = product.split("_")[0];
+  if (!sameKeyboard(dm, pm)) return "refuse";
+  if (dm.toLowerCase() === pm.toLowerCase()) return "same";
+  return NAMED.test(dm) ? "other" : "unknown";
+}
+// the MIDI ports find() probes: the FM-1 / SMK models' and the firmwares' names; other gear is never sent anything
+const PORT_RE = /fm-1|smk|elite|mke-p37|starry|felucca|sloop|clipper|melodee|fomni|x0x|makkuro|maku|rainbow|amb-1|choral|orbit|snoop|vector|vox|ota|composite|sinco|usb-midi/i;
+// a port name without its in / out part (Windows names a device's second port pair "MIDIIN2 (X)" / "MIDIOUT2 (X)")
+const portBase = (n) => n.replace(/^MIDI(?:IN|OUT)(\d*) \((.*)\)$/i, "$2 $1").replace(/[ -](?:in|out|input|output)$/i, "").trim().toLowerCase();
+
+// errors carry a code the pages translate: notfound, model, stopped, noloader, lost, noreturn,
+// mismatch (detail: the identity the device reports), badreq, foreign (detail: the loader's identity)
+function fail(code, msg, detail = "") { const e = new Error(msg); e.code = code; e.detail = detail; return e; }
+
+function pack7(data) {
+  const out = []; let acc = 0, nb = 0;
+  for (const b of data) {
+    acc |= b << nb; nb += 8;
+    while (nb >= 7) { out.push(acc & 0x7F); acc >>>= 7; nb -= 7; }
+  }
+  if (nb) out.push(acc & 0x7F);
+  return out;
+}
+
+function unpack7(s) {
+  const out = []; let acc = 0, nb = 0;
+  for (const b of s) {
+    acc |= (b & 0x7F) << nb; nb += 7;
+    while (nb >= 8) { out.push(acc & 0xFF); acc >>>= 8; nb -= 8; }
+  }
+  return out;
+}
+
+function response(addr, data, fl = 0) {
+  const len = data.length;
+  const body = [0x00, 0x59, 0x30, (len + 8) & 0xFF, ((len + 8) >> 8) & 0xFF, 0, fl,
+    addr & 0xFF, (addr >>> 8) & 0xFF, (addr >>> 16) & 0xFF, (addr >>> 24) & 0xFF,
+    len & 0xFF, (len >> 8) & 0xFF, 0, ...data];
+  let s = 0;
+  for (let i = 6; i < body.length; i++) s += body[i];
+  body.push(~s & 0xFF);
+  return [0xF0, ...pack7(body), 0xF7];
+}
+
+function parseRequest(pkt) {
+  if (pkt[0] !== 0xF0 || pkt[pkt.length - 1] !== 0xF7) return null;
+  const u = unpack7(pkt.slice(1, -1));
+  if (u.length !== 15 || u[0] !== 0 || u[1] !== 0x59 || u[2] !== 0x30) return null;
+  let s = 0;
+  for (let i = 6; i < 14; i++) s += u[i];
+  if ((~s & 0xFF) !== u[14]) return null;
+  return { fl: u[6], addr: (u[7] | (u[8] << 8) | (u[9] << 16) | (u[10] << 24)) >>> 0, len: u[11] | (u[12] << 8) | (u[13] << 16) };
+}
+
+function parseIdentity(pkt) {
+  const d = unpack7(pkt.slice(1, -1));
+  if (d.length !== 34 || d[0] !== 0 || d[1] !== 0x59 || d[2] !== 0x11) return null;
+  const txt = String.fromCharCode(...d.slice(6, 33)).split("\0")[0];   // (some firmwares end the text early)
+  const m = /^([^_]+)_(\d+)$/.exec(txt);
+  return m ? { text: txt, model: m[1], version: parseInt(m[2], 10) } : null;
+}
+
+// one MIDI in/out pair with a SysEx queue
+class Link {
+  constructor(input, output) {
+    this.input = input; this.output = output; this.q = []; this.waiter = null;
+    input.onmidimessage = (ev) => {
+      if (ev.data[0] !== 0xF0) return;
+      this.q.push(Array.from(ev.data));
+      if (this.waiter) { const w = this.waiter; this.waiter = null; w(); }
+    };
+  }
+  get lost() { return this.input.state === "disconnected" || this.output.state === "disconnected"; }
+  // false when the port is gone (unplugged): WebMIDI throws on a disconnected output
+  send(bytes) {
+    try { this.output.send(bytes); return true; } catch (_) { return false; }
+  }
+  drain() { this.q.length = 0; }
+  async read(ms) {
+    if (!this.q.length) {
+      let tm;
+      await Promise.race([new Promise((r) => { this.waiter = r; }), new Promise((r) => { tm = setTimeout(r, ms); })]);
+      clearTimeout(tm);
+      this.waiter = null;
+    }
+    return this.q.shift() || null;
+  }
+  close() { this.input.onmidimessage = null; }
+}
+
+async function handshake(link, tries = 3) {
+  link.drain();
+  for (let t = 0; t < tries; t++) {
+    if (!link.send(HS_QUERY)) return null;
+    const end = Date.now() + 1000;
+    while (Date.now() < end) {
+      const p = await link.read(end - Date.now());
+      if (!p) break;
+      const id = parseIdentity(p);
+      if (id) return id;
+    }
+  }
+  return null;
+}
+
+class Updater {
+  // opts.all: probe every MIDI port, not only PORT_RE's (the handshake query is harmless to other gear)
+  constructor(access, log, opts = {}) {
+    this.access = access;
+    this.log = log || (() => {});
+    this.all = !!opts.all;
+    this.said = new Set();
+  }
+
+  say(t) { if (!this.said.has(t)) { this.said.add(t); this.log(t); } }   // each port line once
+
+  // every in/out pair with the same port name that answers the handshake
+  async find(filter) {
+    const outs = [...this.access.outputs.values()];
+    for (const input of this.access.inputs.values()) {
+      if (input.state === "disconnected") continue;
+      const name = input.name || "";
+      if (!this.all && !PORT_RE.test(name)) { this.say(`port "${name}": not probed`); continue; }   // never probe other gear
+      const output = outs.find((o) => o.name === input.name) ||
+        outs.find((o) => portBase(o.name || "") === portBase(name)) || (outs.length === 1 ? outs[0] : null);
+      if (!output) { this.say(`port "${name}": no output of that name`); continue; }
+      try { await input.open(); await output.open(); } catch (_) { this.say(`port "${name}": cannot open (in use?)`); continue; }
+      const link = new Link(input, output);
+      const id = await handshake(link, 2);
+      this.say(`port "${name}" / "${output.name}": ${id ? id.text : "no answer"}`);
+      if (id && (!filter || filter(id))) return { link, id, name: input.name };
+      link.close();
+    }
+    return null;
+  }
+
+  async waitFor(filter, ms) {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      const dev = await this.find(filter);
+      if (dev) return dev;
+      await sleep(1000);
+    }
+    return null;
+  }
+
+  // serve read requests until the device asks for one of the finish addresses; stops early
+  // when the port disappears (lost: true) instead of waiting out idleMs
+  async serve(link, image, finishAddr, idleMs, onProgress) {
+    let served = 0, last = Date.now();
+    for (;;) {
+      const pkt = await link.read(1000);
+      if (!pkt) {
+        if (link.lost) return { served, finished: false, lost: true };
+        if (Date.now() - last > idleMs) return { served, finished: false };
+        continue;
+      }
+      const r = parseRequest(pkt);
+      if (!r) continue;
+      last = Date.now();
+      if (r.addr === 0xE0000000 || r.addr === 0xF0000000) {
+        link.send(response(r.addr, [...new TextEncoder().encode("success"), 0]));
+        if (r.addr === finishAddr) return { served, finished: true };
+        continue;
+      }
+      if (r.len > MAXDATA || r.addr + r.len > image.length) throw fail("badreq", `bad request ${r.addr.toString(16)}+${r.len}`);
+      await sleep(10);
+      if (!link.send(response(r.addr, Array.from(image.subarray(r.addr, r.addr + r.len)), r.fl))) {
+        return { served, finished: false, lost: true };
+      }
+      served++;
+      if (onProgress) onProgress(served, r.addr);
+    }
+  }
+
+  // full install: running firmware -> loader -> new firmware. anyModel: the package may be for another model of the
+  // same keyboard (an SMK-37 Elite package on a unit that reports SMK-37 Pro); never an FM-1 one on an SMK, nor back
+  async install(image, product, onStep, anyModel = false) {
+    const step = onStep || (() => {});
+    const dev = await this.find((id) => !IS_OTA(id));
+    if (!dev) throw fail("notfound", "FM-1 not found (USB cable, and no other app using it?)");
+    if (OTHER_SMK(dev.id)) { dev.link.close(); throw fail("other", `the keyboard runs a firmware with its own updater (${dev.id.text}): nothing was sent`, dev.id.text); }
+    const [model] = product.split("_");
+    if (dev.id.model !== model && !(anyModel && sameKeyboard(dev.id.model, model))) { dev.link.close(); throw fail("model", `the device is ${dev.id.text}, the package is for ${product}`); }
+    step("start", dev.id.text);
+    dev.link.send(UPGRADE);
+    await sleep(2000);
+    const s1 = await this.serve(dev.link, image, 0xE0000000, 8000, (n) => step("verify", n));
+    dev.link.close();
+    // some firmwares restart into their loader at once, without step 1: such a loader (ours, of this keyboard) goes on
+    const jumped = !s1.finished && s1.lost && s1.served === 0;
+    if (!s1.finished && !jumped) throw fail(s1.lost ? "lost" : "stopped", `the device ${s1.lost ? "was disconnected" : "stopped"} after ${s1.served} requests: nothing was written`);
+    step("loader");
+    await sleep(3000);
+    const ota = await this.waitFor(IS_OTA, jumped ? 15000 : 30000);
+    if (jumped && !(ota && OUR_LOADER(ota.id) && sameKeyboard(ota.id.model.replace(/^ota-/i, ""), dev.id.model))) {
+      if (ota) ota.link.close();
+      throw fail(ota ? "foreign" : "lost", ota ? `the device restarted into the update mode of another firmware (${ota.id.text}): nothing was written`
+        : "the device was disconnected after 0 requests: nothing was written", ota ? ota.id.text : "");
+    }
+    if (!ota) throw fail("noloader", "the update loader did not appear. Replug the USB cable and press Install again: the device stays in update mode until it is finished.");
+    const s2 = await this.write(ota, image, step);
+    if (!s2.finished) throw fail(s2.lost ? "lost" : "stopped", `the loader ${s2.lost ? "was disconnected" : "stopped"} after ${s2.served} requests. Replug and press Install again to resume.`);
+    step("reboot");
+    await sleep(3000);
+    const back = await this.waitFor((id) => !IS_OTA(id), 40000);
+    if (!back) throw fail("noreturn", "the device did not come back: power-cycle it");
+    back.link.close();
+    if (back.id.text !== product) throw fail("mismatch", `installed, but the device reports ${back.id.text}`, back.id.text);
+    step("done", back.id.text);
+    return back.id.text;
+  }
+
+  // step 2 with the loader found by find()/waitFor()
+  async write(ota, image, step) {
+    ota.link.send(UPGRADE);
+    await sleep(2000);
+    const s2 = await this.serve(ota.link, image, 0xF0000000, 180000, (n) => step("write", n));
+    ota.link.close();
+    return s2;
+  }
+
+  // resume: the device is already in update mode (loader) -> true when the write finished. Only SLOOP's
+  // own loader is resumed, except for the return to the official firmware (opts.product: the official
+  // package, its identity checked once the FM-1 is back, after Felucca 1.0): that one is the official
+  // loader's own image, as M-UPGRADE would write it. opts.package: the identity of the package being
+  // written; the loader's model must match it (or opts.product's) by install()'s rule (the same model, or with
+  // opts.anyModel another model of the same keyboard), and without either identity nothing is written
+  async resume(image, onStep, opts = {}) {
+    const ota = await this.find(IS_OTA);
+    if (!ota) return false;
+    if (!OUR_LOADER(ota.id) && !opts.product) {
+      ota.link.close();
+      throw fail("foreign", `the FM-1 is in the update mode of another firmware (${ota.id.text}): finish that update with its own updater`, ota.id.text);
+    }
+    const want = opts.product || opts.package || "";
+    const [lm, pm] = [ota.id.model.replace(/^ota-/i, ""), want.split("_")[0]];
+    if (!want || (lm !== pm && !(opts.anyModel && sameKeyboard(lm, pm)))) {
+      ota.link.close();
+      throw fail("model", `the device is in the update mode of ${ota.id.text}, the package is for ${want || "an unknown model"}`, ota.id.text);
+    }
+    const step = onStep || (() => {});
+    if (!(await this.write(ota, image, step)).finished) return false;
+    if (opts.product) {
+      step("reboot");
+      await sleep(3000);
+      const back = await this.waitFor((id) => !IS_OTA(id), 40000);
+      if (!back) throw fail("noreturn", "the FM-1 did not come back after the write: power-cycle it");
+      back.link.close();
+      if (back.id.text !== opts.product) throw fail("mismatch", `written, but the FM-1 reports ${back.id.text}`, back.id.text);
+      step("done", back.id.text);
+    }
+    return true;
+  }
+}
+
+const FW = [{"id": "vox37", "name": "Vox37", "version": "2.3", "col": "#50ff50", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/vox37-2.3.fwsc", "sha256": "d48dcf0d8a524f9bf6b760340788ae2d6c45c271e6af6513caa9c75755e1d76f", "size": 651208}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/vox37-2.3-elite.fwsc", "sha256": "bd96c92f861394a749332c19cac82450b74503f7a395490b6078c517b62e36ce", "size": 651208}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/vox37-2.3-mke.fwsc", "sha256": "0243e5bd230b78e1880e68f19bd9ed69ba910b46ee7922ecb92fad6db8e3afad", "size": 651204}, "fm1": {"product": "FM-1_900", "pkg": "firmware/vox37-2.3-fm1.fwsc", "sha256": "aabbfb294237174a83d2cc164c009ed26bbc7c601962173820a82839eaef67ea", "size": 610086}}}, {"id": "vector37", "name": "Vector37", "version": "0.1", "col": "#8a7dff", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/vector37-0.1.fwsc", "sha256": "3d36033ac76ddf4eb3b9ee231fb087d66ed5c2fc351a13e3e1a16f57a93b7321", "size": 651194}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/vector37-0.1-elite.fwsc", "sha256": "22ef9f0d4555e3a82e0636ec1ff0947011e7aff3e9267ff9eb083938771494c5", "size": 651194}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/vector37-0.1-mke.fwsc", "sha256": "c6b02f6a3e5d76eefa830b0e3917d2df769bb391593409e10f5888ff1462153a", "size": 651190}}}];
+const $ = (id) => document.getElementById(id);
+const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
+const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
+const store = {
+  get: () => { try { return localStorage.getItem(PENDING); } catch (_) { return null; } },
+  set: (v) => { try { v ? localStorage.setItem(PENDING, v) : localStorage.removeItem(PENDING); } catch (_) {} },
+};
+let midi = null, busy = false, connected = false, allPorts = false;   // allPorts: probe every MIDI port (the user asked)
+/* ---- the package choice (site/test_site.mjs runs this block) ---- */
+// the models a package is built for: the SMK-37 models (one hardware: the connected unit's own, or the one picked on
+// the card) and the FM-1 (another device: only an FM-1 package, and an FM-1 package only on it)
+const MODELS = { pro: "SMK-37 Pro", elite: "SMK-37 Elite", mke: "MKE-P37", fm1: "FM-1" };
+const SMK = (id) => sameKeyboard(id.model, "SMK-37 Pro");                  // any SMK-37 model, our firmwares too
+const FM1 = (id) => /^(ota-)?FM-1$/i.test(id.model);
+const modelOf = (id) => FM1(id) ? "fm1" : ({ "SMK-37 Elite": "elite", "MKE-P37": "mke" })[id.model.replace(/^ota-/i, "")] || "pro";
+const family = (m) => (m === "fm1" ? "fm1" : "smk");
+// the model a card installs: one picked under "Flash another keyboard version" (SMK models only), else the unit's
+const pickModel = (fw, detected, chosen) => (chosen[fw.id] && family(chosen[fw.id]) === family(detected) ? chosen[fw.id] : detected);
+// -> { model, pkg } or { model, refuse: the reason, nothing is written }
+function choosePackage(fw, detected, chosen) {
+  const model = pickModel(fw, detected, chosen), pkg = fw.v[model];
+  if (pkg && family(model) === family(detected)) return { model, pkg };
+  return { model, refuse: model === "fm1" ? fw.name + " has no FM-1 build: on the FM-1, only the cards marked FM-1 install. Nothing was written."
+    : fw.name + " has no package for the " + MODELS[model] + " yet. Nothing was written." };
+}
+/* ---- end of the package choice ---- */
+let detected = "pro";
+let lastId = null;                                     // the connected keyboard's identity (the M-Vave return checks it)                                  // the connected unit's model (Starrykey, +VA: the Pro build)
+const chosen = {};                                     // fw id -> a model picked under "Flash another keyboard version"
+const modelFor = (fw) => pickModel(fw, detected, chosen);
+const FM1_PAGE = FW.some((f) => f.v.fm1);              // this page has FM-1 packages: an FM-1 may connect
+const pkgs = {};
+const OTHER_MSG = "This keyboard runs one of ChanceTheMaker's SMK firmwares (Felucca SMK, Sloop SMK, Melodee SMK, Doom). They have their own updater, which takes only their packages, so these firmwares cannot be installed over them from here. Nothing was written.";
+
+function led(state, name, sub) {
+  $("led").className = "led " + (state || "");
+  if (name !== undefined) $("devname").textContent = name;
+  if (sub !== undefined) $("devsub").textContent = sub;
+}
+function running(dev) {                                  // what the keyboard runs, from its port name and identity
+  const n = dev.name || "", id = dev.id.text;
+  if (IS_OTA_ID(dev.id)) return "update mode (" + id + ")";
+  if (FM1(dev.id)) return id;
+  if (/_016$/.test(id)) return "the stock firmware V016";
+  if (/vox/i.test(n)) return "Vox37";
+  if (/vector/i.test(n)) return "Vector37";
+  if (/melodee/i.test(n)) return "Melodee37";
+  if (/fomni/i.test(n)) return "FoMni — SMK-37 build";
+  if (/x0x/i.test(n)) return "X0X — SMK-37 build";
+  if (/makkuro/i.test(n)) return "Makkuro37";
+  if (/maku/i.test(n)) return "MAKU — SMK-37 build";
+  if (/rainbow/i.test(n)) return "Rainbow mode — SMK-37 build";
+  if (/ghoul/i.test(n)) return "GHOULBOX — SMK-37 build";
+  if (/choral/i.test(n)) return "ChoralRoot — SMK-37 build";
+  if (/amb-1/i.test(n)) return "AMB-1 — SMK-37 build";
+  if (/polly/i.test(n)) return "Polly — SMK-37 build";
+  if (/felucca/i.test(n)) return "Snoop37 (SLOOP), ORBIT, winampFM, MAKU, Rainbow mode or another Felucca-based firmware";
+  return id;
+}
+function showModels() {                              // the cards' radios follow the unit until one is picked
+  for (const fw of FW) {
+    const r = document.querySelector(`input[name="model-${fw.id}"][value="${modelFor(fw)}"]`);
+    if (r) r.checked = true;
+  }
+  document.querySelectorAll("details.model").forEach((d) => { d.hidden = detected === "fm1"; });   // (SMK models only)
+}
+document.querySelectorAll(".models input").forEach((r) => r.addEventListener("change", () => {
+  chosen[r.name.slice(6)] = r.value;
+}));
+function portList(names) {                             // nothing answered: what the browser sees
+  $("ports").hidden = false;
+  $("portlist").textContent = names.length ? "MIDI inputs this browser sees: " + names.join(", ") +
+    (allPorts ? ". None of them answered." : ".") : "This browser sees no MIDI input at all (driver, cable, or another app holds the port).";
+  $("allports").hidden = allPorts || !names.length;
+}
+$("allports").addEventListener("click", () => { allPorts = true; scan(); });
+function lockCards() {
+  document.querySelectorAll(".inst").forEach((b) => { b.disabled = busy || !midi; });
+  $("conn").disabled = busy || connected || !navigator.requestMIDIAccess;
+  $("conn").textContent = connected ? "Connected" : "Connect";
+  stockLock();
+}
+
+async function access() {
+  if (midi) return midi;
+  if (!navigator.requestMIDIAccess) throw new Error("This browser has no Web MIDI. Open the page in Chrome or Edge.");
+  try { midi = await navigator.requestMIDIAccess({ sysex: true }); }
+  catch (e) { throw new Error("MIDI (SysEx) access was not allowed. Allow MIDI in the site settings (address bar) and try again."); }
+  midi.onstatechange = () => { if (!busy) { clearTimeout(access.t); access.t = setTimeout(scan, 1200); } };
+  return midi;
+}
+async function scan() {
+  if (busy) return;
+  led("busy", "Looking for the SMK-37…", "");
+  try {
+    const up = new Updater(await access(), () => {}, { all: allPorts });
+    const dev = await up.find();
+    connected = false;
+    if (!dev) {
+      lastId = null; stockShow();
+      led("err", "No SMK-37 found", "Check the USB cable (a data cable), close other apps that use MIDI, then press Connect.");
+      portList([...midi.inputs.values()].filter((i) => i.state !== "disconnected").map((i) => i.name || "(no name)"));
+      return;
+    }
+    dev.link.close();
+    $("ports").hidden = true;
+    lastId = dev.id; stockShow();
+    if (OTHER_SMK(dev.id)) {
+      led("err", dev.id.text + ": another firmware family", IS_OTA_ID(dev.id)
+        ? "Its update mode is open. Switch the keyboard off and on: its firmware starts again, nothing was written."
+        : "It runs one of ChanceTheMaker's SMK firmwares, with their own updater: these packages cannot be installed over it from here.");
+      return;
+    }
+    if (!SMK(dev.id) && !(FM1_PAGE && FM1(dev.id))) { led("err", dev.id.text + ": not an SMK-37", "These packages are for the M-Vave SMK-37 keyboards only (SMK-37 Pro, Elite, MKE-P37)."); return; }
+    detected = modelOf(dev.id);
+    showModels();
+    if (detected === "fm1") {                              // (a page with FM-1 packages)
+      led("on", "FM-1 connected", (IS_OTA_ID(dev.id) ? "In update mode (" + dev.id.text + ")" : "Running " + dev.id.text) + " · port " + dev.name +
+        " · FM-1 builds here: " + FW.filter((f) => f.v.fm1).map((f) => f.name).join(", "));
+      connected = true; return;
+    }
+    const model = dev.id.model.replace(/^ota-/i, "");
+    if (!Object.values(MODELS).includes(model)) {          // Starrykey 37 Play, the SMK-37+VA mod: the Pro build
+      led("on", dev.id.text + " connected", "SMK37 range · port " + dev.name);
+      connected = true; return;
+    }
+    const what = running(dev);
+    led("on", model + " connected", "Running " + what + " · port " + dev.name);
+    connected = true;
+    document.querySelectorAll(".card.fw").forEach((c) => c.classList.toggle("running", c.dataset.name === what));
+  } catch (e) { connected = false; led("err", "Cannot connect", e.message); }
+  finally { lockCards(); }
+}
+$("conn").addEventListener("click", scan);
+if (!navigator.requestMIDIAccess) led("err", "Chrome or Edge needed", "This browser has no Web MIDI, so it cannot install firmware.");
+
+async function load(pkg) {                              // pkg: one model's package (fw.v[model])
+  if (!pkgs[pkg.pkg]) pkgs[pkg.pkg] = (async () => {
+    const r = await fetch(pkg.pkg);
+    if (!r.ok) throw new Error(pkg.pkg + ": HTTP " + r.status);
+    const raw = new Uint8Array(await r.arrayBuffer());
+    const h = [...new Uint8Array(await crypto.subtle.digest("SHA-256", raw))].map((b) => b.toString(16).padStart(2, "0")).join("");
+    if (h !== pkg.sha256 || productOf(raw) !== pkg.product) throw new Error("The download is damaged (SHA-256 mismatch). Reload the page.");
+    return logicalImage(raw);
+  })().catch((e) => { delete pkgs[pkg.pkg]; throw e; });
+  return pkgs[pkg.pkg];
+}
+
+/* the overlay */
+const ORDER = ["start", "verify", "loader", "write", "reboot", "done"];
+const SAY = { start: "Talking to the keyboard", verify: "The keyboard checks the package", loader: "Switching to update mode",
+              write: "Writing the firmware. Do not unplug, keep this tab open.", reboot: "Restarting", done: "Done. Enjoy!" };
+function ov(title, sub, col) {
+  $("ovtitle").textContent = title; $("ovfw").textContent = "// " + sub;
+  document.querySelector(".ovbox").style.borderColor = col || "var(--cyan)";
+  $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true;
+  document.querySelectorAll("#ovsteps li").forEach((li) => { li.className = ""; });
+  $("ovl").hidden = false;
+}
+function mark(k) {
+  const i = ORDER.indexOf(k);
+  document.querySelectorAll("#ovsteps li").forEach((li, j) => { li.className = j < i ? "ok" : j === i ? (k === "done" ? "ok" : "on") : ""; });
+  $("ovstatus").textContent = SAY[k];
+}
+const logln = (t) => { $("ovlog").textContent += t + "\n"; };
+function stepper(image) {
+  return (k, a) => {
+    logln(k + " " + (a ?? ""));
+    if (ORDER.includes(k)) mark(k);
+    if (k === "verify") $("ovbar").style.width = Math.min(12, a / 8) + "%";
+    if (k === "write") $("ovbar").style.width = Math.min(97, 12 + (a * 512 / image.length) * 85) + "%";
+    if (k === "reboot") $("ovbar").style.width = "98%";
+    if (k === "done") $("ovbar").style.width = "100%";
+  };
+}
+function finish(ok, msg) {
+  $("ovstatus").textContent = msg;
+  $("ovclose").hidden = false;
+  if (!ok) document.querySelector(".ovbox").style.borderColor = "#ff3c5a";
+  busy = false; lockCards();
+}
+$("ovclose").addEventListener("click", () => { $("ovl").hidden = true; scan(); });
+
+/* the confirmation before every install: resolves true (Install) or false (Cancel, Esc, a click outside) */
+const RISKS = [
+  ["Unofficial.", "These are community firmwares, not made by M-Vave, and this site is not affiliated with M-Vave. You install them at your own risk, and doing so may void your warranty."],
+  ["Experimental.", "Expect bugs. An install can fail and leave the keyboard in update mode; it then needs another install or a return to the M-Vave firmware (on this page)."],
+  ["What is lost, what is kept.", "The firmware on the keyboard is replaced, and with it the sounds, patterns and settings it saved. Save anything you want to keep first. This page cannot back up the current firmware; the official one can be downloaded from M-Vave again."],
+  ["While it writes,", "keep the USB cable connected, keep this tab open and the computer awake. If it is interrupted, plug the keyboard in again and press Install again: it continues."],
+  ["A hobby project,", "made in free time. Fixes come as time allows. Thanks to M-Vave for the hardware and to the original authors for their firmwares."]];
+const riskItem = (r) => {                                // [bold head, text] or a plain string
+  const li = document.createElement("li");
+  if (Array.isArray(r)) li.append(Object.assign(document.createElement("b"), { textContent: r[0] }), " " + r[1]);
+  else li.textContent = r;
+  return li;
+};
+function confirmInstall(title, question, warn, risks) {
+  return new Promise((resolve) => {
+    const box = $("cfm"), yes = $("cfyes"), no = $("cfno"), back = document.activeElement;
+    $("cftitle").textContent = title;
+    $("cfq").textContent = question;
+    $("cfwarn").textContent = warn || ""; $("cfwarn").hidden = !warn;
+    $("cfrisk").replaceChildren(...risks.map(riskItem));
+    const done = (ok) => {
+      box.hidden = true;
+      document.removeEventListener("keydown", key); box.removeEventListener("click", outside);
+      yes.onclick = no.onclick = null;
+      if (back && back.focus) back.focus();
+      resolve(ok);
+    };
+    const key = (e) => {
+      if (e.key === "Escape") { e.preventDefault(); done(false); }
+      else if (e.key === "Tab") {                        // keep the focus on the two buttons
+        e.preventDefault();
+        (document.activeElement === no ? yes : no).focus();
+      }
+    };
+    const outside = (e) => { if (e.target === box) done(false); };
+    yes.onclick = () => done(true);
+    no.onclick = () => done(false);
+    document.addEventListener("keydown", key); box.addEventListener("click", outside);
+    box.hidden = false;
+    no.focus();
+  });
+}
+const keyboardId = () => lastId ? lastId.text : "not identified";
+addEventListener("beforeunload", (e) => { if (busy) { e.preventDefault(); e.returnValue = "Writing. Do not close the page."; } });
+
+async function install(fw) {
+  if (busy) return;
+  busy = true; lockCards();
+  const { model, pkg, refuse } = choosePackage(fw, detected, chosen);
+  if (refuse) { ov(fw.name + ": not installed", fw.name + " · for the " + MODELS[model], fw.col); finish(false, refuse); return; }
+  const ok = await confirmInstall("Install " + fw.name + "?",
+    "Install " + fw.name + " " + fw.version + " for the " + MODELS[model] + " on the connected keyboard (" + keyboardId() + ")?",
+    model !== detected ? "You picked the " + MODELS[model] + " build under Flash another keyboard version; the keyboard was detected as the " + MODELS[detected] + "." : "",
+    RISKS);
+  if (!ok) { busy = false; lockCards(); return; }
+  ov("Installing " + fw.name, fw.name + " " + fw.version + " · for the " + MODELS[model], fw.col);
+  mark("start");
+  try {
+    const image = await load(pkg);
+    logln("package " + pkg.product);
+    const up = new Updater(await access(), logln, { all: allPorts });
+    const step = stepper(image);
+    const ota = await up.find(IS_OTA_ID);
+    if (ota) {                                         // an interrupted install: any of these firmwares finishes it (one loader)
+      const lm = ota.id.model.replace(/^ota-/i, "");
+      // the loader's model: this card's, or a bare "SMK-37" (other ports) for any model of the keyboard
+      const fits = lm === MODELS[model] || (!Object.values(MODELS).includes(lm) && sameKeyboard(lm, MODELS[model]));
+      if (OTHER_SMK(ota.id)) { ota.link.close(); throw new Error("The keyboard is in the update mode of one of ChanceTheMaker's SMK firmwares (" + ota.id.text + "). It takes only their packages. Switch the keyboard off and on: its firmware starts again, nothing was written."); }
+      if (!OUR_LOADER(ota.id) || !fits) {
+        ota.link.close();
+        throw new Error("The keyboard is in update mode (" + ota.id.text + ") from an interrupted install. " +
+          (!OUR_LOADER(ota.id) ? "That is another firmware's update mode: finish it under Back to the M-Vave firmware, or with that firmware's own updater."
+             : FM1({ model: lm }) !== (model === "fm1") ? "It is the update mode of " + (FM1({ model: lm }) ? "an FM-1" : "an SMK-37") + ", not of the " + MODELS[model] + ": press Connect, then Install again."
+             : "It is the update mode of the " + lm + ": pick that model under Flash another keyboard version and press Install again."));
+      }
+      store.set(fw.id);
+      if (!(await up.write(ota, image, step)).finished) throw new Error("Stopped. Replug the USB cable and press Install again.");
+      step("reboot");
+      const back = await up.waitFor((id) => !IS_OTA_ID(id), 40000);
+      if (!back) throw new Error("The keyboard did not come back. Switch it off and on.");
+      back.link.close();
+      step("done", back.id.text);
+    } else {
+      store.set(fw.id);
+      await up.install(image, pkg.product, step, true);   // (another model of the same keyboard only)
+    }
+    store.set(null);
+    finish(true, fw.name + " is running. Enjoy!");
+  } catch (e) {
+    logln(String((e && e.stack) || e));
+    finish(false, e && e.code === "other" ? OTHER_MSG : (e && e.message) || String(e));
+  }
+}
+document.querySelectorAll(".inst[data-fw]").forEach((b) => b.addEventListener("click", () => install(FW.find((f) => f.id === b.dataset.fw))));
+
+/* back to the M-Vave firmware: a package the user downloaded from M-Vave (never shipped here), accepted by its
+   structure (identifyStockPackage: CRCs, an SMK-37 range identity, a stock version; known SHA-256s only tag it),
+   written as any install; afterwards the keyboard reports the official identity */
+let stockPkg = null, stockFitNow = null;
+function stockSay(cls, html) { const p = $("sinfo"); p.className = "sinfo " + (cls || ""); p.innerHTML = html; p.hidden = !html; }
+const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c]);
+function stockShow() {
+  stockFitNow = null;
+  $("sconfirmrow").hidden = true;
+  if (!stockPkg) { stockLock(); return; }
+  const k = stockPkg, what = "<b>M-Vave " + esc(k.name) + " firmware V" + esc(k.version) + "</b>" + (k.known ? ", known release." : ".");
+  if (!lastId) stockSay("", what + " Connect the keyboard above.");
+  else {
+    stockFitNow = stockFit(lastId.model, k.product);
+    const kb = esc(lastId.text);
+    if (stockFitNow === "refuse") stockSay("err", what + " The connected device reports " + kb + ": not an SMK-37 keyboard. Refused.");
+    else if (stockFitNow === "same") stockSay("", what + " It matches your keyboard (" + kb + ").");
+    else {
+      stockSay("warn", what + " Your keyboard reports " + kb + (stockFitNow === "other"
+        ? ", this file is for the " + esc(k.name) + ". A firmware installed under another model name reports that name: pick the file for the model printed on your keyboard."
+        : " and does not say its model. Make sure this file is for the model printed on your keyboard (" + esc(k.name) + ")."));
+      $("sconfirmrow").hidden = false;
+    }
+  }
+  stockLock();
+}
+function stockLock() {
+  const f = stockFitNow;
+  $("sinst").disabled = busy || !midi || !connected || !stockPkg || !f || f === "refuse" || (f !== "same" && !$("sconfirm").checked);
+}
+async function stockFile(file) {
+  if (!file || busy) return;
+  stockPkg = null; $("sconfirm").checked = false;
+  $("sdroptext").textContent = file.name;
+  stockSay("", "Checking…");
+  try { stockPkg = await identifyStockPackage(new Uint8Array(await file.arrayBuffer())); }
+  catch (e) {
+    const msg = { fm1: esc(e.message) + ".", ours: "This is one of our firmwares: install it above, not here.",
+                  damaged: "This file is damaged (its checksums do not match). Download it again from M-Vave and drop it unchanged." };
+    stockSay("err", msg[e.code] || "Not an M-Vave firmware for the SMK-37 range. Download the firmware for your keyboard from M-Vave and drop that file, unchanged.");
+  }
+  stockShow();
+}
+$("sfile").addEventListener("change", (e) => stockFile(e.target.files[0]));
+$("sconfirm").addEventListener("change", stockLock);
+const sdrop = $("sdrop");
+sdrop.addEventListener("dragover", (e) => { e.preventDefault(); sdrop.classList.add("over"); });
+sdrop.addEventListener("dragleave", () => sdrop.classList.remove("over"));
+sdrop.addEventListener("drop", (e) => { e.preventDefault(); sdrop.classList.remove("over"); stockFile(e.dataTransfer.files[0]); });
+
+async function stockInstall() {
+  const k = stockPkg;
+  if (busy || !k) return;
+  busy = true; lockCards();
+  const ok = await confirmInstall("Back to the M-Vave firmware?",
+    "Install the M-Vave " + k.name + " firmware V" + k.version + " on the connected keyboard (" + keyboardId() + ")?",
+    stockFitNow && stockFitNow !== "same" ? "The keyboard reports " + keyboardId() + ". Make sure this file is for the model printed on your keyboard." : "",
+    ["The firmware on the keyboard, and the sounds and settings it saved, are replaced. Calibration and pairing are kept.",
+     "If it fails, the keyboard stays in update mode: plug it in again and press Install again.",
+     "Keep the USB cable connected and this tab open until it says Done."]);
+  if (!ok) { busy = false; lockCards(); return; }
+  ov("Back to the M-Vave firmware", "M-Vave " + k.name + " V" + k.version + (k.known ? " · known release" : ""), "var(--amber)");
+  mark("start");
+  try {
+    logln("package " + k.product + (k.known ? " (known release)" : " (stock package, CRCs checked)"));
+    const up = new Updater(await access(), logln, { all: allPorts });
+    const step = stepper(k.image);
+    const ota = await up.find(IS_OTA_ID);
+    store.set("stock");
+    if (ota) {                                         // already in update mode: the official package finishes it
+      ota.link.close();
+      if (!(await up.resume(k.image, step, { product: k.product, anyModel: true })))
+        throw new Error("Stopped. Replug the USB cable and press Install again.");
+    } else await up.install(k.image, k.product, step, true);   // (any model of the SMK-37 keyboard, never an FM-1)
+    store.set(null);
+    finish(true, "Done: the keyboard runs the M-Vave firmware " + k.product + ". M-UPGRADE should also work again if you need it.");
+  } catch (e) {
+    logln(String((e && e.stack) || e));
+    finish(false, e && e.code === "mismatch" ? "Written, but the keyboard reports " + e.detail + " instead of " + k.product + ". Switch it off and on, then connect again."
+      : e && e.code === "other" ? OTHER_MSG
+      : e && e.code === "model" ? "This file is not for this device (" + e.message + "). Nothing was written."
+      : (e && e.message) || String(e));
+  }
+}
+$("sinst").addEventListener("click", stockInstall);
+
+showModels();
+lockCards();
+</script>
+</body>
+</html>
