@@ -246,7 +246,7 @@ label.file input { display: none; }
 .ghead p { margin: 6px 0 0; max-width: 720px; color: #b7cfdc; font-size: 16px; }
 .fwgroup .cards { margin-top: 26px; }
 #stock { scroll-margin-top: 90px; }
-.cfbox { border-color: var(--amber); box-shadow: 0 0 60px -14px var(--amber), inset 0 0 40px -24px var(--amber); }
+.cfbox { max-height: 92vh; overflow-y: auto; border-color: var(--amber); box-shadow: 0 0 60px -14px var(--amber), inset 0 0 40px -24px var(--amber); }
 .cfbox h3 { margin-bottom: 12px; font-size: 24px; overflow-wrap: anywhere; }
 .cfq { margin: 0 0 12px; color: var(--ink); overflow-wrap: anywhere; }
 .cfwarn { margin: 0 0 12px; color: var(--amber); font-size: 14px; }
@@ -307,32 +307,6 @@ label.file input { display: none; }
         Connect the SMK-37 by USB, open this page in Chrome or Edge, and switch firmwares in about a minute.
        </p>
     </div>
-
-    <aside class="warnbox" id="before" aria-labelledby="before-h">
-      <h3 id="before-h">Before you install</h3>
-      <ul>
-        <li><b>Unofficial.</b> These are community firmwares. They are not made, tested or supported by M-Vave, and this
-          site is not affiliated with M-Vave. You install them at your own risk, and doing so may void your warranty.</li>
-        <li><b>No M-Vave code.</b> None of these firmwares contains or publishes M-Vave code. The return to the M-Vave
-          firmware uses M-Vave's own file, downloaded from M-Vave.</li>
-        <li><b>Experimental.</b> Expect bugs. An install can fail and leave the keyboard in update mode; it then needs
-          another install or a return to the M-Vave firmware (below). Testing is limited: mostly on one SMK-37 Pro, the
-          Elite and MKE-P37 builds by user reports.</li>
-        <li><b>What is lost, what is kept.</b> The firmware on the keyboard is replaced, and with it the sounds, patterns
-          and settings it saved. Save anything you want to keep first. This page cannot back up the current firmware;
-          the official one can be downloaded from M-Vave again. The keyboard's model name, calibration and pairing are kept.</li>
-        <li><b>Check your model.</b> The page installs the build for the model your keyboard reports (SMK-37 Pro, SMK-37
-          Elite or MKE-P37). Change it only if you know your keyboard reports the wrong one.</li>
-        <li><b>While it writes,</b> keep the USB cable connected, keep this tab open and the computer awake. If it is
-          interrupted, plug the keyboard in again and press Install again: it continues.</li>
-        <li><b>If the keyboard seems stuck,</b> unplug it, plug it in again and press Install again. If that does not
-          help, use M-UPGRADE or <a href="#stock">Back to the M-Vave firmware</a>.</li>
-        <li><b>Going back.</b> M-Vave's updater, M-UPGRADE, installs the official firmware again, or use
-          <a href="#stock">Back to the M-Vave firmware</a> on this page.</li>
-        <li><b>A hobby project,</b> made in free time. Fixes come as time allows. Thanks to M-Vave for the hardware
-          and to the original authors for their firmwares.</li>
-      </ul>
-    </aside>
 
     <div class="connect" id="connect">
       <span class="led" id="led"></span>
@@ -455,8 +429,7 @@ label.file input { display: none; }
       </div>
     </div>
 
-    <p class="small note reveal">Unofficial, experimental firmware, at your own risk. Every install asks for confirmation first.
-      Do not unplug the keyboard while it writes; an interrupted install continues when you press Install again.</p>
+    <p class="small note reveal">Unofficial, experimental firmware, at your own risk.</p>
 
     <div class="card stock" id="stock" style="--c: var(--amber)">
       <h3>Back to the M-Vave firmware</h3>
@@ -1526,16 +1499,25 @@ function finish(ok, msg) {
 $("ovclose").addEventListener("click", () => { $("ovl").hidden = true; scan(); });
 
 /* the confirmation before every install: resolves true (Install) or false (Cancel, Esc, a click outside) */
-const RISKS = ["Unofficial and experimental, at your own risk. The firmware on the keyboard, and the sounds and settings it saved, are replaced.",
-               "Keep the USB cable connected and this tab open until it says Done.",
-               "To go back: M-UPGRADE, or Back to the M-Vave firmware on this page."];
+const RISKS = [
+  ["Unofficial.", "These are community firmwares, not made by M-Vave, and this site is not affiliated with M-Vave. You install them at your own risk, and doing so may void your warranty."],
+  ["Experimental.", "Expect bugs. An install can fail and leave the keyboard in update mode; it then needs another install or a return to the M-Vave firmware (on this page)."],
+  ["What is lost, what is kept.", "The firmware on the keyboard is replaced, and with it the sounds, patterns and settings it saved. Save anything you want to keep first. This page cannot back up the current firmware; the official one can be downloaded from M-Vave again."],
+  ["While it writes,", "keep the USB cable connected, keep this tab open and the computer awake. If it is interrupted, plug the keyboard in again and press Install again: it continues."],
+  ["A hobby project,", "made in free time. Fixes come as time allows. Thanks to M-Vave for the hardware and to the original authors for their firmwares."]];
+const riskItem = (r) => {                                // [bold head, text] or a plain string
+  const li = document.createElement("li");
+  if (Array.isArray(r)) li.append(Object.assign(document.createElement("b"), { textContent: r[0] }), " " + r[1]);
+  else li.textContent = r;
+  return li;
+};
 function confirmInstall(title, question, warn, risks) {
   return new Promise((resolve) => {
     const box = $("cfm"), yes = $("cfyes"), no = $("cfno"), back = document.activeElement;
     $("cftitle").textContent = title;
     $("cfq").textContent = question;
     $("cfwarn").textContent = warn || ""; $("cfwarn").hidden = !warn;
-    $("cfrisk").replaceChildren(...risks.map((t) => Object.assign(document.createElement("li"), { textContent: t })));
+    $("cfrisk").replaceChildren(...risks.map(riskItem));
     const done = (ok) => {
       box.hidden = true;
       document.removeEventListener("keydown", key); box.removeEventListener("click", outside);
