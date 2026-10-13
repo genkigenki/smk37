@@ -286,7 +286,7 @@ label.file input { display: none; }
 <header class="hero">
   <canvas id="stage" aria-label="A wireframe FM-1 grows into an SMK-37"></canvas>
   <div class="hud" id="hud" aria-hidden="true"></div>
-  <nav class="nav"><a href="#why">Why</a><a href="#firmwares">Firmwares</a><a href="#firmwares">Install</a><a href="#port">Port kit</a></nav>
+  <nav class="nav"><a href="#why">Why</a><a href="#firmwares">Firmwares</a><a href="#firmwares">Install</a><a href="#port">Port kit</a><a href="#mods">Hardware mods</a></nav>
   <div class="title" id="title">
     <h1>SMK<span>37</span></h1>
     <p>Open FM-1 firmwares, unleashed on the M-Vave SMK-37.<br>Same chip. Ten more keys, 16 pads, 4 faders, two wheels.</p>
@@ -304,9 +304,6 @@ label.file input { display: none; }
       update loader. Only the panel is wired differently. So every open FM-1 firmware can run on the
       bigger keyboard, once it learns the new panel: a thin board layer adds the keys, pads, faders,
       wheels, LEDs and flash map.</p>
-    <button class="video" id="video" type="button" aria-label="Play the video: Makkuro37 and Snoop37 on the SMK-37">
-      <img src="assets/video-smk37.webp" alt="" loading="lazy"><span class="play"></span>
-      <span class="vnote mono">plays from YouTube</span></button>
   </div>
 </section>
 
@@ -530,6 +527,18 @@ label.file input { display: none; }
         <ul><li>Board layer as a patch series</li><li>Full panel and pin map</li><li>Controls mapping template for your overlay</li></ul>
         <div class="foot"><span class="meta">github.com/genkigenki/fm1-to-smk37</span></div>
       </a>
+    </div>
+  </div>
+</section>
+
+<section id="mods" class="gridbg">
+  <div class="wrap">
+    <div class="reveal">
+      <div class="eyebrow">// hardware mods</div>
+      <h2>Make it <em>yours</em>.</h2>
+      <p class="lead">Printed knob caps and a built-in speaker for the SMK-37.</p>
+    </div>
+    <div class="duo">
       <a class="card reveal" href="https://makerworld.com/en/models/3425326-m-vave-smk37-colorful-knobs" style="--c: var(--amber)">
         <h3>Knob caps</h3>
         <div class="from">OpenSCAD · print without supports</div>
@@ -544,6 +553,16 @@ label.file input { display: none; }
         <div class="foot"><span class="meta">makerworld.com · M-Vave SMK-37 loudspeaker mod</span></div>
       </a>
     </div>
+  </div>
+</section>
+
+<section id="video-sec">
+  <div class="wrap reveal">
+    <div class="eyebrow">// in action</div>
+    <h2>See it <em>play</em>.</h2>
+    <button class="video" id="video" type="button" aria-label="Play the video: Makkuro37 and Snoop37 on the SMK-37">
+      <img src="assets/video-smk37.webp" alt="" loading="lazy"><span class="play"></span>
+      <span class="vnote mono">plays from YouTube</span></button>
   </div>
 </section>
 
@@ -1119,7 +1138,7 @@ function stockFit(deviceModel, product) {
   return NAMED.test(dm) ? "other" : "unknown";
 }
 // the MIDI ports find() probes: the FM-1 / SMK models' and the firmwares' names; other gear is never sent anything
-const PORT_RE = /fm-1|smk|elite|mke-p37|starry|felucca|sloop|clipper|melodee|fomni|x0x|makkuro|maku|rainbow|snoop|vector|vox|ota|composite|sinco|usb-midi/i;
+const PORT_RE = /fm-1|smk|elite|mke-p37|starry|felucca|sloop|clipper|melodee|fomni|x0x|makkuro|maku|rainbow|amb-1|choral|orbit|snoop|vector|vox|ota|composite|sinco|usb-midi/i;
 // a port name without its in / out part (Windows names a device's second port pair "MIDIIN2 (X)" / "MIDIOUT2 (X)")
 const portBase = (n) => n.replace(/^MIDI(?:IN|OUT)(\d*) \((.*)\)$/i, "$2 $1").replace(/[ -](?:in|out|input|output)$/i, "").trim().toLowerCase();
 
@@ -1405,6 +1424,7 @@ function running(dev) {                                  // what the keyboard ru
   if (/maku/i.test(n)) return "MAKU — SMK-37 build";
   if (/rainbow/i.test(n)) return "Rainbow mode — SMK-37 build";
   if (/ghoul/i.test(n)) return "GHOULBOX — SMK-37 build";
+  if (/amb-1/i.test(n)) return "AMB-1 — SMK-37 build";
   if (/felucca/i.test(n)) return "Snoop37 (SLOOP), MAKU, Rainbow mode or another Felucca-based firmware";
   return id;
 }
