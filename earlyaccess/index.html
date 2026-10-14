@@ -1283,7 +1283,8 @@ function sortCards() {                                 // each group by likes, m
   const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
   document.querySelectorAll(".fwgroup .cards").forEach((g) => {
     const cards = [...g.children].filter((c) => c.classList.contains("fw"));
-    const sorted = cards.map((c, n) => [c, n]).sort((a, b) => likes(b[0]) - likes(a[0]) || a[1] - b[1]).map(([c]) => c);
+    const pin = (c) => (c.dataset.pin ? 1 : 0);        // a pinned card (Makkuro37) stays first
+    const sorted = cards.map((c, n) => [c, n]).sort((a, b) => pin(b[0]) - pin(a[0]) || likes(b[0]) - likes(a[0]) || a[1] - b[1]).map(([c]) => c);
     if (sorted.some((c, n) => c !== cards[n])) sorted.forEach((c) => g.append(c));
   });
 }

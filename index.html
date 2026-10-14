@@ -342,14 +342,14 @@ label.file input { display: none; }
         <h3>SMK-37 native firmwares</h3>
       </div>
       <div class="cards">
-        <article class="card flag fw reveal" data-fw="makkuro37" data-name="Makkuro37" style="--c: var(--mag)">
+        <article class="card fw reveal" data-fw="makkuro37" data-pin="1" data-name="Makkuro37" style="--c: var(--mag)">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Makkuro37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
-        <div>
-          <h3><a href="https://github.com/genkigenki/Makkuro37">Makkuro37</a></h3>
-          <div class="from">new firmware · genkigenki</div>
-          <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
-          <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li><li>A CHAOS pad, a filter on every knob</li></ul>
-          <div class="foot"><span class="tag ">experimental</span>
+        <div class="screen"><img src="assets/makkuro37-anim.webp" width="240" height="240" alt="Makkuro37 on the display"></div>
+        <h3><a href="https://github.com/genkigenki/Makkuro37">Makkuro37</a></h3>
+        <div class="from">new firmware · genkigenki</div>
+        <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
+        <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li><li>A CHAOS pad, a filter on every knob</li></ul>
+        <div class="foot"><span class="tag ">experimental</span>
           <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">github.com/genkigenki/Makkuro37</a></span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span><a class="btn alt" href="makkuro37-sim/">Simulator</a>
           <button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></div>
@@ -358,10 +358,6 @@ label.file input { display: none; }
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
-        </div>
-        <div class="screenbox">
-          <div class="screen"><img src="assets/makkuro37-anim.webp" width="240" height="240" alt="Makkuro37 boot intro on the SMK-37 display"></div>
-        </div>
       </article>
       <article class="card fw reveal" data-fw="vector37" data-name="Vector37" style="--c: #8a7dff">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
@@ -1937,7 +1933,8 @@ function sortCards() {                                 // each group by likes, m
   const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
   document.querySelectorAll(".fwgroup .cards").forEach((g) => {
     const cards = [...g.children].filter((c) => c.classList.contains("fw"));
-    const sorted = cards.map((c, n) => [c, n]).sort((a, b) => likes(b[0]) - likes(a[0]) || a[1] - b[1]).map(([c]) => c);
+    const pin = (c) => (c.dataset.pin ? 1 : 0);        // a pinned card (Makkuro37) stays first
+    const sorted = cards.map((c, n) => [c, n]).sort((a, b) => pin(b[0]) - pin(a[0]) || likes(b[0]) - likes(a[0]) || a[1] - b[1]).map(([c]) => c);
     if (sorted.some((c, n) => c !== cards[n])) sorted.forEach((c) => g.append(c));
   });
 }
