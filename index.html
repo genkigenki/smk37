@@ -178,6 +178,15 @@ footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing:
 .ctext span { color: var(--dim); font-size: 13px; overflow-wrap: anywhere; }
 .card .foot { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .card .meta { font: 11px "JetBrains Mono", monospace; color: var(--dim); }
+.card .cnt { display: inline-flex; align-items: center; gap: 4px; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: nowrap; }
+.card .cnt[hidden] { display: none; }
+.card .cnt b { font-weight: 500; color: #c3d8e3; }
+.card .heart { padding: 0 2px; border: 0; background: none; color: var(--dim); font: 15px/1 "JetBrains Mono", system-ui, sans-serif; cursor: pointer; }
+.card .heart[aria-pressed="true"] { color: var(--c, var(--mag)); text-shadow: 0 0 8px var(--c, var(--mag)); }
+.card .heart:hover { color: var(--c, var(--mag)); }
+.card .heart:focus-visible { outline: 1px solid var(--c, var(--cyan)); outline-offset: 2px; }
+.card .heart:disabled { cursor: default; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .card .inst { margin-left: auto; padding: 10px 18px; border-color: var(--c); background: transparent; cursor: pointer;
   box-shadow: 0 0 14px -4px var(--c), inset 0 0 12px -6px var(--c); }
 .connect .btn:disabled { opacity: .45; cursor: default; border-color: #46f0a0; color: #46f0a0; box-shadow: none; background: transparent; }
@@ -337,7 +346,9 @@ label.file input { display: none; }
           <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
           <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li><li>A CHAOS pad, a filter on every knob</li></ul>
           <div class="foot"><span class="tag ">experimental</span>
-          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">github.com/genkigenki/Makkuro37</a></span><a class="btn alt" href="makkuro37-sim/">Simulator</a>
+          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">github.com/genkigenki/Makkuro37</a></span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like Makkuro37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span><a class="btn alt" href="makkuro37-sim/">Simulator</a>
           <button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-makkuro37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-makkuro37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-makkuro37" value="mke"> MKE-P37</label></div>
@@ -367,6 +378,8 @@ label.file input { display: none; }
         <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li><a href="https://makerworld.com/en/models/3425326-m-vave-smk37-colorful-knobs">3D-printable knob caps to match</a></li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v2.6.1 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like Snoop37 (SLOOP for the SMK-37)" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-snoop37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-snoop37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-snoop37" value="mke"> MKE-P37</label></div>
@@ -382,6 +395,8 @@ label.file input { display: none; }
         <ul><li>Shared reverb, tape delay, master compressor</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like X0X — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="x0x37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-x0x37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-x0x37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-x0x37" value="mke"> MKE-P37</label></div>
@@ -397,6 +412,8 @@ label.file input { display: none; }
         <ul><li>Strum the pads, play chords on the keys</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like FoMni — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="fomni37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-fomni37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-fomni37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-fomni37" value="mke"> MKE-P37</label></div>
@@ -412,6 +429,8 @@ label.file input { display: none; }
         <ul><li>The verbs on the top button row and the wheels</li><li>The 16 pads hold your likes</li><li>Faders as standing verb amounts</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.1 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like MAKU — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="maku37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-maku37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-maku37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-maku37" value="mke"> MKE-P37</label></div>
@@ -427,6 +446,8 @@ label.file input { display: none; }
         <ul><li>The pads light up in the note colours</li><li>Faders: big/small, day/night, echo, wiggle</li><li>A volume cap for grown-ups</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like Rainbow mode — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="rainbow37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-rainbow37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-rainbow37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-rainbow37" value="mke"> MKE-P37</label></div>
@@ -442,6 +463,8 @@ label.file input { display: none; }
         <ul><li>The middle keys play with velocity, the outer keys add notes</li><li>Fader banks: level, pan, reverb, delay</li><li>Keys page: LAYER or SPLIT two sounds</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v2.1 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like GHOULBOX — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="ghoulbox" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-ghoulbox" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-ghoulbox" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-ghoulbox" value="mke"> MKE-P37</label></div>
@@ -457,6 +480,8 @@ label.file input { display: none; }
         <ul><li>Chord pads: DIM MIN MAJ SUS, 6 m7 M7 9, LOCK</li><li>All 37 keys play roots</li><li>Strum, arp, pattern and harp modes on the pads</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.21 · 636 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like ChoralRoot — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="choralroot" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-choralroot" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-choralroot" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-choralroot" value="mke"> MKE-P37</label></div>
@@ -472,6 +497,8 @@ label.file input { display: none; }
         <ul><li>The 16 pads are the steps, in the track colours</li><li>Fader banks: level, pan, reverb, delay</li><li>Outer keys play drums on the drum track</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.7.0 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like ORBIT — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="orbit" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-orbit" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-orbit" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-orbit" value="mke"> MKE-P37</label></div>
@@ -487,6 +514,8 @@ label.file input { display: none; }
         <ul><li>The 37 keys set the scale, the 16 pads ring bells</li><li>Fader banks: levels, space, garden</li><li>Pitch wheel bends, mod wheel adds vibrato</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v1.1 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like AMB-1 — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="amb" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-amb" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-amb" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-amb" value="mke"> MKE-P37</label></div>
@@ -502,6 +531,8 @@ label.file input { display: none; }
         <ul><li>Pads: sections, Follow and 16 progressions</li><li>Faders: the mixer&#x27;s volumes and effects</li><li>Pitch wheel bends, mod wheel adds vibrato</li><li>No QY70 style bank on the SMK-37</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.4.1 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like Polly — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="polly" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-polly" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-polly" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-polly" value="mke"> MKE-P37</label></div>
@@ -517,6 +548,8 @@ label.file input { display: none; }
         <ul><li>Pads: the selected track&#x27;s loop, in its colour</li><li>KNOB BANK: pad sounds · FADER BANK: level, filter, reverb, delay</li><li>Pitch wheel bends, mod wheel adds vibrato</li></ul>
         <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.1 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like winampFM — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="winamp" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-winamp" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-winamp" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-winamp" value="mke"> MKE-P37</label></div>
@@ -1734,6 +1767,7 @@ async function install(fw) {
       await up.install(image, pkg.product, step, true);   // (another model of the same keyboard only)
     }
     store.set(null);
+    counted(fw.id);                                      // (the counter: fire and forget, never blocks the install)
     finish(true, fw.name + " is running. Enjoy!");
   } catch (e) {
     logln(String((e && e.stack) || e));
@@ -1827,6 +1861,64 @@ async function stockInstall() {
   }
 }
 $("sinst").addEventListener("click", stockInstall);
+
+/* ---- the counter: installs and likes per card (site/test_site.mjs runs this block); the page works without it ---- */
+const COUNTER = "https://smk37-counter.makkuro.workers.dev";
+const LIKED = "smk37.liked";                           // the cards this browser liked: kept only here, never sent
+const likedSet = () => { try { return new Set(JSON.parse(localStorage.getItem(LIKED) || "[]")); } catch (_) { return new Set(); } };
+function likedSave(id, on) {
+  try { const s = likedSet(); if (on) s.add(id); else s.delete(id); localStorage.setItem(LIKED, JSON.stringify([...s])); } catch (_) {}
+}
+const compact = (n) => (n < 1000 ? String(n) : n < 1e6 ? +(n / 1e3).toFixed(n < 1e4 ? 1 : 0) + "k" : +(n / 1e6).toFixed(n < 1e7 ? 1 : 0) + "M");
+async function tell(act, id) {                         // -> the card's {i, l}, or null (offline, 429, ...); never throws
+  try { const r = await fetch(COUNTER + "/" + act + "/" + id, { method: "POST", keepalive: true }); return r.ok ? await r.json() : null; }
+  catch (_) { return null; }
+}
+const counted = (id) => { tell("install", id); };      // a finished install
+const stats = {};                                      // fw id -> { i: installs, l: likes }
+function paint(card) {
+  const id = card.dataset.fw, s = stats[id] || { i: 0, l: 0 }, on = likedSet().has(id), h = card.querySelector(".heart");
+  card.querySelector(".ci").textContent = compact(s.i);
+  card.querySelector(".cl").textContent = compact(s.l);
+  h.textContent = on ? "\u2665\ufe0e" : "\u2661\ufe0e";  // (text style, not emoji)
+  h.setAttribute("aria-pressed", String(on));
+  card.querySelector(".cnt").hidden = false;
+}
+async function like(card) {                            // optimistic; back to the old state if the counter says no
+  const id = card.dataset.fw, h = card.querySelector(".heart");
+  if (h.disabled) return;
+  const on = !likedSet().has(id), s = stats[id] || (stats[id] = { i: 0, l: 0 }), was = { ...s };
+  s.l = Math.max(0, s.l + (on ? 1 : -1));
+  likedSave(id, on); h.disabled = true; paint(card);
+  const r = await tell(on ? "like" : "unlike", id);
+  if (r && Number.isFinite(r.i) && Number.isFinite(r.l)) { s.i = r.i; s.l = r.l; }
+  else { Object.assign(s, was); likedSave(id, !on); }
+  h.disabled = false; paint(card);
+}
+function sortCards() {                                 // each group by likes, most first; ties keep the built order
+  const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
+  document.querySelectorAll(".fwgroup .cards").forEach((g) => {
+    const cards = [...g.children].filter((c) => c.classList.contains("fw"));
+    const sorted = cards.map((c, n) => [c, n]).sort((a, b) => likes(b[0]) - likes(a[0]) || a[1] - b[1]).map(([c]) => c);
+    if (sorted.some((c, n) => c !== cards[n])) sorted.forEach((c) => g.append(c));
+  });
+}
+async function counter() {                             // -> true when the numbers are shown
+  const stop = new AbortController(), t = setTimeout(() => stop.abort(), 3000);
+  try {
+    const r = await fetch(COUNTER + "/stats", { signal: stop.signal, cache: "no-store" });
+    if (!r.ok) return false;
+    const got = await r.json();
+    if (!got || typeof got !== "object") return false;
+    for (const [id, s] of Object.entries(got)) if (s && Number.isFinite(s.i) && Number.isFinite(s.l)) stats[id] = { i: s.i, l: s.l };
+  } catch (_) { return false; }
+  finally { clearTimeout(t); }
+  sortCards();
+  document.querySelectorAll(".card.fw").forEach((c) => { paint(c); c.querySelector(".heart").addEventListener("click", () => like(c)); });
+  return true;
+}
+const counterReady = counter();
+/* ---- end of the counter ---- */
 
 showModels();
 lockCards();

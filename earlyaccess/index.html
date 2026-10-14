@@ -178,6 +178,15 @@ footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing:
 .ctext span { color: var(--dim); font-size: 13px; overflow-wrap: anywhere; }
 .card .foot { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .card .meta { font: 11px "JetBrains Mono", monospace; color: var(--dim); }
+.card .cnt { display: inline-flex; align-items: center; gap: 4px; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: nowrap; }
+.card .cnt[hidden] { display: none; }
+.card .cnt b { font-weight: 500; color: #c3d8e3; }
+.card .heart { padding: 0 2px; border: 0; background: none; color: var(--dim); font: 15px/1 "JetBrains Mono", system-ui, sans-serif; cursor: pointer; }
+.card .heart[aria-pressed="true"] { color: var(--c, var(--mag)); text-shadow: 0 0 8px var(--c, var(--mag)); }
+.card .heart:hover { color: var(--c, var(--mag)); }
+.card .heart:focus-visible { outline: 1px solid var(--c, var(--cyan)); outline-offset: 2px; }
+.card .heart:disabled { cursor: default; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .card .inst { margin-left: auto; padding: 10px 18px; border-color: var(--c); background: transparent; cursor: pointer;
   box-shadow: 0 0 14px -4px var(--c), inset 0 0 12px -6px var(--c); }
 .connect .btn:disabled { opacity: .45; cursor: default; border-color: #46f0a0; color: #46f0a0; box-shadow: none; background: transparent; }
@@ -323,13 +332,15 @@ label.file input { display: none; }
     <div class="fwgroup" id="early">
       <div class="cards">
         <article class="card fw reveal" data-fw="vox37" data-name="Vox37" style="--c: #50ff50">
-        <div class="screen"><img src="assets/shot-vox37.png" width="240" height="240" alt="Vox37 on the display"></div>
+        <div class="screen"><img src="assets/shot-vox37.webp" width="240" height="240" alt="Vox37 on the display"></div>
         <h3>Vox37</h3>
         <div class="from">new firmware · genkigenki · SMK-37 and FM-1</div>
         <p>A vocoder: plug a battery-powered USB microphone into the keyboard, hold a chord and speak or sing. Confirmed working: DJI Mic Mini 2.</p>
         <ul><li>USB mic in, the keys play the voice</li><li>4 modes, 8 memories, record &amp; play a voice take</li><li>Also for the FM-1 (experimental)</li></ul>
         <div class="foot"><span class="tag ">early access</span>
-          <span class="meta">v2.3 · 635 KB</span>
+          <span class="meta">v2.4 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like Vox37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="vox37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-vox37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vox37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vox37" value="mke"> MKE-P37</label></div>
@@ -338,13 +349,15 @@ label.file input { display: none; }
           </details>
       </article>
       <article class="card fw reveal" data-fw="vector37" data-name="Vector37" style="--c: #8a7dff">
-        <div class="screen"><img src="assets/shot-vector37.png" width="240" height="240" alt="Vector37 on the display"></div>
+        <div class="screen"><img src="assets/shot-vector37.webp" width="240" height="240" alt="Vector37 on the display"></div>
         <h3>Vector37</h3>
         <div class="from">new firmware · genkigenki</div>
         <p>An orbiting overtone synth: a moon circles a sun along a path, and where it is decides how much of each of four sounds you hear.</p>
         <ul><li>Four corners, each two overtone generators, a blend and a filter</li><li>Pads and knobs are the planets, the faders the path</li><li>Eight sounds on &lt; &gt;</li></ul>
         <div class="foot"><span class="tag ">early access</span>
           <span class="meta">v0.1 · 635 KB</span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
+            <button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
           <button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-vector37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vector37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vector37" value="mke"> MKE-P37</label></div>
@@ -881,7 +894,7 @@ class Updater {
   }
 }
 
-const FW = [{"id": "vox37", "name": "Vox37", "version": "2.3", "col": "#50ff50", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/vox37-2.3.fwsc", "sha256": "d48dcf0d8a524f9bf6b760340788ae2d6c45c271e6af6513caa9c75755e1d76f", "size": 651208}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/vox37-2.3-elite.fwsc", "sha256": "bd96c92f861394a749332c19cac82450b74503f7a395490b6078c517b62e36ce", "size": 651208}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/vox37-2.3-mke.fwsc", "sha256": "0243e5bd230b78e1880e68f19bd9ed69ba910b46ee7922ecb92fad6db8e3afad", "size": 651204}, "fm1": {"product": "FM-1_900", "pkg": "firmware/vox37-2.3-fm1.fwsc", "sha256": "aabbfb294237174a83d2cc164c009ed26bbc7c601962173820a82839eaef67ea", "size": 610086}}}, {"id": "vector37", "name": "Vector37", "version": "0.1", "col": "#8a7dff", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/vector37-0.1.fwsc", "sha256": "3d36033ac76ddf4eb3b9ee231fb087d66ed5c2fc351a13e3e1a16f57a93b7321", "size": 651194}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/vector37-0.1-elite.fwsc", "sha256": "22ef9f0d4555e3a82e0636ec1ff0947011e7aff3e9267ff9eb083938771494c5", "size": 651194}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/vector37-0.1-mke.fwsc", "sha256": "c6b02f6a3e5d76eefa830b0e3917d2df769bb391593409e10f5888ff1462153a", "size": 651190}}}];
+const FW = [{"id": "vox37", "name": "Vox37", "version": "2.4", "col": "#50ff50", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/vox37-2.4.fwsc", "sha256": "c35b488f4c6c333ef02b58811ec48985db3ec9eae97bd2be55373ca35c582214", "size": 651208}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/vox37-2.4-elite.fwsc", "sha256": "52a0f0f60416978b3fa5df3cd256b0b2c7841d9a74ace829d229c3e98596e4ff", "size": 651208}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/vox37-2.4-mke.fwsc", "sha256": "d08205fff02f05427e756235e9643f6c4224aef4be63ec3218272f2e837a4acf", "size": 651204}, "fm1": {"product": "FM-1_900", "pkg": "firmware/vox37-2.4-fm1.fwsc", "sha256": "e3230422d985199d387203da4391e69ef4b8bcac716e18c4fd25b2137b65b28b", "size": 610086}}}, {"id": "vector37", "name": "Vector37", "version": "0.1", "col": "#8a7dff", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/vector37-0.1.fwsc", "sha256": "3d36033ac76ddf4eb3b9ee231fb087d66ed5c2fc351a13e3e1a16f57a93b7321", "size": 651194}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/vector37-0.1-elite.fwsc", "sha256": "22ef9f0d4555e3a82e0636ec1ff0947011e7aff3e9267ff9eb083938771494c5", "size": 651194}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/vector37-0.1-mke.fwsc", "sha256": "c6b02f6a3e5d76eefa830b0e3917d2df769bb391593409e10f5888ff1462153a", "size": 651190}}}];
 const $ = (id) => document.getElementById(id);
 const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
 const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
@@ -1152,6 +1165,7 @@ async function install(fw) {
       await up.install(image, pkg.product, step, true);   // (another model of the same keyboard only)
     }
     store.set(null);
+    counted(fw.id);                                      // (the counter: fire and forget, never blocks the install)
     finish(true, fw.name + " is running. Enjoy!");
   } catch (e) {
     logln(String((e && e.stack) || e));
@@ -1245,6 +1259,64 @@ async function stockInstall() {
   }
 }
 $("sinst").addEventListener("click", stockInstall);
+
+/* ---- the counter: installs and likes per card (site/test_site.mjs runs this block); the page works without it ---- */
+const COUNTER = "https://smk37-counter.makkuro.workers.dev";
+const LIKED = "smk37.liked";                           // the cards this browser liked: kept only here, never sent
+const likedSet = () => { try { return new Set(JSON.parse(localStorage.getItem(LIKED) || "[]")); } catch (_) { return new Set(); } };
+function likedSave(id, on) {
+  try { const s = likedSet(); if (on) s.add(id); else s.delete(id); localStorage.setItem(LIKED, JSON.stringify([...s])); } catch (_) {}
+}
+const compact = (n) => (n < 1000 ? String(n) : n < 1e6 ? +(n / 1e3).toFixed(n < 1e4 ? 1 : 0) + "k" : +(n / 1e6).toFixed(n < 1e7 ? 1 : 0) + "M");
+async function tell(act, id) {                         // -> the card's {i, l}, or null (offline, 429, ...); never throws
+  try { const r = await fetch(COUNTER + "/" + act + "/" + id, { method: "POST", keepalive: true }); return r.ok ? await r.json() : null; }
+  catch (_) { return null; }
+}
+const counted = (id) => { tell("install", id); };      // a finished install
+const stats = {};                                      // fw id -> { i: installs, l: likes }
+function paint(card) {
+  const id = card.dataset.fw, s = stats[id] || { i: 0, l: 0 }, on = likedSet().has(id), h = card.querySelector(".heart");
+  card.querySelector(".ci").textContent = compact(s.i);
+  card.querySelector(".cl").textContent = compact(s.l);
+  h.textContent = on ? "\u2665\ufe0e" : "\u2661\ufe0e";  // (text style, not emoji)
+  h.setAttribute("aria-pressed", String(on));
+  card.querySelector(".cnt").hidden = false;
+}
+async function like(card) {                            // optimistic; back to the old state if the counter says no
+  const id = card.dataset.fw, h = card.querySelector(".heart");
+  if (h.disabled) return;
+  const on = !likedSet().has(id), s = stats[id] || (stats[id] = { i: 0, l: 0 }), was = { ...s };
+  s.l = Math.max(0, s.l + (on ? 1 : -1));
+  likedSave(id, on); h.disabled = true; paint(card);
+  const r = await tell(on ? "like" : "unlike", id);
+  if (r && Number.isFinite(r.i) && Number.isFinite(r.l)) { s.i = r.i; s.l = r.l; }
+  else { Object.assign(s, was); likedSave(id, !on); }
+  h.disabled = false; paint(card);
+}
+function sortCards() {                                 // each group by likes, most first; ties keep the built order
+  const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
+  document.querySelectorAll(".fwgroup .cards").forEach((g) => {
+    const cards = [...g.children].filter((c) => c.classList.contains("fw"));
+    const sorted = cards.map((c, n) => [c, n]).sort((a, b) => likes(b[0]) - likes(a[0]) || a[1] - b[1]).map(([c]) => c);
+    if (sorted.some((c, n) => c !== cards[n])) sorted.forEach((c) => g.append(c));
+  });
+}
+async function counter() {                             // -> true when the numbers are shown
+  const stop = new AbortController(), t = setTimeout(() => stop.abort(), 3000);
+  try {
+    const r = await fetch(COUNTER + "/stats", { signal: stop.signal, cache: "no-store" });
+    if (!r.ok) return false;
+    const got = await r.json();
+    if (!got || typeof got !== "object") return false;
+    for (const [id, s] of Object.entries(got)) if (s && Number.isFinite(s.i) && Number.isFinite(s.l)) stats[id] = { i: s.i, l: s.l };
+  } catch (_) { return false; }
+  finally { clearTimeout(t); }
+  sortCards();
+  document.querySelectorAll(".card.fw").forEach((c) => { paint(c); c.querySelector(".heart").addEventListener("click", () => like(c)); });
+  return true;
+}
+const counterReady = counter();
+/* ---- end of the counter ---- */
 
 showModels();
 lockCards();

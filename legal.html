@@ -43,8 +43,13 @@ hr { border: 0; border-top: 1px solid var(--line); margin: 40px 0 0; }
   <p>The video on the start page is hosted on YouTube (Google). It is loaded from youtube-nocookie.com only when you press
     play; until then nothing is requested from YouTube. After that, Google's privacy policy applies.</p>
   <p>The installer talks to your keyboard through Web MIDI, inside your browser. Nothing about you or your device is sent
-    anywhere. The browser's local storage only remembers which firmware an interrupted install was writing, so it can be
-    finished; it never leaves your computer.</p>
+    anywhere. The browser's local storage remembers which firmware an interrupted install was writing, so it can be
+    finished, and which firmwares you liked; it never leaves your computer.</p>
+  <p>The firmware cards show install and like counts. For them the page sends anonymous requests to a counter on
+    Cloudflare Workers: when an install finishes, and when you like or unlike a firmware. Only the totals per firmware
+    are stored. For a short rate limit, a truncated one-way hash of the connection is kept for up to 5 minutes. No IP
+    addresses and no cookies are stored. Cloudflare processes the requests as the host; see
+    <a href="https://www.cloudflare.com/privacypolicy/">Cloudflare's privacy policy</a>.</p>
 
   <h2>Disclaimer</h2>
   <p>Unofficial community project, not affiliated with or endorsed by M-Vave. All trademarks belong to their owners.
