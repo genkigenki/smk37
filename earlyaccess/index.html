@@ -223,6 +223,9 @@ footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing:
 .sconfirm { display: block; margin: 10px 0 0; font-size: 14px; cursor: pointer; }
 .sconfirm input { accent-color: var(--amber); margin: 0 8px 0 0; vertical-align: -2px; }
 .stock .note { margin: 14px 0 0; }
+.stock .restore { margin: 26px 0 0; padding: 18px 0 0; border-top: 1px dashed rgba(255, 176, 42, .35); }
+.stock h4 { margin: 0 0 8px; font-size: 17px; color: var(--ink); }
+.stock .warnline { color: var(--amber); }
 .card.running .meta::after { content: " · running now"; color: #46f0a0; }
 .tag.soon { color: var(--mag); }
 .card.fw .screen { margin: 4px auto 20px; }
@@ -380,6 +383,11 @@ label.file input { display: none; }
         <button class="btn inst" id="sinst" type="button" disabled>Install</button></div>
       <p class="small note">Your keyboard's calibration and pairing are never touched. The firmware on the keyboard, and what it saved, is replaced.
         Keep the USB cable connected and this tab open until it says Done. Afterwards, M-UPGRADE should also work again if you need it.</p>
+      <div class="restore" id="restore">  <!-- the settings restore: on the main page only (no helper firmware here) -->
+        <label class="drop" id="rdrop"><input type="file" id="rfile" accept=".bin"><span id="rdroptext"></span></label>
+        <p class="sinfo" id="rinfo" hidden></p>
+        <button class="btn inst" id="rinst" type="button" disabled>Restore</button>
+      </div>
     </div>
   </div>
 </section>
@@ -1159,6 +1167,87 @@ async function install(fw) {
 }
 document.querySelectorAll(".inst[data-fw]").forEach((b) => b.addEventListener("click", () => install(FW.find((f) => f.id === b.dataset.fw))));
 
+/* ---- the M-Vave settings restore (site/test_site.mjs runs this block) ----
+   The stock firmware (V016) keeps its mapping ("usrdata") in USRFLASH 0xC2000-0xEAFFF: a global header at 0xC2000
+   (0x86 bytes, magic A3 3A), 8 presets of 0x49E3 bytes at 0xC3000 + n * 0x5000 (the rest of each 0x5000 stays
+   erased), and the tag "usrdata\0" at 0xEAFF8. At boot it trusts the area whenever the tag is there and rebuilds its
+   defaults only when it is missing. Custom firmwares keep samples, banks and loops in 0xC2000-0xE9FFF and leave the
+   tag: the stock firmware then reads their data as its mapping. The restore writes the area back from the user's own
+   full flash backup through Snoop37's sample-slot commands (EDITOR_PROTOCOL.md, cmds 11/12/15): slot USR1 is
+   0xC2000-0xD5FFF, USR2 0xD6000-0xE9FFF, SMP_BEGIN erases a slot's first sector, SMP_WRITE writes 256 bytes at an
+   offset >= 512 (a write at a sector start erases that sector). The first 512 bytes of each slot stay erased: the
+   global header (defaults then) and 0xD6000-0xD61FF (erased in every stock area, checked). The tag sector 0xEA000
+   is never written. Nothing here reads the device or the DOM. */
+const UD = { SIZE: 0x100000, TRIM: 0xC1224, LO: 0xC2000, HI: 0xEA000, HEAD_LEN: 0x86, PRESETS: 0xC3000, STEP: 0x5000,
+             PLEN: 0x49E3, NPRESETS: 8, TAG: 0xEAFF8, SLOT: 0x14000, SLOT_DATA: 512, SLOTS: 2, PAGE: 256, SECTOR: 0x1000 };
+// never written by anyone: the boot head, BTIF + USRTRIM (pairing, calibration), the stock resources USR, key_mac
+const UD_PROTECTED = [[0x0, 0x4000], [0xC0000, 0xC2000], [0xF4000, 0xFE000], [0xFF000, 0x100000]];
+// the only bytes the restore writes: the two slots past their first 512 bytes
+const UD_WINDOWS = [[UD.LO + UD.SLOT_DATA, UD.LO + UD.SLOT], [UD.LO + UD.SLOT + UD.SLOT_DATA, UD.HI]];
+const udErr = (code, message) => Object.assign(new Error(message), { code });
+const udAscii = (b, off, s) => [...s].every((c, i) => b[off + i] === c.charCodeAt(0));
+const udErased = (b, lo, hi) => { for (let i = lo; i < hi; i++) if (b[i] !== 0xFF) return false; return true; };
+// a write [addr, addr + n) is allowed: inside a restore window and clear of every protected range (throws otherwise)
+function udGuard(addr, n) {
+  if (!Number.isInteger(addr) || !Number.isInteger(n) || n <= 0 || n > UD.PAGE || addr < 0 || addr + n > UD.SIZE)
+    throw udErr("guard", "refused: bad range " + addr + "+" + n);
+  if (UD_PROTECTED.some(([lo, hi]) => addr < hi && addr + n > lo))
+    throw udErr("guard", "refused: 0x" + addr.toString(16) + " is in a protected range");
+  if (!UD_WINDOWS.some(([lo, hi]) => addr >= lo && addr + n <= hi))
+    throw udErr("guard", "refused: 0x" + addr.toString(16) + " is outside the mapping area");
+  return true;
+}
+// a full flash backup of an SMK-37 with the stock mapping in it -> { presets, header, notes } (throws { code })
+function udCheck(bin) {
+  if (!ArrayBuffer.isView(bin) || bin.BYTES_PER_ELEMENT !== 1 || bin.length !== UD.SIZE)
+    throw udErr("size", "Not a full flash backup: it must be exactly 1 MiB (1048576 bytes).");
+  if (!udAscii(bin, UD.TRIM, "trimdat"))
+    throw udErr("trim", "Not an SMK-37 flash backup (no calibration record at 0xC1224).");
+  if (!udAscii(bin, UD.TAG, "usrdata\0"))
+    throw udErr("tag", "This backup holds no M-Vave mapping (no end marker at 0xEAFF8). Was it made after a custom firmware?");
+  if (bin[UD.LO] !== 0xA3 || bin[UD.LO + 1] !== 0x3A || !udErased(bin, UD.LO + UD.HEAD_LEN, UD.PRESETS))
+    throw udErr("layout", "The mapping area of this backup is not the M-Vave layout (it holds another firmware's data).");
+  for (let n = 0; n < UD.NPRESETS; n++) {
+    const p = UD.PRESETS + n * UD.STEP, end = n === UD.NPRESETS - 1 ? UD.TAG : p + UD.STEP;
+    if (!udErased(bin, p + UD.PLEN, end))
+      throw udErr("layout", "The mapping area of this backup is not the M-Vave layout (preset " + (n + 1) + ").");
+  }
+  if (!udErased(bin, UD.LO + UD.SLOT, UD.LO + UD.SLOT + UD.SLOT_DATA))
+    throw udErr("slot2", "This backup has data at 0xD6000-0xD61FF, which this page cannot write. Use the command-line tool (tools/smk_usrdata.py, bootloader way).");
+  return { presets: UD.NPRESETS, header: true };
+}
+// the writes, in order: per slot, every sector's first page (it erases the sector) and every page that is not erased
+function udPlan(bin) {
+  udCheck(bin);
+  const plan = [];
+  for (let k = 0; k < UD.SLOTS; k++) {
+    const base = UD.LO + k * UD.SLOT;
+    for (let off = UD.SLOT_DATA; off < UD.SLOT; off += UD.PAGE) {
+      const addr = base + off, data = bin.slice(addr, addr + UD.PAGE);
+      if (off % UD.SECTOR && data.every((x) => x === 0xFF)) continue;
+      udGuard(addr, data.length);
+      plan.push({ slot: k, off, addr, data });
+    }
+  }
+  return plan;
+}
+// the editor protocol (F0 7D 46 4C cmd args F7, 7-bit data; pack7: a top-bits byte, then up to 7 bytes)
+function edPack7(b) {
+  const out = [];
+  for (let i = 0; i < b.length; i += 7) {
+    const g = b.slice(i, i + 7);
+    out.push(g.reduce((m, x, j) => m | ((x >> 7) & 1) << j, 0), ...Array.from(g, (x) => x & 0x7F));
+  }
+  return out;
+}
+const edFrame = (cmd, args = []) => [0xF0, 0x7D, 0x46, 0x4C, cmd, ...args, 0xF7];
+const ED = { INFO: 1, SMP_BEGIN: 11, SMP_WRITE: 12, SMP_INFO: 15 };
+const udWriteFrame = (w) => { udGuard(w.addr, w.data.length); return edFrame(ED.SMP_WRITE, [w.slot, w.off & 0x7F, (w.off >> 7) & 0x7F, (w.off >> 14) & 0x7F, ...edPack7(w.data)]); };
+// a reply frame -> its args for cmd, else null
+const edReply = (pkt, cmd) => pkt && pkt.length >= 6 && pkt[0] === 0xF0 && pkt[1] === 0x7D && pkt[2] === 0x46 && pkt[3] === 0x4C &&
+  pkt[4] === cmd && pkt[pkt.length - 1] === 0xF7 ? pkt.slice(5, -1) : null;
+/* ---- end of the M-Vave settings restore ---- */
+
 /* back to the M-Vave firmware: a package the user downloaded from M-Vave (never shipped here), accepted by its
    structure (identifyStockPackage: CRCs, an SMK-37 range identity, a stock version; known SHA-256s only tag it),
    written as any install; afterwards the keyboard reports the official identity */
@@ -1188,6 +1277,7 @@ function stockShow() {
 function stockLock() {
   const f = stockFitNow;
   $("sinst").disabled = busy || !midi || !connected || !stockPkg || !f || f === "refuse" || (f !== "same" && !$("sconfirm").checked);
+  restoreLock();                                       // (the restore needs the same file and confirmation)
 }
 async function stockFile(file) {
   if (!file || busy) return;
@@ -1244,6 +1334,114 @@ async function stockInstall() {
   }
 }
 $("sinst").addEventListener("click", stockInstall);
+
+/* restore the M-Vave settings (the block above): Snoop37 as the helper, the area from the user's backup, then the
+   M-Vave package dropped above. The backup stays in this tab. */
+let udBin = null, udPlanNow = null;
+function restoreSay(cls, html) { const p = $("rinfo"); p.className = "sinfo " + (cls || ""); p.innerHTML = html; p.hidden = !html; }
+function restoreLock() {
+  const helper = FW.find((f) => f.id === "snoop37");
+  $("rinst").disabled = busy || !midi || !connected || !udPlanNow || !stockPkg || !helper || stockFitNow === "refuse" ||
+    (stockFitNow !== "same" && !$("sconfirm").checked);
+}
+async function restoreFile(file) {
+  if (!file || busy) return;
+  udBin = udPlanNow = null;
+  $("rdroptext").textContent = file.name;
+  restoreSay("", "Checking…");
+  try {
+    if (file.size !== UD.SIZE) throw udErr("size", "Not a full flash backup: it must be exactly 1 MiB (1048576 bytes).");
+    udBin = new Uint8Array(await file.arrayBuffer());
+    udPlanNow = udPlan(udBin);
+    restoreSay("", "<b>SMK-37 backup with the M-Vave mapping</b>: 8 presets, " + udPlanNow.length + " writes of 256 bytes." +
+      (stockPkg ? "" : " Now drop the M-Vave firmware above."));
+  } catch (e) { udBin = udPlanNow = null; restoreSay("err", esc(e && e.code ? e.message : "This file cannot be read.")); }
+  restoreLock();
+}
+$("rfile").addEventListener("change", (e) => restoreFile(e.target.files[0]));
+const rdrop = $("rdrop");
+rdrop.addEventListener("dragover", (e) => { e.preventDefault(); rdrop.classList.add("over"); });
+rdrop.addEventListener("dragleave", () => rdrop.classList.remove("over"));
+rdrop.addEventListener("drop", (e) => { e.preventDefault(); rdrop.classList.remove("over"); restoreFile(e.dataTransfer.files[0]); });
+
+// one editor request -> its reply args; one retry (a page written twice holds the same bytes, a sector erased twice too)
+async function edAsk(link, frame, cmd, ms = 3000, accept = () => true) {
+  for (let t = 0; t < 2; t++) {
+    link.drain();
+    if (!link.send(frame)) throw new Error("The keyboard was disconnected.");
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      const r = edReply(await link.read(end - Date.now()), cmd);
+      if (r && accept(r)) return r;
+    }
+  }
+  throw new Error("The helper firmware did not answer (command " + cmd + ").");
+}
+async function restoreArea(link, plan, onProgress) {
+  const info = await edAsk(link, edFrame(ED.INFO), ED.INFO);
+  const ver = String.fromCharCode(...info.slice(0, Math.max(0, info.indexOf(0))));
+  logln("helper: " + ver);
+  if (!/^FELUCCA /.test(ver)) throw new Error("The helper firmware is not the expected one (" + ver + "). Nothing was written.");
+  const si = await edAsk(link, edFrame(ED.SMP_INFO), ED.SMP_INFO);
+  if (si[0] !== 4 || si[1] !== UD.SLOT / 1024) throw new Error("The helper firmware has another sample-slot layout. Nothing was written.");
+  for (let k = 0; k < UD.SLOTS; k++) {
+    const r = await edAsk(link, edFrame(ED.SMP_BEGIN, [k]), ED.SMP_BEGIN, 5000, (a) => a[0] === k);
+    if (r[1] !== 0) throw new Error("Slot " + (k + 1) + " could not be erased (" + r[1] + ").");
+  }
+  let n = 0;
+  for (const w of plan) {
+    const r = await edAsk(link, udWriteFrame(w), ED.SMP_WRITE, 3000,
+      (a) => a[0] === w.slot && (a[1] | a[2] << 7 | a[3] << 14) === w.off);
+    if (r[4] !== 0) throw new Error("Writing 0x" + w.addr.toString(16) + " failed (" + r[4] + ").");
+    onProgress(++n);
+  }
+}
+async function restoreRun() {
+  const k = stockPkg, plan = udPlanNow, helper = FW.find((f) => f.id === "snoop37");
+  if (busy || !k || !plan || !helper) return;
+  busy = true; lockCards();
+  const hp = choosePackage(helper, detected, {});
+  if (hp.refuse) { busy = false; lockCards(); restoreSay("err", esc(hp.refuse)); return; }
+  const ok = await confirmInstall("Restore the M-Vave settings?",
+    "Install Snoop37 as a helper, write the mapping area 0xC2000-0xE9FFF from your backup, then install the M-Vave " + k.name +
+      " firmware V" + k.version + " on the connected keyboard (" + keyboardId() + ")?",
+    stockFitNow && stockFitNow !== "same" ? "The keyboard reports " + keyboardId() + ". Make sure the M-Vave file is for the model printed on your keyboard." : "",
+    ["Only your own backup's mapping area is written. Calibration, pairing, the boot area and the M-Vave resources are never touched.",
+     "The firmware on the keyboard, and what it saved, is replaced: first by Snoop37, then by the M-Vave firmware.",
+     "The global settings (channels, velocity curves, pedal) return to their defaults; the 8 presets come back as in the backup.",
+     "If it stops, the keyboard may stay in update mode or run Snoop37: press Restore again, or install the M-Vave firmware above.",
+     "Keep the USB cable connected and this tab open until it says Done."]);
+  if (!ok) { busy = false; lockCards(); return; }
+  ov("Restore the M-Vave settings", "Snoop37 (helper) · your backup · M-Vave " + k.name + " V" + k.version, "var(--amber)");
+  mark("start");
+  try {
+    const up = new Updater(await access(), logln, { all: allPorts });
+    if (await up.find(IS_OTA_ID)) throw new Error("The keyboard is in update mode. Finish that first (install a firmware above, or the M-Vave firmware), then press Restore again.");
+    logln("1/3 helper " + hp.pkg.product);
+    const image = await load(hp.pkg);
+    store.set(helper.id);
+    await up.install(image, hp.pkg.product, stepper(image), true);
+    store.set(null);
+    logln("2/3 the mapping area, " + plan.length + " writes");
+    $("ovstatus").textContent = "Writing your M-Vave settings. Do not unplug, keep this tab open.";
+    await new Promise((r) => setTimeout(r, 2500));                 // (the helper finishes booting)
+    const dev = await up.waitFor((id) => !IS_OTA_ID(id), 20000);
+    if (!dev) throw new Error("Snoop37 did not answer after the install. Switch the keyboard off and on, connect, and press Restore again.");
+    if (dev.id.text !== hp.pkg.product) { dev.link.close(); throw new Error("The keyboard reports " + dev.id.text + ", not the helper. Nothing was written."); }
+    try { await restoreArea(dev.link, plan, (n) => { $("ovbar").style.width = Math.round(n * 100 / plan.length) + "%"; }); }
+    finally { dev.link.close(); }
+    logln("3/3 " + k.product);
+    store.set("stock");
+    await up.install(k.image, k.product, stepper(k.image), true);
+    store.set(null);
+    finish(true, "Done: the keyboard runs the M-Vave firmware " + k.product + " with the mapping from your backup.");
+  } catch (e) {
+    logln(String((e && e.stack) || e));
+    finish(false, e && e.code === "mismatch" ? "Written, but the keyboard reports " + e.detail + ". Switch it off and on, then connect again."
+      : e && e.code === "other" ? OTHER_MSG : (e && e.message) || String(e));
+  }
+}
+$("rinst").addEventListener("click", restoreRun);
 
 /* ---- the counter: installs and likes per card (site/test_site.mjs runs this block); the page works without it ---- */
 const COUNTER = "https://smk37-counter.makkuro.workers.dev";
