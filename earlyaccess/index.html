@@ -181,7 +181,10 @@ footer b { color: var(--ink); font-family: Orbitron, sans-serif; letter-spacing:
 .card .cnt { display: inline-flex; align-items: center; gap: 4px; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: nowrap; }
 .card .cnt[hidden] { display: none; }
 .card .cnt b { font-weight: 500; color: #c3d8e3; }
-.card .heart { padding: 0 2px; border: 0; background: none; color: var(--dim); font: 15px/1 "JetBrains Mono", system-ui, sans-serif; cursor: pointer; }
+.card .likebox { position: absolute; top: 12px; right: 30px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.card .likebox[hidden] { display: none; }
+.card .likebox b { font: 500 12px "JetBrains Mono", monospace; color: #c3d8e3; }
+.card .heart { padding: 2px 6px; border: 0; background: none; color: #8fa6b4; font: 32px/1 "JetBrains Mono", system-ui, sans-serif; cursor: pointer; }
 .card .heart[aria-pressed="true"] { color: var(--c, var(--mag)); text-shadow: 0 0 8px var(--c, var(--mag)); }
 .card .heart:hover { color: var(--c, var(--mag)); }
 .card .heart:focus-visible { outline: 1px solid var(--c, var(--cyan)); outline-offset: 2px; }
@@ -332,6 +335,7 @@ label.file input { display: none; }
     <div class="fwgroup" id="early">
       <div class="cards">
         <article class="card fw reveal" data-fw="vox37" data-name="Vox37" style="--c: #50ff50">
+        <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vox37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-vox37.webp" width="240" height="240" alt="Vox37 on the display"></div>
         <h3>Vox37</h3>
         <div class="from">new firmware · genkigenki · SMK-37 and FM-1</div>
@@ -339,8 +343,7 @@ label.file input { display: none; }
         <ul><li>USB mic in, the keys play the voice</li><li>4 modes, 8 memories, record &amp; play a voice take</li><li>Also for the FM-1 (experimental)</li></ul>
         <div class="foot"><span class="tag ">early access</span>
           <span class="meta">v2.4 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
-            <button class="heart" type="button" aria-pressed="false" aria-label="Like Vox37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
           <button class="btn inst" type="button" data-fw="vox37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-vox37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vox37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vox37" value="mke"> MKE-P37</label></div>
@@ -349,6 +352,7 @@ label.file input { display: none; }
           </details>
       </article>
       <article class="card fw reveal" data-fw="vector37" data-name="Vector37" style="--c: #8a7dff">
+        <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-vector37.webp" width="240" height="240" alt="Vector37 on the display"></div>
         <h3>Vector37</h3>
         <div class="from">new firmware · genkigenki</div>
@@ -356,8 +360,7 @@ label.file input { display: none; }
         <ul><li>Four corners, each two overtone generators, a blend and a filter</li><li>Pads and knobs are the planets, the faders the path</li><li>Eight sounds on &lt; &gt;</li></ul>
         <div class="foot"><span class="tag ">early access</span>
           <span class="meta">v0.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span> ·
-            <button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
           <button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-vector37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vector37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vector37" value="mke"> MKE-P37</label></div>
@@ -1281,6 +1284,7 @@ function paint(card) {
   h.textContent = on ? "\u2665\ufe0e" : "\u2661\ufe0e";  // (text style, not emoji)
   h.setAttribute("aria-pressed", String(on));
   card.querySelector(".cnt").hidden = false;
+  card.querySelector(".likebox").hidden = false;
 }
 async function like(card) {                            // optimistic; back to the old state if the counter says no
   const id = card.dataset.fw, h = card.querySelector(".heart");
