@@ -326,7 +326,7 @@ label.file input { display: none; }
 
     <div class="connect" id="connect">
       <span class="led" id="led"></span>
-      <div class="ctext"><b id="devname">Not connected</b><span id="devsub">Use Chrome or Edge. Plug the SMK-37 (or an FM-1, for Vox37) into this computer, then press Connect.</span></div>
+      <div class="ctext"><b id="devname">Not connected</b><span id="devsub">Use Chrome or Edge. Plug the SMK-37 (or an FM-1) into this computer, then press Connect.</span></div>
       <button class="btn" id="conn" type="button">Connect</button>
     </div>
     <div class="ports" id="ports" hidden><span id="portlist"></span>
@@ -351,29 +351,12 @@ label.file input { display: none; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="vector37" data-name="Vector37" style="--c: #8a7dff">
-        <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
-        <div class="screen"><img src="assets/shot-vector37.webp" width="240" height="240" alt="Vector37 on the display"></div>
-        <h3>Vector37</h3>
-        <div class="from">new firmware · genkigenki</div>
-        <p>An orbiting overtone synth: a moon circles a sun along a path, and where it is decides how much of each of four sounds you hear.</p>
-        <ul><li>Four corners, each two overtone generators, a blend and a filter</li><li>Pads and knobs are the planets, the faders the path</li><li>Eight sounds on &lt; &gt;</li></ul>
-        <div class="foot"><span class="tag ">early access</span>
-          <span class="meta">v0.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></div>
-          <details class="model"><summary>Flash another keyboard version</summary>
-            <div class="models"><label><input type="radio" name="model-vector37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vector37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vector37" value="mke"> MKE-P37</label></div>
-            <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
-              reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
-          </details>
-      </article>
       
       </div>
       <p class="small srcline">Source (GPL-3.0): on request, and published with the release.</p>
     </div>
 
-    <p class="small note reveal">Unofficial, experimental firmware, at your own risk. The FM-1 build of Vox37 is untested on a unit.</p>
+    <p class="small note reveal">Unofficial, experimental firmware, at your own risk. The FM-1 build is untested on a unit.</p>
 
     <div class="card stock" id="stock" style="--c: var(--amber); display: none">  <!-- kept for the shared installer script, not shown -->
       <h3>Back to the M-Vave firmware</h3>
@@ -434,8 +417,7 @@ label.file input { display: none; }
 <footer>
   <div class="wrap">
     <div><b>MAKKURO</b> · © 2026 genkigenki · site CC BY-NC 4.0 · installer code GPL-3.0 (Felucca / SLOOP)</div>
-    <div>Vox37 builds on Felucca's platform layer (hugelton / kurogedelic). Vector37 on SLOOP's board layer (isod89), based on
-      Felucca; its master stage after Melodee (Kerem Kilic). Inspired by the Beetlecrab Vector.</div>
+    <div>Vox37 builds on Felucca's platform layer (hugelton / kurogedelic).</div>
     <div>Unofficial community project. Not affiliated with or endorsed by M-Vave. All trademarks belong to their owners.</div>
     <div><a href="../legal.html">Legal notice · Privacy</a></div>
   </div>
@@ -897,7 +879,7 @@ class Updater {
   }
 }
 
-const FW = [{"id": "vox37", "name": "Vox37", "version": "2.4", "col": "#50ff50", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/vox37-2.4.fwsc", "sha256": "c35b488f4c6c333ef02b58811ec48985db3ec9eae97bd2be55373ca35c582214", "size": 651208}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/vox37-2.4-elite.fwsc", "sha256": "52a0f0f60416978b3fa5df3cd256b0b2c7841d9a74ace829d229c3e98596e4ff", "size": 651208}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/vox37-2.4-mke.fwsc", "sha256": "d08205fff02f05427e756235e9643f6c4224aef4be63ec3218272f2e837a4acf", "size": 651204}, "fm1": {"product": "FM-1_900", "pkg": "firmware/vox37-2.4-fm1.fwsc", "sha256": "e3230422d985199d387203da4391e69ef4b8bcac716e18c4fd25b2137b65b28b", "size": 610086}}}, {"id": "vector37", "name": "Vector37", "version": "0.1", "col": "#8a7dff", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/vector37-0.1.fwsc", "sha256": "3d36033ac76ddf4eb3b9ee231fb087d66ed5c2fc351a13e3e1a16f57a93b7321", "size": 651194}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/vector37-0.1-elite.fwsc", "sha256": "22ef9f0d4555e3a82e0636ec1ff0947011e7aff3e9267ff9eb083938771494c5", "size": 651194}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/vector37-0.1-mke.fwsc", "sha256": "c6b02f6a3e5d76eefa830b0e3917d2df769bb391593409e10f5888ff1462153a", "size": 651190}}}];
+const FW = [{"id": "vox37", "name": "Vox37", "version": "2.4", "col": "#50ff50", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/vox37-2.4.fwsc", "sha256": "c35b488f4c6c333ef02b58811ec48985db3ec9eae97bd2be55373ca35c582214", "size": 651208}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/vox37-2.4-elite.fwsc", "sha256": "52a0f0f60416978b3fa5df3cd256b0b2c7841d9a74ace829d229c3e98596e4ff", "size": 651208}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/vox37-2.4-mke.fwsc", "sha256": "d08205fff02f05427e756235e9643f6c4224aef4be63ec3218272f2e837a4acf", "size": 651204}, "fm1": {"product": "FM-1_900", "pkg": "firmware/vox37-2.4-fm1.fwsc", "sha256": "e3230422d985199d387203da4391e69ef4b8bcac716e18c4fd25b2137b65b28b", "size": 610086}}}];
 const $ = (id) => document.getElementById(id);
 const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
 const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
