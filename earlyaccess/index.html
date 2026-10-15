@@ -262,6 +262,20 @@ label.file input { display: none; }
 .warnbox li { padding-left: 18px; position: relative; }
 .warnbox li::before { content: ""; position: absolute; left: 0; top: .62em; width: 8px; height: 2px; background: var(--amber); }
 .warnbox b { color: var(--ink); }
+.devsel { display: flex; gap: 0; margin: 34px 0 0; max-width: 520px; border: 1px solid var(--cyan); border-radius: 10px; overflow: hidden; }
+.devbtn { flex: 1; padding: 16px 10px; font: 800 clamp(18px, 3.4vw, 24px)/1 Orbitron, sans-serif; letter-spacing: .08em;
+  background: transparent; color: var(--ink); border: 0; cursor: pointer; opacity: .6; }
+.devbtn + .devbtn { border-left: 1px solid var(--cyan); }
+.devbtn[aria-checked="true"] { background: rgba(60, 240, 255, .14); color: #effcff; opacity: 1; text-shadow: 0 0 10px var(--cyan); }
+.devbtn:hover { opacity: 1; }
+.devbtn:focus-visible { outline: 2px solid var(--amber); outline-offset: -4px; }
+.fm1only { display: none; margin-top: 14px; }
+body[data-dev="fm1"] .fm1only { display: block; }
+body[data-dev="fm1"] .card.fw:not([data-fm1]), body[data-dev="fm1"] #fm1-ports, body[data-dev="fm1"] #stock { display: none; }
+body[data-dev="fm1"] .ghead h3 .smkword { display: none; }
+.fm1note { display: none; font-size: 14px; color: var(--amber); }
+body[data-dev="fm1"] .fm1note { display: block; }
+.tag.fm1tag { color: var(--cyan); margin-left: 6px; }
 .fwgroup { margin-top: 64px; scroll-margin-top: 90px; }
 .fwgroup + .fwgroup { margin-top: 80px; }
 .ghead { border-top: 1px solid var(--line); padding-top: 18px; }
@@ -336,14 +350,15 @@ label.file input { display: none; }
 
     <div class="fwgroup" id="early">
       <div class="cards">
-        <article class="card fw reveal" data-fw="vox37" data-name="Vox37" style="--c: #50ff50">
+        <article class="card fw reveal" data-fw="vox37" data-fm1="1" data-name="Vox37" style="--c: #50ff50">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vox37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-vox37.webp" width="240" height="240" alt="Vox37 on the display"></div>
         <h3>Vox37</h3>
         <div class="from">new firmware · genkigenki · SMK-37 and FM-1</div>
         <p>A vocoder: plug a battery-powered USB microphone into the keyboard, hold a chord and speak or sing. Confirmed working: DJI Mic Mini 2.</p>
         <ul><li>USB mic in, the keys play the voice</li><li>4 modes, 8 memories, record &amp; play a voice take</li><li>Also for the FM-1 (experimental)</li></ul>
-        <div class="foot"><span class="tag ">early access</span>
+        
+        <div class="foot"><span class="tag ">early access</span><span class="tag fm1tag">FM-1</span>
           <span class="meta">v2.4 · 635 KB</span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
           <button class="btn inst" type="button" data-fw="vox37" disabled>Install</button></div>
@@ -353,14 +368,15 @@ label.file input { display: none; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="vector37" data-name="Vector37 0.3 beta" style="--c: #8a7dff">
+      <article class="card fw reveal" data-fw="vector37" data-fm1="1" data-name="Vector37 0.3 beta" style="--c: #8a7dff">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37 0.3 beta" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-vector37-beta.webp" width="240" height="240" alt="Vector37 0.3 beta on the display"></div>
         <h3>Vector37 0.3 beta</h3>
         <div class="from">new firmware · genkigenki · SMK-37 and FM-1</div>
         <p>The next Vector37: stereo that moves with the sun (WIDTH on K7 with no planet selected), the tilted solar-system boot, and a first build for the FM-1.</p>
         <ul><li>Stereo: the planets spread left and right, the sun moves the image</li><li>FM-1: hold EDIT, the lowest 16 keys are the pads; SEL pages the knobs (untested on a unit)</li><li>Install the release on the main page if you just want to play</li></ul>
-        <div class="foot"><span class="tag ">beta</span>
+        
+        <div class="foot"><span class="tag ">beta</span><span class="tag fm1tag">FM-1</span>
           <span class="meta">v0.3 · 635 KB</span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
           <button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></div>
@@ -377,6 +393,7 @@ label.file input { display: none; }
         <div class="from">new firmware · genkigenki</div>
         <p>A generative sequencer: eight tracks with Euclid, Turing, random, arp and step generators, chord follow and a harmoniser, on their own MIDI channels and an internal synth and drums.</p>
         <ul><li>35 moods and styles in three banks: SPA, NIGHT DRIVE, HOUSE, BRAINDANCE, GLASSWORK …</li><li>EVOLVE: sections and slow drift, so a mood runs for minutes</li><li>MIDI out over USB and the TRS jack, clock in and out</li></ul>
+        
         <div class="foot"><span class="tag ">early access</span>
           <span class="meta">v0.2 · 635 KB</span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
@@ -1032,6 +1049,7 @@ async function scan() {
     }
     if (!SMK(dev.id) && !(FM1_PAGE && FM1(dev.id))) { led("err", dev.id.text + ": not an SMK-37", "These packages are for the M-Vave SMK-37 keyboards only (SMK-37 Pro, Elite, MKE-P37)."); return; }
     detected = modelOf(dev.id);
+    if (window.setDev) window.setDev(detected === "fm1" ? "fm1" : "smk", true);
     showModels();
     if (detected === "fm1") {                              // (a page with FM-1 packages)
       led("on", "FM-1 connected", (IS_OTA_ID(dev.id) ? "In update mode (" + dev.id.text + ")" : "Running " + dev.id.text) + " · port " + dev.name +
