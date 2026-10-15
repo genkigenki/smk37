@@ -1136,6 +1136,8 @@ body[data-dev="fm1"] .fm1note { display: block; }
   let d = location.hash === "#fm1" ? "fm1" : "";
   if (!d) { try { d = localStorage.getItem("smk37-dev") || ""; } catch (e) {} }
   set(d || "smk", false);
+  addEventListener("hashchange", () => { if (location.hash === "#fm1") set("fm1", true); });   // (the page already open: only the hash changes)
+  addEventListener("pageshow", (e) => { if (e.persisted && location.hash === "#fm1") set("fm1", true); });
 })();
 </script>
 <script type="module">
