@@ -300,12 +300,6 @@ body[data-dev="fm1"] .fm1note { display: block; }
   .ticker .ttrack, .ticker .tlabel { animation: none; }
   .ticker .tview { overflow-x: auto; }
 }
-#news { scroll-margin-top: 90px; }
-.newslist { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; max-width: 760px; }
-.newslist li { display: flex; gap: 14px; align-items: baseline; }
-.newslist time { flex: none; width: 64px; font: 12px "JetBrains Mono", monospace; letter-spacing: .08em; color: var(--amber); }
-.newslist a { color: var(--ink); }
-.newslist a:hover { color: var(--cyan); }
 .fwgroup { margin-top: 64px; scroll-margin-top: 90px; }
 .fwgroup + .fwgroup { margin-top: 80px; }
 .ghead { border-top: 1px solid var(--line); padding-top: 18px; }
@@ -344,7 +338,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
 <header class="hero">
   <canvas id="stage" aria-label="A wireframe FM-1 grows into an SMK-37"></canvas>
   <div class="hud" id="hud" aria-hidden="true"></div>
-  <nav class="nav"><a href="#why">Why</a><a href="#firmwares">Firmwares</a><a href="#firmwares">Install</a><a href="#port">Port kit</a><a href="#mods">Hardware mods</a><a href="#news">News</a></nav>
+  <nav class="nav"><a href="#why">Why</a><a href="#firmwares">Firmwares</a><a href="#firmwares">Install</a><a href="#port">Port kit</a><a href="#mods">Hardware mods</a></nav>
   <div class="title" id="title">
     <h1>SMK<span>37</span></h1>
     <p>Open FM-1 firmwares, unleashed on the M-Vave SMK-37.<br>Same chip. Ten more keys, 16 pads, 4 faders, two wheels.</p>
@@ -353,7 +347,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
   <button class="replay mono" id="replay" type="button">↻ replay</button>
   <div class="scrollcue"></div>
 </header>
-<div class="ticker" role="region" aria-label="News"><a class="tlabel" href="#news">News</a><div class="tview"><div class="ttrack"><span><a href="#firmwares"><b>16 OCT</b> Feedback buttons on every card: ideas and bugs go to GitHub Discussions</a><a href="#fw-snoop37"><b>16 OCT</b> Snoop37 2.7.0: on SLOOP 2.7, the volume knob shows its level</a><a href="earlyaccess/"><b>16 OCT</b> Vector37 0.3 beta also for the FM-1 (early access)</a><a href="earlyaccess/"><b>15 OCT</b> Gen37 0.2 in early access</a><a href="#fw-vector37"><b>14 OCT</b> Vector37: an orbiting overtone synth, with a simulator in the browser</a><a href="#fw-obervave"><b>14 OCT</b> OberVave by zvenson, with its own SMK-37 build</a><a href="#fw-snoop37"><b>14 OCT</b> Snoop37 2.6.4: TRS MIDI out, bend range, wheel calibration</a><a href="earlyaccess/"><b>14 OCT</b> Early access page: Vox37, the singing keyboard</a></span><span aria-hidden="true"><a href="#firmwares"><b>16 OCT</b> Feedback buttons on every card: ideas and bugs go to GitHub Discussions</a><a href="#fw-snoop37"><b>16 OCT</b> Snoop37 2.7.0: on SLOOP 2.7, the volume knob shows its level</a><a href="earlyaccess/"><b>16 OCT</b> Vector37 0.3 beta also for the FM-1 (early access)</a><a href="earlyaccess/"><b>15 OCT</b> Gen37 0.2 in early access</a><a href="#fw-vector37"><b>14 OCT</b> Vector37: an orbiting overtone synth, with a simulator in the browser</a><a href="#fw-obervave"><b>14 OCT</b> OberVave by zvenson, with its own SMK-37 build</a><a href="#fw-snoop37"><b>14 OCT</b> Snoop37 2.6.4: TRS MIDI out, bend range, wheel calibration</a><a href="earlyaccess/"><b>14 OCT</b> Early access page: Vox37, the singing keyboard</a></span></div></div></div>
+<div class="ticker" role="region" aria-label="Firmware news"><span class="tlabel">News</span><div class="tview"><div class="ttrack"><span><a href="#fw-snoop37"><b>16 OCT</b> Snoop37 2.6.6 and 2.7.0: DAW mode, now on SLOOP 2.7, the volume knob shows its level</a><a href="#fw-vector37"><b>14 OCT</b> New: Vector37, an orbiting overtone synth, and OberVave by zvenson · Snoop37 2.6.5: TRS MIDI out, key velocity</a><a href="#fm1-ports"><b>13 OCT</b> New ports: ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode, GHOULBOX · Snoop37 2.6 on SLOOP 2.6 · X0X and FoMni 0.2</a><a href="#fm1-ports"><b>12 OCT</b> New: MAKU · builds for the SMK-37 Elite and the MKE-P37 · Snoop37 0.1.1</a><a href="#fw-makkuro37"><b>11 OCT</b> Launch: Makkuro37, Snoop37, X0X and FoMni on the SMK-37</a></span><span aria-hidden="true"><a href="#fw-snoop37"><b>16 OCT</b> Snoop37 2.6.6 and 2.7.0: DAW mode, now on SLOOP 2.7, the volume knob shows its level</a><a href="#fw-vector37"><b>14 OCT</b> New: Vector37, an orbiting overtone synth, and OberVave by zvenson · Snoop37 2.6.5: TRS MIDI out, key velocity</a><a href="#fm1-ports"><b>13 OCT</b> New ports: ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode, GHOULBOX · Snoop37 2.6 on SLOOP 2.6 · X0X and FoMni 0.2</a><a href="#fm1-ports"><b>12 OCT</b> New: MAKU · builds for the SMK-37 Elite and the MKE-P37 · Snoop37 0.1.1</a><a href="#fw-makkuro37"><b>11 OCT</b> Launch: Makkuro37, Snoop37, X0X and FoMni on the SMK-37</a></span></div></div></div>
 
 <section id="why" class="gridbg">
   <div class="wrap reveal">
@@ -773,13 +767,6 @@ body[data-dev="fm1"] .fm1note { display: block; }
     <button class="video" id="video" type="button" aria-label="Play the video: Makkuro37 and Snoop37 on the SMK-37">
       <img src="assets/video-smk37.webp" alt="" loading="lazy"><span class="play"></span>
       <span class="vnote mono">plays from YouTube</span></button>
-  </div>
-</section>
-
-<section id="news">
-  <div class="wrap">
-    <h2>News</h2>
-    <ul class="newslist"><li><time datetime="2026-10-16">16 OCT</time> <a href="#firmwares">Feedback buttons on every card: ideas and bugs go to GitHub Discussions</a></li><li><time datetime="2026-10-16">16 OCT</time> <a href="#fw-snoop37">Snoop37 2.7.0: on SLOOP 2.7, the volume knob shows its level</a></li><li><time datetime="2026-10-16">16 OCT</time> <a href="earlyaccess/">Vector37 0.3 beta also for the FM-1 (early access)</a></li><li><time datetime="2026-10-15">15 OCT</time> <a href="earlyaccess/">Gen37 0.2 in early access</a></li><li><time datetime="2026-10-14">14 OCT</time> <a href="#fw-vector37">Vector37: an orbiting overtone synth, with a simulator in the browser</a></li><li><time datetime="2026-10-14">14 OCT</time> <a href="#fw-obervave">OberVave by zvenson, with its own SMK-37 build</a></li><li><time datetime="2026-10-14">14 OCT</time> <a href="#fw-snoop37">Snoop37 2.6.4: TRS MIDI out, bend range, wheel calibration</a></li><li><time datetime="2026-10-14">14 OCT</time> <a href="earlyaccess/">Early access page: Vox37, the singing keyboard</a></li><li><time datetime="2026-10-13">13 OCT</time> <a href="#fm1-ports">Five new ports: ORBIT, AMB-1, ChoralRoot, Polly, winampFM</a></li><li><time datetime="2026-10-13">13 OCT</time> <a href="#fm1-ports">Rainbow mode, GHOULBOX, X0X and FoMni on the SMK-37</a></li><li><time datetime="2026-10-13">13 OCT</time> <a href="#mods">Hardware mods: 3D-printable knob caps, a speaker mod</a></li><li><time datetime="2026-10-12">12 OCT</time> <a href="#fm1-ports">MAKU on the SMK-37; packages for the SMK-37 Elite and the MKE-P37</a></li><li><time datetime="2026-10-11">11 OCT</time> <a href="#fw-makkuro37">Site launch: Makkuro37 and Snoop37, the Makkuro37 simulator</a></li></ul>
   </div>
 </section>
 
