@@ -276,9 +276,10 @@ body[data-dev="fm1"] .ghead .smkword { display: none; }
 .fm1note { display: none; font-size: 14px; color: var(--amber); }
 body[data-dev="fm1"] .fm1note { display: block; }
 .card .foot .tag { border: 0; padding: 0; }                      /* a label, not a button */
+.card .foot .info { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
 .card .act { margin-left: auto; display: flex; flex-wrap: wrap; gap: 10px; }
-.card .act .btn { padding: 10px 16px; font-size: 12px; cursor: pointer; }
-.card .act .fb { border-color: #46f0a0; background: rgba(70, 240, 160, .08); box-shadow: 0 0 14px -4px #46f0a0, inset 0 0 12px -6px #46f0a0; }
+.card .foot .btn { padding: 10px 16px; font-size: 12px; cursor: pointer; }
+.card .foot .fb { border-color: #46f0a0; background: rgba(70, 240, 160, .08); box-shadow: 0 0 14px -4px #46f0a0, inset 0 0 12px -6px #46f0a0; }
 .ticker { position: relative; z-index: 2; display: flex; align-items: stretch; height: 38px; overflow: hidden;
   border-block: 1px solid rgba(255, 176, 60, .35); background: #050505;
   background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, .03) 0 1px, transparent 1px 3px);
@@ -399,10 +400,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
         <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li><li>A CHAOS pad, a filter on every knob</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span>
           <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">github.com/genkigenki/Makkuro37</a></span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn alt" href="makkuro37-sim/">Simulator</a><a class="btn fb" href="https://github.com/genkigenki/Makkuro37/discussions" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/Makkuro37/discussions" title="Your feedback and ideas">Feedback</a><span class="act"><a class="btn alt" href="makkuro37-sim/">Simulator</a><button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-makkuro37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-makkuro37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-makkuro37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -417,10 +418,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>An orbiting overtone synth: a moon circles a sun along a path, and where it is decides how much of each of four sounds you hear.</p>
         <ul><li>Four planets, each two overtone generators, a blend and a filter</li><li>Pads and knobs are the planets, the faders the path</li><li>Eight sounds on &lt; &gt; · TRS MIDI out</li></ul>
         <p class="fm1note">FM-1 build: 0.3 beta, untested on a unit. Hold EDIT: the lowest 16 keys are the pads; SEL pages the knobs.</p>
-        <div class="foot"><span class="tag ">experimental</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span>
           <span class="meta">v0.2.2 · 635 KB · <a href="https://github.com/genkigenki/Vector37">github.com/genkigenki/Vector37</a></span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn alt" href="vector37-sim/">Simulator</a><a class="btn fb" href="https://github.com/genkigenki/Vector37/discussions" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/Vector37/discussions" title="Your feedback and ideas">Feedback</a><span class="act"><a class="btn alt" href="vector37-sim/">Simulator</a><button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-vector37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vector37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vector37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -445,10 +446,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>SLOOP, the four-track looper groovebox, adapted for the SMK-37.</p>
         <ul><li>Pads in the track colours, a pad sound picker</li><li>Fader banks: level, filter, reverb, delay</li><li>DAW mode: the keyboard as a MIDI controller</li><li><a href="https://makerworld.com/en/models/3425326-m-vave-smk37-colorful-knobs">3D-printable knob caps to match</a></li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v2.7.0 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Snoop37%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Snoop37%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-snoop37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-snoop37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-snoop37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -463,10 +464,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A 909, an 808, two 303s with a line generator and a breakbeat player, all at once.</p>
         <ul><li>Shared reverb, tape delay, master compressor</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=X0X%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="x0x37" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=X0X%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="x0x37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-x0x37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-x0x37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-x0x37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -481,10 +482,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>An Omnichord-style chord harp: the 16 pads become the strum plate, the keybed holds the chords.</p>
         <ul><li>Strum the pads, play chords on the keys</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=FoMni%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="fomni37" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=FoMni%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fomni37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-fomni37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-fomni37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-fomni37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -499,10 +500,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>An always-on ambience machine: power it on and a new, random, in-key world is already playing.</p>
         <ul><li>The verbs on the top button row and the wheels</li><li>The 16 pads hold your likes</li><li>Faders as standing verb amounts</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=MAKU%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="maku37" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=MAKU%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="maku37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-maku37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-maku37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-maku37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -517,10 +518,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A music toy for kids: colour-coded notes, 40 friends who sing along, no menus.</p>
         <ul><li>The pads light up in the note colours</li><li>Faders: big/small, day/night, echo, wiggle</li><li>A volume cap for grown-ups</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Rainbow%20mode%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="rainbow37" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Rainbow%20mode%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="rainbow37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-rainbow37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-rainbow37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-rainbow37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -535,10 +536,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>Dungeon-synth firmware: dark ambient, medieval and fantasy sounds, with drones, a hurdy-gurdy crank and two sounds at once.</p>
         <ul><li>The middle keys play with velocity, the outer keys add notes</li><li>Fader banks: level, pan, reverb, delay</li><li>Keys page: LAYER or SPLIT two sounds</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v2.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=GHOULBOX%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="ghoulbox" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=GHOULBOX%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="ghoulbox" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-ghoulbox" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-ghoulbox" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-ghoulbox" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -553,10 +554,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A chord instrument in the manner of the Orchid: one hand plays roots, the other picks the chord.</p>
         <ul><li>Chord pads: DIM MIN MAJ SUS, 6 m7 M7 9, LOCK</li><li>All 37 keys play roots</li><li>Strum, arp, pattern and harp modes on the pads</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.21 · 636 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=ChoralRoot%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="choralroot" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=ChoralRoot%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="choralroot" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-choralroot" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-choralroot" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-choralroot" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -571,10 +572,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A four-track groovebox with OP-1-inspired screens: three synth parts, a drum machine, an event tape and a mixer.</p>
         <ul><li>The 16 pads are the steps, in the track colours</li><li>Fader banks: level, pan, reverb, delay</li><li>Outer keys play drums on the drum track</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.7.0 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=ORBIT%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="orbit" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=ORBIT%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="orbit" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-orbit" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-orbit" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-orbit" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -589,10 +590,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A generative ambient machine inspired by Music for Airports: loops of different lengths drift past each other and never repeat.</p>
         <ul><li>The 37 keys set the scale, the 16 pads ring bells</li><li>Fader banks: levels, space, garden</li><li>Pitch wheel bends, mod wheel adds vibrato</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v1.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=AMB-1%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="amb" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=AMB-1%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="amb" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-amb" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-amb" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-amb" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -607,10 +608,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A pocket arranger inspired by the Yamaha QY70: a band of eight General MIDI instruments follows the chords you play.</p>
         <ul><li>Pads: sections, Follow and 16 progressions</li><li>Faders: the mixer&#x27;s volumes and effects</li><li>Pitch wheel bends, mod wheel adds vibrato</li><li>No QY70 style bank on the SMK-37</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.4.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Polly%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="polly" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Polly%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="polly" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-polly" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-polly" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-polly" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -625,10 +626,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A synth groovebox in the look of Winamp 2.x, built on SLOOP: player, playlist, effect sliders and a visualizer.</p>
         <ul><li>Pads: the selected track&#x27;s loop, in its colour</li><li>KNOB BANK: pad sounds · FADER BANK: level, filter, reverb, delay</li><li>Pitch wheel bends, mod wheel adds vibrato</li></ul>
         
-        <div class="foot"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
+        <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=winampFM%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="winamp" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=winampFM%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="winamp" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-winamp" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-winamp" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-winamp" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -643,10 +644,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>One 8-voice analog-style polysynth in the spirit of the American poly synths of 1979–84, with chorus, delay and a plate reverb.</p>
         <ul><li>K1–K4: the page&#x27;s knobs · K5–K8: master, tempo, program, track</li><li>Pads: the two-track step sequencer</li><li>Faders: filter and envelope · FADER BANK: chorus, delay, reverb, master</li><li>Pitch wheel bends, mod wheel adds vibrato</li></ul>
         
-        <div class="foot">
+        <div class="foot"><div class="info">
           <span class="meta">v1.2.1 · 636 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="act"><a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=OberVave%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><button class="btn inst" type="button" data-fw="obervave" disabled>Install</button></span></div>
+          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=OberVave%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="obervave" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-obervave" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-obervave" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-obervave" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
