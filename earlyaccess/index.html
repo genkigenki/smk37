@@ -1364,10 +1364,10 @@ async function like(card) {                            // optimistic; back to th
   else { Object.assign(s, was); likedSave(id, !on); }
   h.disabled = false; paint(card);
 }
-document.querySelectorAll(".ticker time").forEach((t) => {   // today / yesterday, by the visitor's calendar
+document.querySelectorAll(".ticker time").forEach((t) => {   // Today / Yesterday by the visitor's calendar, older ones undated
   const d = new Date(t.dateTime + "T00:00"), now = new Date(); now.setHours(0, 0, 0, 0);
   const n = Math.round((now - d) / 864e5);
-  if (n === 0) t.textContent = "Today"; else if (n === 1) t.textContent = "Yesterday";
+  if (n === 0) t.textContent = "Today"; else if (n === 1) t.textContent = "Yesterday"; else t.remove();   // older: no date
 });
 function sortCards() {                                 // each group by likes, most first; ties keep the built order
   const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
