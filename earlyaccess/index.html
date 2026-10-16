@@ -279,6 +279,33 @@ body[data-dev="fm1"] .fm1note { display: block; }
 .card .act { margin-left: auto; display: flex; flex-wrap: wrap; gap: 10px; }
 .card .act .btn { padding: 10px 16px; font-size: 12px; cursor: pointer; }
 .card .act .fb { border-color: #46f0a0; background: rgba(70, 240, 160, .08); box-shadow: 0 0 14px -4px #46f0a0, inset 0 0 12px -6px #46f0a0; }
+.ticker { position: relative; z-index: 2; display: flex; align-items: stretch; height: 38px; overflow: hidden;
+  border-block: 1px solid rgba(255, 176, 60, .35); background: #050505;
+  background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, .03) 0 1px, transparent 1px 3px);
+  font: 500 13px/38px "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+.ticker .tlabel { flex: none; padding: 0 14px; color: #050505; background: var(--amber); font-weight: 700;
+  animation: tblink 1.6s steps(1) infinite; }
+.ticker .tview { flex: 1; min-width: 0; overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
+.ticker .ttrack { display: flex; width: max-content; animation: tscroll 90s linear infinite; }
+.ticker:hover .ttrack, .ticker:focus-within .ttrack { animation-play-state: paused; }
+.ticker .ttrack > span { display: flex; }
+.ticker .ttrack a { padding: 0 18px; color: var(--amber); text-shadow: 0 0 6px rgba(255, 176, 60, .6); white-space: nowrap; }
+.ticker .ttrack a::after { content: "+++"; margin-left: 36px; color: var(--mag); text-shadow: 0 0 6px var(--mag); }
+.ticker .ttrack a b { color: var(--cyan); font-weight: 500; text-shadow: 0 0 6px var(--cyan); }
+.ticker .ttrack a:hover { color: #fff; }
+@keyframes tscroll { to { translate: -50% 0; } }
+@keyframes tblink { 50% { background: var(--mag); } }
+@media (prefers-reduced-motion: reduce) {
+  .ticker .ttrack, .ticker .tlabel { animation: none; }
+  .ticker .tview { overflow-x: auto; }
+}
+#news { scroll-margin-top: 90px; }
+.newslist { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; max-width: 760px; }
+.newslist li { display: flex; gap: 14px; align-items: baseline; }
+.newslist time { flex: none; width: 64px; font: 12px "JetBrains Mono", monospace; letter-spacing: .08em; color: var(--amber); }
+.newslist a { color: var(--ink); }
+.newslist a:hover { color: var(--cyan); }
 .fwgroup { margin-top: 64px; scroll-margin-top: 90px; }
 .fwgroup + .fwgroup { margin-top: 80px; }
 .ghead { border-top: 1px solid var(--line); padding-top: 18px; }
@@ -353,7 +380,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
 
     <div class="fwgroup" id="early">
       <div class="cards">
-        <article class="card fw reveal" data-fw="vox37" data-fm1="1" data-name="Vox37" style="--c: #50ff50">
+        <article class="card fw reveal" id="fw-vox37" data-fw="vox37" data-fm1="1" data-name="Vox37" style="--c: #50ff50">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vox37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-vox37.webp" width="240" height="240" alt="Vox37 on the display"></div>
         <h3>Vox37</h3>
@@ -371,7 +398,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="vector37" data-fm1="1" data-name="Vector37 0.3 beta" style="--c: #8a7dff">
+      <article class="card fw reveal" id="fw-vector37" data-fw="vector37" data-fm1="1" data-name="Vector37 0.3 beta" style="--c: #8a7dff">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37 0.3 beta" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-vector37-beta.webp" width="240" height="240" alt="Vector37 0.3 beta on the display"></div>
         <h3>Vector37 0.3 beta</h3>
@@ -389,7 +416,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="gen37" data-name="Gen37" style="--c: #ff8a3d">
+      <article class="card fw reveal" id="fw-gen37" data-fw="gen37" data-name="Gen37" style="--c: #ff8a3d">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Gen37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-gen37.webp" width="240" height="240" alt="Gen37 on the display"></div>
         <h3>Gen37</h3>

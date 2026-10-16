@@ -279,6 +279,33 @@ body[data-dev="fm1"] .fm1note { display: block; }
 .card .act { margin-left: auto; display: flex; flex-wrap: wrap; gap: 10px; }
 .card .act .btn { padding: 10px 16px; font-size: 12px; cursor: pointer; }
 .card .act .fb { border-color: #46f0a0; background: rgba(70, 240, 160, .08); box-shadow: 0 0 14px -4px #46f0a0, inset 0 0 12px -6px #46f0a0; }
+.ticker { position: relative; z-index: 2; display: flex; align-items: stretch; height: 38px; overflow: hidden;
+  border-block: 1px solid rgba(255, 176, 60, .35); background: #050505;
+  background-image: repeating-linear-gradient(0deg, rgba(255, 255, 255, .03) 0 1px, transparent 1px 3px);
+  font: 500 13px/38px "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; }
+.ticker .tlabel { flex: none; padding: 0 14px; color: #050505; background: var(--amber); font-weight: 700;
+  animation: tblink 1.6s steps(1) infinite; }
+.ticker .tview { flex: 1; min-width: 0; overflow: hidden;
+  mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
+.ticker .ttrack { display: flex; width: max-content; animation: tscroll 90s linear infinite; }
+.ticker:hover .ttrack, .ticker:focus-within .ttrack { animation-play-state: paused; }
+.ticker .ttrack > span { display: flex; }
+.ticker .ttrack a { padding: 0 18px; color: var(--amber); text-shadow: 0 0 6px rgba(255, 176, 60, .6); white-space: nowrap; }
+.ticker .ttrack a::after { content: "+++"; margin-left: 36px; color: var(--mag); text-shadow: 0 0 6px var(--mag); }
+.ticker .ttrack a b { color: var(--cyan); font-weight: 500; text-shadow: 0 0 6px var(--cyan); }
+.ticker .ttrack a:hover { color: #fff; }
+@keyframes tscroll { to { translate: -50% 0; } }
+@keyframes tblink { 50% { background: var(--mag); } }
+@media (prefers-reduced-motion: reduce) {
+  .ticker .ttrack, .ticker .tlabel { animation: none; }
+  .ticker .tview { overflow-x: auto; }
+}
+#news { scroll-margin-top: 90px; }
+.newslist { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 10px; max-width: 760px; }
+.newslist li { display: flex; gap: 14px; align-items: baseline; }
+.newslist time { flex: none; width: 64px; font: 12px "JetBrains Mono", monospace; letter-spacing: .08em; color: var(--amber); }
+.newslist a { color: var(--ink); }
+.newslist a:hover { color: var(--cyan); }
 .fwgroup { margin-top: 64px; scroll-margin-top: 90px; }
 .fwgroup + .fwgroup { margin-top: 80px; }
 .ghead { border-top: 1px solid var(--line); padding-top: 18px; }
@@ -317,7 +344,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
 <header class="hero">
   <canvas id="stage" aria-label="A wireframe FM-1 grows into an SMK-37"></canvas>
   <div class="hud" id="hud" aria-hidden="true"></div>
-  <nav class="nav"><a href="#why">Why</a><a href="#firmwares">Firmwares</a><a href="#firmwares">Install</a><a href="#port">Port kit</a><a href="#mods">Hardware mods</a></nav>
+  <nav class="nav"><a href="#why">Why</a><a href="#firmwares">Firmwares</a><a href="#firmwares">Install</a><a href="#port">Port kit</a><a href="#mods">Hardware mods</a><a href="#news">News</a></nav>
   <div class="title" id="title">
     <h1>SMK<span>37</span></h1>
     <p>Open FM-1 firmwares, unleashed on the M-Vave SMK-37.<br>Same chip. Ten more keys, 16 pads, 4 faders, two wheels.</p>
@@ -326,6 +353,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
   <button class="replay mono" id="replay" type="button">↻ replay</button>
   <div class="scrollcue"></div>
 </header>
+<div class="ticker" role="region" aria-label="News"><a class="tlabel" href="#news">News</a><div class="tview"><div class="ttrack"><span><a href="#firmwares"><b>16 OCT</b> Feedback buttons on every card: ideas and bugs go to GitHub Discussions</a><a href="#fw-snoop37"><b>16 OCT</b> Snoop37 2.7.0: on SLOOP 2.7, the volume knob shows its level</a><a href="earlyaccess/"><b>16 OCT</b> Vector37 0.3 beta also for the FM-1 (early access)</a><a href="earlyaccess/"><b>15 OCT</b> Gen37 0.2 in early access</a><a href="#fw-vector37"><b>14 OCT</b> Vector37: an orbiting overtone synth, with a simulator in the browser</a><a href="#fw-obervave"><b>14 OCT</b> OberVave by zvenson, with its own SMK-37 build</a><a href="#fw-snoop37"><b>14 OCT</b> Snoop37 2.6.4: TRS MIDI out, bend range, wheel calibration</a><a href="earlyaccess/"><b>14 OCT</b> Early access page: Vox37, the singing keyboard</a></span><span aria-hidden="true"><a href="#firmwares"><b>16 OCT</b> Feedback buttons on every card: ideas and bugs go to GitHub Discussions</a><a href="#fw-snoop37"><b>16 OCT</b> Snoop37 2.7.0: on SLOOP 2.7, the volume knob shows its level</a><a href="earlyaccess/"><b>16 OCT</b> Vector37 0.3 beta also for the FM-1 (early access)</a><a href="earlyaccess/"><b>15 OCT</b> Gen37 0.2 in early access</a><a href="#fw-vector37"><b>14 OCT</b> Vector37: an orbiting overtone synth, with a simulator in the browser</a><a href="#fw-obervave"><b>14 OCT</b> OberVave by zvenson, with its own SMK-37 build</a><a href="#fw-snoop37"><b>14 OCT</b> Snoop37 2.6.4: TRS MIDI out, bend range, wheel calibration</a><a href="earlyaccess/"><b>14 OCT</b> Early access page: Vox37, the singing keyboard</a></span></div></div></div>
 
 <section id="why" class="gridbg">
   <div class="wrap reveal">
@@ -369,7 +397,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p><span class="smkword">New firmwares, written for the SMK-37 (and some for the FM-1 too).</span><span class="fm1only">FM-1 builds.</span></p>
       </div>
       <div class="cards">
-        <article class="card fw reveal" data-fw="makkuro37" data-pin="1" data-name="Makkuro37" style="--c: var(--mag)">
+        <article class="card fw reveal" id="fw-makkuro37" data-fw="makkuro37" data-pin="1" data-name="Makkuro37" style="--c: var(--mag)">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Makkuro37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/makkuro37-anim.webp" width="240" height="240" alt="Makkuro37 on the display"></div>
         <h3><a href="https://github.com/genkigenki/Makkuro37">Makkuro37</a></h3>
@@ -387,7 +415,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="vector37" data-fm1="1" data-name="Vector37" style="--c: #8a7dff">
+      <article class="card fw reveal" id="fw-vector37" data-fw="vector37" data-fm1="1" data-name="Vector37" style="--c: #8a7dff">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-vector37.webp" width="240" height="240" alt="Vector37 on the display"></div>
         <h3><a href="https://github.com/genkigenki/Vector37">Vector37</a></h3>
@@ -415,7 +443,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>FM-1 firmwares, ported and extended for the SMK-37.</p>
       </div>
       <div class="cards">
-        <article class="card fw reveal" data-fw="snoop37" data-name="Snoop37 (SLOOP for the SMK-37)" style="--c: var(--cyan)">
+        <article class="card fw reveal" id="fw-snoop37" data-fw="snoop37" data-name="Snoop37 (SLOOP for the SMK-37)" style="--c: var(--cyan)">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Snoop37 (SLOOP for the SMK-37)" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/snoop37-intro.webp" width="240" height="240" alt="Snoop37 (SLOOP for the SMK-37) on the display"></div>
         <h3><a href="https://github.com/isod89/sloop-fm1">Snoop37 (SLOOP for the SMK-37)</a></h3>
@@ -433,7 +461,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="x0x37" data-name="X0X — SMK-37 build" style="--c: var(--t3)">
+      <article class="card fw reveal" id="fw-x0x37" data-fw="x0x37" data-name="X0X — SMK-37 build" style="--c: var(--t3)">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like X0X — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-x0x37.png" width="240" height="240" alt="X0X — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/charlesvestal/fm1-x0x">X0X — SMK-37 build</a></h3>
@@ -451,7 +479,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="fomni37" data-name="FoMni — SMK-37 build" style="--c: var(--t4)">
+      <article class="card fw reveal" id="fw-fomni37" data-fw="fomni37" data-name="FoMni — SMK-37 build" style="--c: var(--t4)">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like FoMni — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-fomni37.png" width="240" height="240" alt="FoMni — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/charlesvestal/fm1-fomni">FoMni — SMK-37 build</a></h3>
@@ -469,7 +497,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="maku37" data-name="MAKU — SMK-37 build" style="--c: #ed7962">
+      <article class="card fw reveal" id="fw-maku37" data-fw="maku37" data-name="MAKU — SMK-37 build" style="--c: #ed7962">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like MAKU — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-maku37.png" width="240" height="240" alt="MAKU — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/okumurari2/maku">MAKU — SMK-37 build</a></h3>
@@ -487,7 +515,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="rainbow37" data-name="Rainbow mode — SMK-37 build" style="--c: #f7c948">
+      <article class="card fw reveal" id="fw-rainbow37" data-fw="rainbow37" data-name="Rainbow mode — SMK-37 build" style="--c: #f7c948">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Rainbow mode — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-rainbow37.webp" width="240" height="240" alt="Rainbow mode — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/joshbartlettband-web/felucca-rainbow">Rainbow mode — SMK-37 build</a></h3>
@@ -505,7 +533,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="ghoulbox" data-name="GHOULBOX — SMK-37 build" style="--c: #7fbf6a">
+      <article class="card fw reveal" id="fw-ghoulbox" data-fw="ghoulbox" data-name="GHOULBOX — SMK-37 build" style="--c: #7fbf6a">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like GHOULBOX — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-ghoulbox.png" width="240" height="240" alt="GHOULBOX — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth">GHOULBOX — SMK-37 build</a></h3>
@@ -523,7 +551,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="choralroot" data-name="ChoralRoot — SMK-37 build" style="--c: #c9a2ff">
+      <article class="card fw reveal" id="fw-choralroot" data-fw="choralroot" data-name="ChoralRoot — SMK-37 build" style="--c: #c9a2ff">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like ChoralRoot — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-choralroot.png" width="240" height="240" alt="ChoralRoot — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/Quixotic7/ChoralRootFM1">ChoralRoot — SMK-37 build</a></h3>
@@ -541,7 +569,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="orbit" data-name="ORBIT — SMK-37 build" style="--c: #ff8a3d">
+      <article class="card fw reveal" id="fw-orbit" data-fw="orbit" data-name="ORBIT — SMK-37 build" style="--c: #ff8a3d">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like ORBIT — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-orbit.png" width="240" height="240" alt="ORBIT — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/dspaudio/orbit">ORBIT — SMK-37 build</a></h3>
@@ -559,7 +587,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="amb" data-name="AMB-1 — SMK-37 build" style="--c: #8fd3c7">
+      <article class="card fw reveal" id="fw-amb" data-fw="amb" data-name="AMB-1 — SMK-37 build" style="--c: #8fd3c7">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like AMB-1 — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-amb.png" width="240" height="240" alt="AMB-1 — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/charlesvestal/fm1-amb">AMB-1 — SMK-37 build</a></h3>
@@ -577,7 +605,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="polly" data-name="Polly — SMK-37 build" style="--c: #ffd166">
+      <article class="card fw reveal" id="fw-polly" data-fw="polly" data-name="Polly — SMK-37 build" style="--c: #ffd166">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Polly — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-polly.png" width="240" height="240" alt="Polly — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/charlesvestal/fm1-polly">Polly — SMK-37 build</a></h3>
@@ -595,7 +623,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="winamp" data-name="winampFM — SMK-37 build" style="--c: #9be564">
+      <article class="card fw reveal" id="fw-winamp" data-fw="winamp" data-name="winampFM — SMK-37 build" style="--c: #9be564">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like winampFM — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-winamp.png" width="240" height="240" alt="winampFM — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/hericdk/winampFM">winampFM — SMK-37 build</a></h3>
@@ -613,7 +641,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" data-fw="obervave" data-name="OberVave — SMK-37 build" style="--c: #ff5a5a">
+      <article class="card fw reveal" id="fw-obervave" data-fw="obervave" data-name="OberVave — SMK-37 build" style="--c: #ff5a5a">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like OberVave — SMK-37 build" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-obervave.png" width="240" height="240" alt="OberVave — SMK-37 build on the display"></div>
         <h3><a href="https://github.com/zvenson/obervave">OberVave — SMK-37 build</a></h3>
@@ -745,6 +773,13 @@ body[data-dev="fm1"] .fm1note { display: block; }
     <button class="video" id="video" type="button" aria-label="Play the video: Makkuro37 and Snoop37 on the SMK-37">
       <img src="assets/video-smk37.webp" alt="" loading="lazy"><span class="play"></span>
       <span class="vnote mono">plays from YouTube</span></button>
+  </div>
+</section>
+
+<section id="news">
+  <div class="wrap">
+    <h2>News</h2>
+    <ul class="newslist"><li><time datetime="2026-10-16">16 OCT</time> <a href="#firmwares">Feedback buttons on every card: ideas and bugs go to GitHub Discussions</a></li><li><time datetime="2026-10-16">16 OCT</time> <a href="#fw-snoop37">Snoop37 2.7.0: on SLOOP 2.7, the volume knob shows its level</a></li><li><time datetime="2026-10-16">16 OCT</time> <a href="earlyaccess/">Vector37 0.3 beta also for the FM-1 (early access)</a></li><li><time datetime="2026-10-15">15 OCT</time> <a href="earlyaccess/">Gen37 0.2 in early access</a></li><li><time datetime="2026-10-14">14 OCT</time> <a href="#fw-vector37">Vector37: an orbiting overtone synth, with a simulator in the browser</a></li><li><time datetime="2026-10-14">14 OCT</time> <a href="#fw-obervave">OberVave by zvenson, with its own SMK-37 build</a></li><li><time datetime="2026-10-14">14 OCT</time> <a href="#fw-snoop37">Snoop37 2.6.4: TRS MIDI out, bend range, wheel calibration</a></li><li><time datetime="2026-10-14">14 OCT</time> <a href="earlyaccess/">Early access page: Vox37, the singing keyboard</a></li><li><time datetime="2026-10-13">13 OCT</time> <a href="#fm1-ports">Five new ports: ORBIT, AMB-1, ChoralRoot, Polly, winampFM</a></li><li><time datetime="2026-10-13">13 OCT</time> <a href="#fm1-ports">Rainbow mode, GHOULBOX, X0X and FoMni on the SMK-37</a></li><li><time datetime="2026-10-13">13 OCT</time> <a href="#mods">Hardware mods: 3D-printable knob caps, a speaker mod</a></li><li><time datetime="2026-10-12">12 OCT</time> <a href="#fm1-ports">MAKU on the SMK-37; packages for the SMK-37 Elite and the MKE-P37</a></li><li><time datetime="2026-10-11">11 OCT</time> <a href="#fw-makkuro37">Site launch: Makkuro37 and Snoop37, the Makkuro37 simulator</a></li></ul>
   </div>
 </section>
 
