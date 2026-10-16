@@ -291,8 +291,9 @@ body[data-dev="fm1"] .fm1note { display: block; }
 .ticker .ttrack { display: flex; width: max-content; animation: tscroll 90s linear infinite; }
 .ticker:hover .ttrack, .ticker:focus-within .ttrack { animation-play-state: paused; }
 .ticker .ttrack > span { display: flex; }
-.ticker .ttrack a { padding: 0 18px; color: var(--amber); text-shadow: 0 0 6px rgba(255, 176, 60, .6); white-space: nowrap; }
-.ticker .ttrack a::after { content: "+++"; margin-left: 36px; color: var(--mag); text-shadow: 0 0 6px var(--mag); }
+.ticker .tday { display: flex; gap: 0 16px; padding: 0 18px; white-space: nowrap; }
+.ticker .tday::after { content: "+++"; margin-left: 20px; color: var(--mag); text-shadow: 0 0 6px var(--mag); }
+.ticker .ttrack a { color: var(--amber); text-shadow: 0 0 6px rgba(255, 176, 60, .6); }
 .ticker .ttrack time { color: var(--cyan); text-shadow: 0 0 6px var(--cyan); }
 .ticker .ttrack i { font-style: normal; color: #46f0a0; text-shadow: 0 0 6px #46f0a0; }
 .ticker .ttrack a:hover { color: #fff; }
@@ -353,7 +354,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
   <button class="replay mono" id="replay" type="button">↻ replay</button>
   <div class="scrollcue"></div>
 </header>
-<div class="ticker" role="region" aria-label="Firmware news"><span class="tlabel">News</span><div class="tview"><div class="ttrack"><span><a href="#fw-snoop37"><time datetime="2026-10-16">16 OCT</time> <i>Updated:</i> Snoop37 2.7.0</a><a href="#fw-vector37"><time datetime="2026-10-14">14 OCT</time> <i>New:</i> Vector37, OberVave</a><a href="#fm1-ports"><time datetime="2026-10-13">13 OCT</time> <i>New:</i> ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode, GHOULBOX</a><a href="#fm1-ports"><time datetime="2026-10-13">13 OCT</time> <i>Updated:</i> X0X 0.2, FoMni 0.2</a><a href="#fw-maku37"><time datetime="2026-10-12">12 OCT</time> <i>New:</i> MAKU</a></span><span aria-hidden="true"><a href="#fw-snoop37"><time datetime="2026-10-16">16 OCT</time> <i>Updated:</i> Snoop37 2.7.0</a><a href="#fw-vector37"><time datetime="2026-10-14">14 OCT</time> <i>New:</i> Vector37, OberVave</a><a href="#fm1-ports"><time datetime="2026-10-13">13 OCT</time> <i>New:</i> ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode, GHOULBOX</a><a href="#fm1-ports"><time datetime="2026-10-13">13 OCT</time> <i>Updated:</i> X0X 0.2, FoMni 0.2</a><a href="#fw-maku37"><time datetime="2026-10-12">12 OCT</time> <i>New:</i> MAKU</a></span></div></div></div>
+<div class="ticker" role="region" aria-label="Firmware news"><span class="tlabel">News</span><div class="tview"><div class="ttrack"><span><span class="tday"><time datetime="2026-10-16">16 OCT</time> <a href="#fw-snoop37"><i>Updated:</i> Snoop37 2.7.0</a></span><span class="tday"><time datetime="2026-10-14">14 OCT</time> <a href="#fw-vector37"><i>New:</i> Vector37, OberVave</a></span><span class="tday"><time datetime="2026-10-13">13 OCT</time> <a href="#fm1-ports"><i>New:</i> ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode, GHOULBOX</a> <a href="#fm1-ports"><i>Updated:</i> X0X 0.2, FoMni 0.2</a></span><span class="tday"><time datetime="2026-10-12">12 OCT</time> <a href="#fw-maku37"><i>New:</i> MAKU</a></span></span><span aria-hidden="true"><span class="tday"><time datetime="2026-10-16">16 OCT</time> <a href="#fw-snoop37"><i>Updated:</i> Snoop37 2.7.0</a></span><span class="tday"><time datetime="2026-10-14">14 OCT</time> <a href="#fw-vector37"><i>New:</i> Vector37, OberVave</a></span><span class="tday"><time datetime="2026-10-13">13 OCT</time> <a href="#fm1-ports"><i>New:</i> ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode, GHOULBOX</a> <a href="#fm1-ports"><i>Updated:</i> X0X 0.2, FoMni 0.2</a></span><span class="tday"><time datetime="2026-10-12">12 OCT</time> <a href="#fw-maku37"><i>New:</i> MAKU</a></span></span></div></div></div>
 
 <section id="why" class="gridbg">
   <div class="wrap reveal">
@@ -2023,10 +2024,10 @@ async function like(card) {                            // optimistic; back to th
   else { Object.assign(s, was); likedSave(id, !on); }
   h.disabled = false; paint(card);
 }
-document.querySelectorAll(".ticker time").forEach((t) => {   // Today / Yesterday by the visitor's calendar, older ones undated
+document.querySelectorAll(".ticker time").forEach((t) => {   // Today / Yesterday, by the visitor's calendar
   const d = new Date(t.dateTime + "T00:00"), now = new Date(); now.setHours(0, 0, 0, 0);
   const n = Math.round((now - d) / 864e5);
-  if (n === 0) t.textContent = "Today"; else if (n === 1) t.textContent = "Yesterday"; else t.remove();   // older: no date
+  if (n === 0) t.textContent = "Today"; else if (n === 1) t.textContent = "Yesterday";
 });
 function sortCards() {                                 // each group by likes, most first; ties keep the built order
   const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
