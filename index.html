@@ -178,7 +178,7 @@ footer .coffee a { color: var(--amber); font-weight: 600; }
 .ctext { flex: 1; min-width: 0; display: grid; }
 .ctext b { font: 700 15px Orbitron, sans-serif; letter-spacing: .05em; }
 .ctext span { color: var(--dim); font-size: 13px; overflow-wrap: anywhere; }
-.card .foot { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
+.card .foot { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 8px; }
 .card .meta { font: 11px "JetBrains Mono", monospace; color: var(--dim); }
 .card .cnt { display: inline-flex; align-items: center; gap: 4px; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: nowrap; }
 .card .cnt[hidden] { display: none; }
@@ -277,8 +277,8 @@ body[data-dev="fm1"] .ghead .smkword { display: none; }
 body[data-dev="fm1"] .fm1note { display: block; }
 .card .foot .tag { border: 0; padding: 0; }                      /* a label, not a button */
 .card .foot .info { flex-basis: 100%; display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; }
-.card .act { margin-left: auto; display: flex; flex-wrap: wrap; gap: 10px; }
-.card .foot .btn { padding: 10px 16px; font-size: 12px; cursor: pointer; }
+.card .act { margin-left: auto; display: flex; gap: 8px; }
+.card .foot .btn { padding: 10px 12px; font-size: 11px; letter-spacing: .12em; cursor: pointer; white-space: nowrap; }
 .card .foot .fb { border-color: #46f0a0; background: rgba(70, 240, 160, .08); box-shadow: 0 0 14px -4px #46f0a0, inset 0 0 12px -6px #46f0a0; }
 .ticker { position: relative; z-index: 2; display: flex; align-items: stretch; height: 38px; overflow: hidden;
   border-block: 1px solid rgba(255, 176, 60, .35); background: #050505;
@@ -293,7 +293,8 @@ body[data-dev="fm1"] .fm1note { display: block; }
 .ticker .ttrack > span { display: flex; }
 .ticker .ttrack a { padding: 0 18px; color: var(--amber); text-shadow: 0 0 6px rgba(255, 176, 60, .6); white-space: nowrap; }
 .ticker .ttrack a::after { content: "+++"; margin-left: 36px; color: var(--mag); text-shadow: 0 0 6px var(--mag); }
-.ticker .ttrack a b { color: var(--cyan); font-weight: 500; text-shadow: 0 0 6px var(--cyan); }
+.ticker .ttrack time { color: var(--cyan); text-shadow: 0 0 6px var(--cyan); }
+.ticker .ttrack i { font-style: normal; color: #46f0a0; text-shadow: 0 0 6px #46f0a0; }
 .ticker .ttrack a:hover { color: #fff; }
 @keyframes tscroll { to { translate: -50% 0; } }
 @keyframes tblink { 50% { background: var(--mag); } }
@@ -307,6 +308,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
 .ghead h3 { margin: 0; font: 900 clamp(22px, 3.2vw, 30px)/1.15 Orbitron, sans-serif; letter-spacing: .04em; }
 .ghead p { margin: 6px 0 0; max-width: 720px; color: #b7cfdc; font-size: 16px; }
 .fwgroup .cards { margin-top: 26px; }
+#firmwares > .wrap { max-width: 1320px; }                         /* room for three cards a row */
+.fwgroup .cards { grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); }
+.card.fw:not(.flag) { display: flex; flex-direction: column; }
+.card.fw:not(.flag) .foot { margin-top: auto; padding-top: 18px; }  /* the buttons on the card's bottom edge */
 #stock { scroll-margin-top: 90px; }
 .cfbox { max-height: 92vh; overflow-y: auto; border-color: var(--amber); box-shadow: 0 0 60px -14px var(--amber), inset 0 0 40px -24px var(--amber); }
 .cfbox h3 { margin-bottom: 12px; font-size: 24px; overflow-wrap: anywhere; }
@@ -348,7 +353,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
   <button class="replay mono" id="replay" type="button">↻ replay</button>
   <div class="scrollcue"></div>
 </header>
-<div class="ticker" role="region" aria-label="Firmware news"><span class="tlabel">News</span><div class="tview"><div class="ttrack"><span><a href="#fw-snoop37"><b>16 OCT</b> Snoop37 2.6.6 and 2.7.0: DAW mode, now on SLOOP 2.7, the volume knob shows its level</a><a href="#fw-vector37"><b>14 OCT</b> New: Vector37, an orbiting overtone synth, and OberVave by zvenson · Snoop37 2.6.5: TRS MIDI out, key velocity</a><a href="#fm1-ports"><b>13 OCT</b> New ports: ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode, GHOULBOX · Snoop37 2.6 on SLOOP 2.6 · X0X and FoMni 0.2</a><a href="#fm1-ports"><b>12 OCT</b> New: MAKU · builds for the SMK-37 Elite and the MKE-P37 · Snoop37 0.1.1</a><a href="#fw-makkuro37"><b>11 OCT</b> Launch: Makkuro37, Snoop37, X0X and FoMni on the SMK-37</a></span><span aria-hidden="true"><a href="#fw-snoop37"><b>16 OCT</b> Snoop37 2.6.6 and 2.7.0: DAW mode, now on SLOOP 2.7, the volume knob shows its level</a><a href="#fw-vector37"><b>14 OCT</b> New: Vector37, an orbiting overtone synth, and OberVave by zvenson · Snoop37 2.6.5: TRS MIDI out, key velocity</a><a href="#fm1-ports"><b>13 OCT</b> New ports: ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode, GHOULBOX · Snoop37 2.6 on SLOOP 2.6 · X0X and FoMni 0.2</a><a href="#fm1-ports"><b>12 OCT</b> New: MAKU · builds for the SMK-37 Elite and the MKE-P37 · Snoop37 0.1.1</a><a href="#fw-makkuro37"><b>11 OCT</b> Launch: Makkuro37, Snoop37, X0X and FoMni on the SMK-37</a></span></div></div></div>
+<div class="ticker" role="region" aria-label="Firmware news"><span class="tlabel">News</span><div class="tview"><div class="ttrack"><span><a href="#fw-snoop37"><time datetime="2026-10-16">16 OCT</time> <i>Updated:</i> Snoop37 2.7.0: now on SLOOP 2.7, the volume knob shows its level</a><a href="#fw-vector37"><time datetime="2026-10-14">14 OCT</time> <i>New:</i> Vector37: an orbiting overtone synth</a><a href="#fw-obervave"><time datetime="2026-10-14">14 OCT</time> <i>New:</i> OberVave by zvenson</a><a href="#fw-snoop37"><time datetime="2026-10-14">14 OCT</time> <i>Updated:</i> Snoop37 2.6.5: TRS MIDI out, key velocity</a><a href="#fm1-ports"><time datetime="2026-10-13">13 OCT</time> <i>New:</i> ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode and GHOULBOX on the SMK-37</a></span><span aria-hidden="true"><a href="#fw-snoop37"><time datetime="2026-10-16">16 OCT</time> <i>Updated:</i> Snoop37 2.7.0: now on SLOOP 2.7, the volume knob shows its level</a><a href="#fw-vector37"><time datetime="2026-10-14">14 OCT</time> <i>New:</i> Vector37: an orbiting overtone synth</a><a href="#fw-obervave"><time datetime="2026-10-14">14 OCT</time> <i>New:</i> OberVave by zvenson</a><a href="#fw-snoop37"><time datetime="2026-10-14">14 OCT</time> <i>Updated:</i> Snoop37 2.6.5: TRS MIDI out, key velocity</a><a href="#fm1-ports"><time datetime="2026-10-13">13 OCT</time> <i>New:</i> ORBIT, AMB-1, ChoralRoot, Polly, winampFM, Rainbow mode and GHOULBOX on the SMK-37</a></span></div></div></div>
 
 <section id="why" class="gridbg">
   <div class="wrap reveal">
@@ -396,12 +401,12 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Makkuro37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/makkuro37-anim.webp" width="240" height="240" alt="Makkuro37 on the display"></div>
         <h3><a href="https://github.com/genkigenki/Makkuro37">Makkuro37</a></h3>
-        <div class="from">new firmware · genkigenki</div>
+        <div class="from">GitHub: <a href="https://github.com/genkigenki/Makkuro37">genkigenki/Makkuro37</a></div>
         <p>A microtonal drone synth: eight voices as eight soot creatures, 96 presets.</p>
         <ul><li>Pads gate eight drone voices, keys play two VCOs</li><li>Tuning sets: just, Pythagorean, 24-TET, maqam, gamelan</li><li>A CHAOS pad, a filter on every knob</li></ul>
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span>
-          <span class="meta">v0.1 · 635 KB · <a href="https://github.com/genkigenki/Makkuro37">github.com/genkigenki/Makkuro37</a></span>
+          <span class="meta">v0.1 · 635 KB</span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/Makkuro37/discussions" title="Your feedback and ideas">Feedback</a><span class="act"><a class="btn alt" href="makkuro37-sim/">Simulator</a><button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
@@ -414,12 +419,12 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-vector37.webp" width="240" height="240" alt="Vector37 on the display"></div>
         <h3><a href="https://github.com/genkigenki/Vector37">Vector37</a></h3>
-        <div class="from">new firmware · genkigenki</div>
+        <div class="from">GitHub: <a href="https://github.com/genkigenki/Vector37">genkigenki/Vector37</a></div>
         <p>An orbiting overtone synth: a moon circles a sun along a path, and where it is decides how much of each of four sounds you hear.</p>
         <ul><li>Four planets, each two overtone generators, a blend and a filter</li><li>Pads and knobs are the planets, the faders the path</li><li>Eight sounds on &lt; &gt; · TRS MIDI out</li></ul>
         <p class="fm1note">FM-1 build: 0.3 beta, untested on a unit. Hold EDIT: the lowest 16 keys are the pads; SEL pages the knobs.</p>
         <div class="foot"><div class="info"><span class="tag ">experimental</span>
-          <span class="meta">v0.2.2 · 635 KB · <a href="https://github.com/genkigenki/Vector37">github.com/genkigenki/Vector37</a></span>
+          <span class="meta">v0.2.2 · 635 KB</span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/Vector37/discussions" title="Your feedback and ideas">Feedback</a><span class="act"><a class="btn alt" href="vector37-sim/">Simulator</a><button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
@@ -2018,6 +2023,11 @@ async function like(card) {                            // optimistic; back to th
   else { Object.assign(s, was); likedSave(id, !on); }
   h.disabled = false; paint(card);
 }
+document.querySelectorAll(".ticker time").forEach((t) => {   // today / yesterday, by the visitor's calendar
+  const d = new Date(t.dateTime + "T00:00"), now = new Date(); now.setHours(0, 0, 0, 0);
+  const n = Math.round((now - d) / 864e5);
+  if (n === 0) t.textContent = "Today"; else if (n === 1) t.textContent = "Yesterday";
+});
 function sortCards() {                                 // each group by likes, most first; ties keep the built order
   const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
   document.querySelectorAll(".fwgroup .cards").forEach((g) => {
