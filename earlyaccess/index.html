@@ -192,7 +192,7 @@ footer .coffee a { color: var(--amber); font-weight: 600; }
 .card .heart:focus-visible { outline: 1px solid var(--c, var(--cyan)); outline-offset: 2px; }
 .card .heart:disabled { cursor: default; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-.card .inst { margin-left: auto; padding: 10px 18px; border-color: var(--c); background: transparent; cursor: pointer;
+.card .inst { border-color: var(--c); background: transparent; cursor: pointer;
   box-shadow: 0 0 14px -4px var(--c), inset 0 0 12px -6px var(--c); }
 .connect .btn:disabled { opacity: .45; cursor: default; border-color: #46f0a0; color: #46f0a0; box-shadow: none; background: transparent; }
 .card .inst:disabled { opacity: .35; cursor: default; box-shadow: none; }
@@ -275,7 +275,10 @@ body[data-dev="fm1"] .card.fw:not([data-fm1]), body[data-dev="fm1"] #fm1-ports, 
 body[data-dev="fm1"] .ghead .smkword { display: none; }
 .fm1note { display: none; font-size: 14px; color: var(--amber); }
 body[data-dev="fm1"] .fm1note { display: block; }
-.card .fb { margin: 6px 0 0; font-size: 14px; } .card .fb a { color: var(--c); }
+.card .foot .tag { border: 0; padding: 0; }                      /* a label, not a button */
+.card .act { margin-left: auto; display: flex; flex-wrap: wrap; gap: 10px; }
+.card .act .btn { padding: 10px 16px; font-size: 12px; cursor: pointer; }
+.card .act .fb { border-color: #46f0a0; background: rgba(70, 240, 160, .08); box-shadow: 0 0 14px -4px #46f0a0, inset 0 0 12px -6px #46f0a0; }
 .fwgroup { margin-top: 64px; scroll-margin-top: 90px; }
 .fwgroup + .fwgroup { margin-top: 80px; }
 .ghead { border-top: 1px solid var(--line); padding-top: 18px; }
@@ -358,11 +361,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A vocoder: plug a battery-powered USB microphone into the keyboard, hold a chord and speak or sing. Confirmed working: DJI Mic Mini 2.</p>
         <ul><li>USB mic in, the keys play the voice</li><li>4 modes, 8 memories, record &amp; play a voice take</li><li>Also for the FM-1 (experimental)</li></ul>
         
-        
         <div class="foot"><span class="tag ">early access</span>
           <span class="meta">v2.4 · 635 KB</span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <button class="btn inst" type="button" data-fw="vox37" disabled>Install</button></div>
+          <span class="act"><button class="btn inst" type="button" data-fw="vox37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-vox37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vox37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vox37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -377,11 +379,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>The next Vector37: stereo that moves with the sun (WIDTH on K7 with no planet selected), the tilted solar-system boot, and a first build for the FM-1.</p>
         <ul><li>Stereo: the planets spread left and right, the sun moves the image</li><li>FM-1: hold EDIT, the lowest 16 keys are the pads; SEL pages the knobs (untested on a unit)</li><li>Install the release on the main page if you just want to play</li></ul>
         
-        
         <div class="foot"><span class="tag ">beta</span>
           <span class="meta">v0.3 · 635 KB</span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></div>
+          <span class="act"><button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-vector37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vector37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vector37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
@@ -396,11 +397,10 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <p>A generative sequencer: eight tracks with Euclid, Turing, random, arp and step generators, chord follow and a harmoniser, on their own MIDI channels and an internal synth and drums.</p>
         <ul><li>35 moods and styles in three banks: SPA, NIGHT DRIVE, HOUSE, BRAINDANCE, GLASSWORK …</li><li>EVOLVE: sections and slow drift, so a mood runs for minutes</li><li>MIDI out over USB and the TRS jack, clock in and out</li></ul>
         
-        
         <div class="foot"><span class="tag ">early access</span>
           <span class="meta">v0.2 · 635 KB</span>
           <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <button class="btn inst" type="button" data-fw="gen37" disabled>Install</button></div>
+          <span class="act"><button class="btn inst" type="button" data-fw="gen37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-gen37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-gen37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-gen37" value="mke"> MKE-P37</label></div>
             <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
