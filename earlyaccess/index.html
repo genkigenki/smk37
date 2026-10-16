@@ -290,6 +290,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
   mask-image: linear-gradient(90deg, transparent, #000 24px, #000 calc(100% - 24px), transparent); }
 .ticker .ttrack { display: flex; width: max-content; animation: tscroll 90s linear infinite; }
 .ticker:hover .ttrack, .ticker:focus-within .ttrack { animation-play-state: paused; }
+.ticker.still .ttrack { animation: none; } .ticker.still .ttrack > span + span { display: none; } .ticker.still .tday::after { content: none; }
 .ticker .ttrack > span { display: flex; }
 .ticker .tday { display: flex; gap: 0 16px; padding: 0 18px; white-space: nowrap; }
 .ticker .tday::after { content: "+++"; margin-left: 20px; color: var(--mag); text-shadow: 0 0 6px var(--mag); }
@@ -1365,10 +1366,15 @@ async function like(card) {                            // optimistic; back to th
   else { Object.assign(s, was); likedSave(id, !on); }
   h.disabled = false; paint(card);
 }
-document.querySelectorAll(".ticker time").forEach((t) => {   // Today / Yesterday, by the visitor's calendar
+document.querySelectorAll(".ticker time").forEach((t) => {   // only today's and yesterday's news, by the visitor's calendar
   const d = new Date(t.dateTime + "T00:00"), now = new Date(); now.setHours(0, 0, 0, 0);
   const n = Math.round((now - d) / 864e5);
-  if (n === 0) t.textContent = "Today"; else if (n === 1) t.textContent = "Yesterday";
+  if (n === 0) t.textContent = "Today"; else if (n === 1) t.textContent = "Yesterday"; else t.parentElement.remove();
+});
+document.querySelectorAll(".ticker").forEach((k) => {
+  if (!k.querySelector(".tday")) return k.remove();   // (nothing new: no ticker)
+  const fit = () => k.classList.toggle("still", k.querySelector(".ttrack > span").offsetWidth <= k.querySelector(".tview").offsetWidth);
+  fit(); addEventListener("resize", fit);              // short news stand still, long ones scroll
 });
 function sortCards() {                                 // each group by likes, most first; ties keep the built order
   const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
