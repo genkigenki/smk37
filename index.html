@@ -316,6 +316,7 @@ body[data-dev="fm1"] .fm1note { display: block; }
 .card.fw:not(.flag) { display: flex; flex-direction: column; }
 .card.fw:not(.flag) .foot { margin-top: auto; padding-top: 18px; }  /* the buttons on the card's bottom edge */
 #stock { scroll-margin-top: 90px; }
+.card.fw { scroll-margin-top: 110px; }                          /* (under the sticky connect bar) */
 .cfbox { max-height: 92vh; overflow-y: auto; border-color: var(--amber); box-shadow: 0 0 60px -14px var(--amber), inset 0 0 40px -24px var(--amber); }
 .cfbox h3 { margin-bottom: 12px; font-size: 24px; overflow-wrap: anywhere; }
 .cfq { margin: 0 0 12px; color: var(--ink); overflow-wrap: anywhere; }
@@ -2054,6 +2055,11 @@ document.querySelectorAll(".ticker").forEach((k) => {
   const fit = () => k.classList.toggle("still", k.querySelector(".ttrack > span").offsetWidth <= k.querySelector(".tview").offsetWidth);
   fit(); addEventListener("resize", fit);              // short news stand still, long ones scroll
 });
+function toHash() {                                    // #fw-x: the card again, once the layout settled (sorting, images)
+  const c = location.hash.startsWith("#fw-") && document.getElementById(location.hash.slice(1));
+  if (c) c.scrollIntoView({ block: "start" });
+}
+addEventListener("load", toHash);
 function sortCards() {                                 // each group by likes, most first; ties keep the built order
   const likes = (c) => (stats[c.dataset.fw] || {}).l || 0;
   document.querySelectorAll(".fwgroup .cards").forEach((g) => {
@@ -2073,7 +2079,7 @@ async function counter() {                             // -> true when the numbe
     for (const [id, s] of Object.entries(got)) if (s && Number.isFinite(s.i) && Number.isFinite(s.l)) stats[id] = { i: s.i, l: s.l };
   } catch (_) { return false; }
   finally { clearTimeout(t); }
-  sortCards();
+  sortCards(); toHash();
   document.querySelectorAll(".card.fw").forEach((c) => { paint(c); c.querySelector(".heart").addEventListener("click", () => like(c)); });
   return true;
 }
