@@ -278,6 +278,7 @@ label.file input { display: none; }
 .ovbox details summary { cursor: pointer; color: var(--dim); font-size: 12px; }
 .ovbox pre { max-height: 160px; overflow: auto; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: pre-wrap; }
 .ovbtns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.ovhang { flex: 1 1 260px; align-self: center; font-size: 12px; color: var(--dim); }
 .ovbtns .btn { cursor: pointer; }
 .ovbtns #ovcopy { padding: 10px 14px; font-size: 11px; border-color: var(--dim); color: var(--dim); box-shadow: none; background: transparent; }
 /* before you install, the firmware groups, the confirmation */
@@ -383,6 +384,8 @@ body[data-page="help"] #firmwares { padding-top: 40px; }
 body[data-page="help"] #stock, body[data-page="help"] #connect { display: none !important; }
 #repair .rsteps2 > div { display: flex; flex-direction: column; gap: 10px; }
 #repair .rsteps2 .btn { align-self: flex-start; margin-top: auto; }
+#repair code { font: 13px "JetBrains Mono", monospace; color: #7cf0a8; word-break: break-all; }
+#repair #rcopy { padding: 4px 10px; font-size: 11px; margin-left: 6px; }
 #repair .rdev { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #c3d8e3; }
 #repair .rdev .led { flex: none; }
 body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
@@ -884,6 +887,17 @@ class Link {
     this.input.onmidimessage = null;
     for (const port of [this.input, this.output]) portUsers.set(port, Math.max(0, (portUsers.get(port) || 1) - 1));
   }
+  // done with a device that restarts in a moment: the ports are closed now, while it is still there
+  closeNow() {
+    if (this.closed) return;
+    this.closed = true;
+    this.input.onmidimessage = null;
+    for (const port of [this.input, this.output]) {
+      const n = Math.max(0, (portUsers.get(port) || 1) - 1);
+      portUsers.set(port, n);
+      if (n <= 0 && port.close && port.state !== "disconnected") Promise.resolve().then(() => port.close()).catch(() => {});
+    }
+  }
   // done with this pair: no more messages, and the ports are closed (after the last answer left)
   close() {
     if (this.closed) return;
@@ -934,6 +948,7 @@ class Updater {
     for (const input of this.access.inputs.values()) {
       if (input.state !== "connected") continue;
       const name = input.name || "";
+      if (/^MIDI(IN|OUT)\d+ \(/i.test(name)) { this.say(`port "${name}": a device's extra port, not probed`); continue; }
       if (!this.all && !PORT_RE.test(name)) { this.say(`port "${name}": not probed`); continue; }   // never probe other gear
       const output = outs.find((o) => o.name === input.name) ||
         outs.find((o) => portBase(o.name || "") === portBase(name)) || (outs.length === 1 ? outs[0] : null);
@@ -1039,7 +1054,8 @@ class Updater {
     const t1 = Date.now();
     await sleep(t.settle);
     const s1 = await this.serve(dev.link, image, 0xE0000000, t.step1Idle, (n) => step("verify", n), { totalMs: t.step1Total });
-    if (s1.finished || s1.lost) dev.link.detach(); else dev.link.close();   // (finished: it restarts into its loader now)
+    if (s1.finished) { await sleep(40); dev.link.closeNow(); }              // (it restarts into its loader now: close
+    else if (s1.lost) dev.link.detach(); else dev.link.close();             //  before it leaves the USB)
     this.log(`step 1: ${s1.served} requests in ${Math.round((Date.now() - t1) / 1000)} s: ${outcome(s1)}`);
     if (s1.timeout) throw fail("timeout", `the keyboard's check of the package did not finish within ${t.step1Total / 1000} s (${s1.served} requests): nothing was written. Switch it off and on.`);
     // some firmwares restart into their loader at once, without step 1: such a loader (ours, of this keyboard) goes on
@@ -1055,7 +1071,7 @@ class Updater {
       throw fail(ota ? "foreign" : "lost", ota ? `the device restarted into the update mode of another firmware (${ota.id.text}): nothing was written`
         : "the device was disconnected after 0 requests: nothing was written", ota ? ota.id.text : "");
     }
-    if (!ota) throw fail("noloader", `the update loader did not appear within ${Math.round((wait + t.reboot) / 1000)} s. Replug the USB cable and press Install again: the device stays in update mode until it is finished.`);
+    if (!ota) throw fail("noloader", `the update loader did not appear within ${Math.round((wait + t.reboot) / 1000)} s. Switch the keyboard off and on, press Reconnect, then Install again: it stays in update mode until the install is finished.`);
     // one of our packages goes only to our loader, of this keyboard: never into another firmware's (the official one
     // lays the image out its own way). An official package (identity _0NN, the way back) keeps the path it had.
     const official = /_0\d\d$/.test(product);
@@ -1314,9 +1330,9 @@ function ov(title, sub, col, info) {
   $("ovcopy").textContent = "Copy log";
   $("ovtitle").textContent = title; $("ovfw").textContent = "// " + sub;
   document.querySelector(".ovbox").style.borderColor = col || "var(--cyan)";
-  $("rsteps").hidden = true;
+  $("rsteps").hidden = true; $("rfreeze").hidden = true;
   document.querySelectorAll("#ovsteps li").forEach((li) => li.style.removeProperty("--p"));
-  LOG.length = 0; $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true;
+  LOG.length = 0; $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true; $("ovreconn").hidden = true;
   document.querySelectorAll("#ovsteps li").forEach((li) => { li.className = ""; });
   $("ovl").hidden = false;
 }
@@ -1357,10 +1373,12 @@ function stepper(image) {
 function finish(ok, msg) {
   $("ovstatus").textContent = msg;
   $("ovclose").hidden = false;
+  $("ovreconn").hidden = ok;
   if (!ok) document.querySelector(".ovbox").style.borderColor = "#ff3c5a";
   busy = false; lockCards();
 }
 $("ovclose").addEventListener("click", () => { $("ovl").hidden = true; scan(); });
+$("ovreconn").addEventListener("click", () => { $("ovl").hidden = true; connected = false; scan(); });
 // the log for a bug report: the page, the browser, the keyboard's and the package's identity and the install log.
 // Nothing personal: the names of MIDI ports that are not an SMK-37 / firmware port (other gear, a phone) are left out
 function logText() {
@@ -1600,12 +1618,14 @@ const RSTATE = { 0: "busy", 1: "ready", 2: "copied, mapping released", 3: "copy 
                  4: "copy kept, mapping rebuilt", 5: "restored", 0x10: "flash error", 0x11: "refused" };
 const rsleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let rfileErr = "";
+const RWIN = false && /Windows/i.test((navigator.userAgentData && navigator.userAgentData.platform) || navigator.userAgent);   // (step 0 off: Windows Runtime MIDI got no messages from the keyboard on a test PC)
+const RWINKEY = "smk37.winrtmidi";
 function rlock() {
   if (!$("rinst")) return;
-  const f = stockFitNow;
-  $("rinst").disabled = busy || !REPAIR || !midi || !connected || !stockPkg || !f || f === "refuse" || (stockPkg && stockPkg.version !== "016" && stockPkg.version !== 16);
+  const f = stockFitNow, winok = !RWIN || $("rwinok").checked;
+  $("rinst").disabled = busy || !REPAIR || !midi || !connected || !stockPkg || !f || f === "refuse" || !winok || (stockPkg && stockPkg.version !== "016" && stockPkg.version !== 16);
   const k = stockPkg, what = k ? "M-Vave " + k.name + " V" + k.version : "";
-  const say = !REPAIR || busy ? "" : rfileErr ? rfileErr : !connected ? (k ? what + ". " : "") + "Connect the keyboard in step 1."
+  const say = !REPAIR || busy ? "" : !winok ? "On Windows, first switch Chrome's MIDI (step 0) and tick the box." : rfileErr ? rfileErr : !connected ? (k ? what + ". " : "") + "Connect the keyboard in step 1."
     : !k ? "Connected: " + keyboardId() + ". Now download V016 for it and drop the file in step 2."
     : String(k.version).replace(/^0+/, "") !== "16" ? what + ": please use V016."
     : f === "refuse" ? what + " does not fit this keyboard (" + keyboardId() + ")."
@@ -1625,6 +1645,15 @@ async function rfile(file) {
   await stockFile(file);                               // (the same check as the M-Vave return: CRCs, model, version)
   if (!stockPkg) rfileErr = "That is not M-Vave's firmware for the SMK-37 range. Download V016 with the link in step 2 and drop that file, unchanged.";
   rlock();
+}
+if ($("rwin")) {
+  $("rwin").hidden = !RWIN;
+  try { $("rwinok").checked = localStorage.getItem(RWINKEY) === "1"; } catch (_) {}
+  $("rwinok").addEventListener("change", () => { try { localStorage.setItem(RWINKEY, $("rwinok").checked ? "1" : "0"); } catch (_) {} rlock(); });
+  $("rcopy").addEventListener("click", async () => {
+    try { await navigator.clipboard.writeText($("rflag").textContent); $("rcopy").textContent = "Copied"; }
+    catch (_) { getSelection().selectAllChildren($("rflag")); $("rcopy").textContent = "Press Ctrl+C"; }
+  });
 }
 if ($("rfile")) {
   $("rfile").addEventListener("change", (e) => rfile(e.target.files[0]));
@@ -1656,6 +1685,7 @@ async function rstatus(up, cmd, ms) {
 }
 // one install over whatever runs now; from update mode (an install cut off) it goes on there
 async function rinstall(up, image, product, step, official) {
+  $("rfreeze").hidden = !(await rstockNow(up));         // (the freeze comes when M-Vave's firmware restarts)
   const ota = await up.find(IS_OTA_ID);
   if (ota) {
     ota.link.close();
@@ -1677,6 +1707,11 @@ async function rstock(up, k, step) {
         "(for example m-bootloader) is installed. Put M-Vave's bootloader back with M-Flasher, then press Repair again: it goes on where it stopped.");
     throw e;
   }
+}
+async function rstockNow(up) {                         // does the keyboard run M-Vave's firmware right now?
+  const d = await up.find();
+  if (d) d.link.close();
+  return !!(d && /_0\d\d$/.test(d.id.text));
 }
 async function repairRun() {
   const k = stockPkg;
