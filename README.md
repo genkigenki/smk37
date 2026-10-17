@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/readme-banner.png" width="100%" alt="SMK37: FM-1 firmwares, unleashed on the SMK-37; the screens of Speak37, Vector37 and Makkuro37"></p>
+
 # SMK37
 
 The website at **[genkigenki.github.io/smk37](https://genkigenki.github.io/smk37/)**: open FM-1 firmwares on the
