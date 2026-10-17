@@ -226,6 +226,23 @@ footer .coffee a { color: var(--amber); font-weight: 600; }
 .sconfirm { display: block; margin: 10px 0 0; font-size: 14px; cursor: pointer; }
 .sconfirm input { accent-color: var(--amber); margin: 0 8px 0 0; vertical-align: -2px; }
 .stock .note { margin: 14px 0 0; }
+.idea form { display: grid; gap: 14px; margin-top: 6px; }
+.idea label { display: grid; gap: 6px; font: 11px "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+.idea label .opt { text-transform: none; letter-spacing: 0; }
+.idea select, .idea textarea, .idea input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px;
+  background: rgba(4, 6, 12, .7); color: var(--ink); font: 15px/1.5 Inter, system-ui, sans-serif; text-transform: none; letter-spacing: 0; }
+.idea textarea { min-height: 120px; resize: vertical; }
+.idea select:focus, .idea textarea:focus, .idea input:focus { outline: none; border-color: var(--c); box-shadow: 0 0 10px -3px var(--c); }
+.idea option { background: #08111f; color: var(--ink); }
+.idea .len { justify-self: end; margin-top: -8px; font: 11px "JetBrains Mono", monospace; color: var(--dim); }
+.idea .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.idea .send { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.idea .send .btn { cursor: pointer; border-color: var(--c); }
+.idea .send .btn:disabled { opacity: .45; cursor: default; }
+.idea .imsg { font-size: 14px; color: var(--dim); }
+.idea .imsg.okay { color: #46f0a0; }
+.idea .imsg.err { color: #ff3c5a; }
+.idea p.small { margin: 0; }
 .card.running .meta::after { content: " · running now"; color: #46f0a0; }
 .tag.soon { color: var(--mag); }
 .card.fw .screen { margin: 4px auto 20px; }
@@ -741,6 +758,26 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <li><b>For tinkerers:</b> <a href="https://github.com/jvitkauskas/m-bootloader" target="_blank" rel="noopener">m-bootloader</a> (open source) adds a recovery menu and download mode from the keys, with
           <a href="https://github.com/jvitkauskas/m-flasher" target="_blank" rel="noopener">M-Flasher</a> for backups. It replaces the keyboard's bootloader: back up first, and know what you are doing.</li>
       </ul>
+    </div>
+    <div class="card stock idea" id="ideas" style="--c: var(--mag)">
+      <h3>Ideas and feedback</h3>
+      <div class="from">no account needed</div>
+      <p>An idea for a firmware, something that bugged you, a sound you miss: write it here. If you have a GitHub account,
+        the Feedback link on each card opens its discussions instead.</p>
+      <form id="ideaform" novalidate>
+        <label>Firmware <span class="opt">(optional)</span>
+          <select name="firmware"><option value="">Not about one firmware</option><option value="makkuro37">Makkuro37</option><option value="vector37">Vector37</option><option value="speak37">Speak37</option><option value="snoop37">Snoop37 (SLOOP for the SMK-37)</option><option value="x0x37">X0X — SMK-37 build</option><option value="fomni37">FoMni — SMK-37 build</option><option value="maku37">MAKU — SMK-37 build</option><option value="rainbow37">Rainbow mode — SMK-37 build</option><option value="ghoulbox">GHOULBOX — SMK-37 build</option><option value="choralroot">ChoralRoot — SMK-37 build</option><option value="orbit">ORBIT — SMK-37 build</option><option value="amb">AMB-1 — SMK-37 build</option><option value="polly">Polly — SMK-37 build</option><option value="winamp">winampFM — SMK-37 build</option><option value="dub">DUB-1 — SMK-37 build</option><option value="obervave">OberVave — SMK-37 build</option><option value="site">This site, the installer</option></select></label>
+        <label>Your idea or feedback
+          <textarea name="text" rows="5" minlength="10" maxlength="2000" required placeholder="At least 10 characters. No links, please."></textarea></label>
+        <span class="len" id="idealen">0 / 2000</span>
+        <label>Contact <span class="opt">(optional, only if you want an answer: an email, a Reddit or GitHub name)</span>
+          <input name="contact" maxlength="200" autocomplete="email"></label>
+        <label class="hp" aria-hidden="true">Website <input name="website" tabindex="-1" autocomplete="off"></label>
+        <p class="small">Your message goes to the author; no IP address is stored. Messages are deleted after 90 days
+          (<a href="legal.html">privacy</a>).</p>
+        <div class="send"><button class="btn" type="submit" id="ideasend">Send</button>
+          <span class="imsg" id="ideamsg" role="status" aria-live="polite"></span></div>
+      </form>
     </div>
   </div>
 </section>
@@ -2147,6 +2184,42 @@ document.getElementById("video").addEventListener("click", function () {
   this.innerHTML = '<iframe src="https://www.youtube-nocookie.com/embed/HqUAT-hULgU?autoplay=1" title="Makkuro37 and Snoop37 on the SMK-37" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
   this.style.cursor = "default";
 }, { once: true });
+</script>
+<script>
+/* ---- the idea box: anonymous feedback to the counter Worker (counter/src/idea.js; site/test_site.mjs runs this block) ---- */
+(() => {
+  const IDEA = "https://smk37-counter.makkuro.workers.dev/idea";
+  const form = document.getElementById("ideaform");
+  if (!form) return;
+  const msg = document.getElementById("ideamsg"), send = document.getElementById("ideasend"), len = document.getElementById("idealen");
+  const text = form.elements.text;
+  const say = (s, cls) => { msg.textContent = s; msg.className = "imsg" + (cls ? " " + cls : ""); };
+  const count = () => { len.textContent = [...text.value.trim()].length + " / 2000"; };
+  text.addEventListener("input", count);
+  const WHY = {
+    "too short": "Please write at least 10 characters.", "too long": "Please keep it under 2000 characters.",
+    "contact too long": "The contact can have at most 200 characters.", "no links, please": "Please leave out links: the box refuses them, against spam.",
+    "unknown firmware": "Please pick a firmware from the list.", "slow down": "One message a minute, please. Try again in a moment.",
+    "busy, try later": "Many messages right now. Please try again in a few minutes.",
+  };
+  form.addEventListener("submit", async (ev) => {
+    ev.preventDefault();
+    const n = [...text.value.trim()].length;
+    if (n < 10) return say(WHY["too short"], "err");
+    if (n > 2000) return say(WHY["too long"], "err");
+    send.disabled = true; say("Sending");
+    const body = { firmware: form.elements.firmware.value, text: text.value, contact: form.elements.contact.value, website: form.elements.website.value };
+    let r = null, got = {};
+    try {
+      r = await fetch(IDEA, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+      got = await r.json().catch(() => ({}));
+    } catch (_) { r = null; }
+    send.disabled = false;
+    if (r && r.ok) { form.reset(); count(); return say("Thank you, it's on its way.", "okay"); }
+    say((r && WHY[got.error]) || "It could not be sent right now. Please try again later.", "err");
+  });
+})();
+/* ---- end of the idea box ---- */
 </script>
 </body>
 </html>

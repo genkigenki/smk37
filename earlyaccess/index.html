@@ -226,6 +226,23 @@ footer .coffee a { color: var(--amber); font-weight: 600; }
 .sconfirm { display: block; margin: 10px 0 0; font-size: 14px; cursor: pointer; }
 .sconfirm input { accent-color: var(--amber); margin: 0 8px 0 0; vertical-align: -2px; }
 .stock .note { margin: 14px 0 0; }
+.idea form { display: grid; gap: 14px; margin-top: 6px; }
+.idea label { display: grid; gap: 6px; font: 11px "JetBrains Mono", monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+.idea label .opt { text-transform: none; letter-spacing: 0; }
+.idea select, .idea textarea, .idea input { width: 100%; padding: 10px 12px; border: 1px solid var(--line); border-radius: 2px;
+  background: rgba(4, 6, 12, .7); color: var(--ink); font: 15px/1.5 Inter, system-ui, sans-serif; text-transform: none; letter-spacing: 0; }
+.idea textarea { min-height: 120px; resize: vertical; }
+.idea select:focus, .idea textarea:focus, .idea input:focus { outline: none; border-color: var(--c); box-shadow: 0 0 10px -3px var(--c); }
+.idea option { background: #08111f; color: var(--ink); }
+.idea .len { justify-self: end; margin-top: -8px; font: 11px "JetBrains Mono", monospace; color: var(--dim); }
+.idea .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.idea .send { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+.idea .send .btn { cursor: pointer; border-color: var(--c); }
+.idea .send .btn:disabled { opacity: .45; cursor: default; }
+.idea .imsg { font-size: 14px; color: var(--dim); }
+.idea .imsg.okay { color: #46f0a0; }
+.idea .imsg.err { color: #ff3c5a; }
+.idea p.small { margin: 0; }
 .card.running .meta::after { content: " · running now"; color: #46f0a0; }
 .tag.soon { color: var(--mag); }
 .card.fw .screen { margin: 4px auto 20px; }
