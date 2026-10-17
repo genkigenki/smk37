@@ -1157,6 +1157,7 @@ const RISKS = [
   ["Unofficial.", "These are community firmwares, not made by M-Vave, and this site is not affiliated with M-Vave. You install them at your own risk, and doing so may void your warranty."],
   ["Experimental.", "Expect bugs. An install can fail and leave the keyboard in update mode; it then needs another install or a return to the M-Vave firmware (on this page)."],
   ["What is lost, what is kept.", "The firmware on the keyboard is replaced, and with it the sounds, patterns and settings it saved. Save anything you want to keep first. This page cannot back up the current firmware; the official one can be downloaded from M-Vave again."],
+  ["From the M-Vave firmware:", "the keyboard needs M-Vave's V016 for the first install. An older one (V013, V015): update it to V016 with M-Vave's updater first."],
   ["While it writes,", "keep the USB cable connected, keep this tab open and the computer awake. If it is interrupted, plug the keyboard in again and press Install again: it continues."],
   ["A hobby project,", "made in free time. Fixes come as time allows. Thanks to M-Vave for the hardware and to the original authors for their firmwares."]];
 const riskItem = (r) => {                                // [bold head, text] or a plain string
@@ -1202,6 +1203,13 @@ async function install(fw) {
   busy = true; lockCards();
   const { model, pkg, refuse } = choosePackage(fw, detected, chosen);
   if (refuse) { ov(fw.name + ": not installed", fw.name + " · for the " + MODELS[model], fw.col); finish(false, refuse); return; }
+  const old = lastId && !FM1(lastId) && /^(SMK-37|MKE-P37|STARRYKEY)/i.test(lastId.model) && lastId.version < 16;
+  if (old) {                                           // (stock before V016: its update mode was not built for this installer)
+    ov(fw.name + ": not installed", "M-Vave firmware V" + String(lastId.version).padStart(3, "0") + " on the keyboard", fw.col);
+    finish(false, "The keyboard runs M-Vave's firmware V" + String(lastId.version).padStart(3, "0") + ". Update it to V016 first with " +
+      "M-Vave's own updater (M-UPGRADE; the V016 files are under Back to the M-Vave firmware), then press Install again.");
+    return;
+  }
   const ok = await confirmInstall("Install " + fw.name + "?",
     "Install " + fw.name + " " + fw.version + " for the " + MODELS[model] + " on the connected keyboard (" + keyboardId() + ")?",
     model !== detected ? "You picked the " + MODELS[model] + " build under Flash another keyboard version; the keyboard was detected as the " + MODELS[detected] + "." : "",
