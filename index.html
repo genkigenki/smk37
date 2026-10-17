@@ -217,6 +217,7 @@ footer .coffee a { color: var(--amber); font-weight: 600; }
   font: 13px "JetBrains Mono", monospace; overflow-wrap: anywhere; }
 .drop:hover, .drop.over { color: var(--ink); background: rgba(255, 176, 42, .06); }
 .drop input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.stock ul.help { margin: 8px 0 0; padding-left: 20px; color: #c3d8e3; font-size: 15px; } .stock ul.help li { margin: 6px 0; }
 .stock .sinfo { margin: 12px 0 0; font-size: 14px; }
 .sinfo b { color: var(--ink); }
 .sinfo.warn { color: var(--amber); }
@@ -726,6 +727,19 @@ body[data-dev="fm1"] .fm1note { display: block; }
         <button class="btn inst" id="sinst" type="button" disabled>Install</button></div>
       <p class="small note">Your keyboard's calibration and pairing are never touched. The firmware on the keyboard, and what it saved, is replaced.
         Keep the USB cable connected and this tab open until it says Done. Afterwards, M-UPGRADE should also work again if you need it.</p>
+    </div>
+    <div class="card stock" id="help" style="--c: var(--cyan)">
+      <h3>If something goes wrong</h3>
+      <ul class="help">
+        <li><b>Cut off while writing:</b> nothing serious. Plug the keyboard in again, press Connect, then Install again: it continues where it stopped.</li>
+        <li><b>Stuck at "switching to update mode" from M-Vave's firmware:</b> the first install needs M-Vave's <b>V016</b>. On an older one (V013, V015) update with M-UPGRADE first; the page checks this and tells you.</li>
+        <li><b>The new firmware does not start</b> (dark or restarting): on most firmwares here, holding <b>OCTAVE−</b> and <b>OCTAVE+</b> for 5 s gives their update mode; then install again here or go back to the M-Vave firmware above (its Install also finishes from update mode).</li>
+        <li><b>The keyboard is in another firmware's update mode:</b> switch it off and on (its firmware starts again), or finish that update with that firmware's own updater or M-UPGRADE.</li>
+        <li><b>Black screen and the computer sees a disk "WL82 UBOOT1.00":</b> this is the chip's own download mode. On an <b>FM-1</b>: <a href="https://github.com/Quixotic7/MvaveFM1Unbricker" target="_blank" rel="noopener">MvaveFM1Unbricker</a>. On an <b>SMK-37</b>: don't use the FM-1's factory files; ask in the
+          <a href="https://www.reddit.com/r/MVaveFirmware/" target="_blank" rel="noopener">community</a> first.</li>
+        <li><b>For tinkerers:</b> <a href="https://github.com/jvitkauskas/m-bootloader" target="_blank" rel="noopener">m-bootloader</a> (open source) adds a recovery menu and download mode from the keys, with
+          <a href="https://github.com/jvitkauskas/m-flasher" target="_blank" rel="noopener">M-Flasher</a> for backups. It replaces the keyboard's bootloader: back up first, and know what you are doing.</li>
+      </ul>
     </div>
   </div>
 </section>
