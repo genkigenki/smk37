@@ -265,6 +265,12 @@ label.file input { display: none; }
   border-top: 3px solid #1b2a44; padding-top: 6px; }
 .ovsteps li.on { color: var(--cyan); border-color: var(--cyan); box-shadow: 0 -6px 12px -6px var(--cyan); }
 .ovsteps li.ok { color: #46f0a0; border-color: #46f0a0; }
+#ovsteps li { position: relative; }
+#ovsteps li.on { border-top-color: #1b2a44; }
+#ovsteps li::before { content: ""; position: absolute; left: 0; top: -3px; height: 3px; width: var(--p, 0%);
+  background: var(--cyan); box-shadow: 0 0 8px var(--cyan); transition: width .25s linear; }
+#ovsteps li.ok::before { width: 100%; background: #46f0a0; box-shadow: none; }
+#ovl .bar { display: none; }
 .bar { height: 8px; background: #0d1526; border: 1px solid #1b2a44; overflow: hidden; }
 .bar i { display: block; height: 100%; width: 0; transition: width .25s linear;
   background: linear-gradient(90deg, var(--cyan), var(--mag)); box-shadow: 0 0 14px var(--cyan); }
@@ -362,6 +368,38 @@ body[data-dev="fm1"] .fm1note { display: block; }
 @media (prefers-reduced-motion: reduce) {
   .reveal, .title { transition: none; }
 }
+
+/* help.html: the same page in help mode (make_site.py sets data-page="help"): the guide, Connect, the M-Vave return
+   and the repair; the main page shows a short help card that links there */
+body:not([data-page="help"]) #guide, body:not([data-page="help"]) #repair { display: none; }
+body[data-page="help"] .hero, body[data-page="help"] .ticker, body[data-page="help"] #why,
+body[data-page="help"] #firmwares > .wrap > .reveal:first-child, body[data-page="help"] .devsel,
+body[data-page="help"] .fm1only, body[data-page="help"] .fwgroup, body[data-page="help"] #firmwares > .wrap > .note,
+body[data-page="help"] #help, body[data-page="help"] #ideas, body[data-page="help"] #port, body[data-page="help"] #mods,
+body[data-page="help"] #video-sec { display: none !important; }
+body[data-page="help"] #firmwares { padding-top: 40px; }
+#guide { margin: 0 0 34px; }
+#guide > p.lead { max-width: 760px; }
+body[data-page="help"] #stock, body[data-page="help"] #connect { display: none !important; }
+#repair .rsteps2 > div { display: flex; flex-direction: column; gap: 10px; }
+#repair .rsteps2 .btn { align-self: flex-start; margin-top: auto; }
+#repair .rdev { display: flex; align-items: center; gap: 10px; font-size: 14px; color: #c3d8e3; }
+#repair .rdev .led { flex: none; }
+body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
+#repair .rsteps2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 16px; margin: 16px 0 6px; }
+#repair .rsteps2 > div { border: 1px solid #1d2a3a; border-radius: 10px; padding: 14px 16px; background: #070b14; color: #c3d8e3; font-size: 15px; }
+#repair .rsteps2 b.n { display: block; color: #7cf0a8; font: 12px "JetBrains Mono", monospace; letter-spacing: .08em; margin-bottom: 6px; }
+#repair .drop { margin-top: 10px; }
+#rsteps { grid-template-columns: repeat(5, 1fr); margin-bottom: 10px; }
+#rsteps li.on { color: #7cf0a8; border-color: #7cf0a8; box-shadow: 0 -6px 12px -6px #7cf0a8; }
+#guide .back { display: inline-block; margin: 0 0 18px; font-size: 14px; }
+#guide ol.steps { counter-reset: st; list-style: none; padding: 0; margin: 22px 0 0; display: grid; gap: 16px;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 380px), 1fr)); }
+#guide ol.steps > li { counter-increment: st; position: relative; padding: 16px 18px 16px 54px; margin: 0;
+  border: 1px solid #1d2a3a; border-radius: 10px; background: #070b14; color: #c3d8e3; font-size: 15px; }
+#guide ol.steps > li::before { content: counter(st); position: absolute; left: 16px; top: 13px; width: 24px; height: 24px;
+  border-radius: 50%; border: 1px solid var(--cyan); color: var(--cyan); font: 12px/24px "JetBrains Mono", monospace; text-align: center; }
+#guide ol.steps b.q { display: block; color: #fff; margin-bottom: 4px; }
 </style>
 <style>
 /* the early-access page: a banner instead of the hero (the rest is index.html's style) */
@@ -837,6 +875,15 @@ class Link {
     }
     return this.q.shift() || null;
   }
+  // done with a device that restarts now (after step 1, after step 2): no more messages, but the ports are not
+  // closed. Closing a port while its device leaves the USB has hung Chrome's MIDI on Windows; the browser drops
+  // the ports of a device that is gone by itself
+  detach() {
+    if (this.closed) return;
+    this.closed = true;
+    this.input.onmidimessage = null;
+    for (const port of [this.input, this.output]) portUsers.set(port, Math.max(0, (portUsers.get(port) || 1) - 1));
+  }
   // done with this pair: no more messages, and the ports are closed (after the last answer left)
   close() {
     if (this.closed) return;
@@ -844,6 +891,14 @@ class Link {
     this.input.onmidimessage = null;
     releasePort(this.input); releasePort(this.output);
   }
+}
+
+// a device that restarts: wait (at most ms) until the browser reports its ports as gone. Opening a port whose device
+// is leaving the USB has hung Chrome's MIDI on Windows (the whole browser), so nothing is probed before that
+async function gone(link, ms) {
+  const end = Date.now() + ms;
+  while (Date.now() < end && !link.lost) await sleep(100);
+  return link.lost;
 }
 
 async function handshake(link, tries = 3) {
@@ -877,7 +932,7 @@ class Updater {
   async find(filter) {
     const outs = [...this.access.outputs.values()];
     for (const input of this.access.inputs.values()) {
-      if (input.state === "disconnected") continue;
+      if (input.state !== "connected") continue;
       const name = input.name || "";
       if (!this.all && !PORT_RE.test(name)) { this.say(`port "${name}": not probed`); continue; }   // never probe other gear
       const output = outs.find((o) => o.name === input.name) ||
@@ -984,13 +1039,14 @@ class Updater {
     const t1 = Date.now();
     await sleep(t.settle);
     const s1 = await this.serve(dev.link, image, 0xE0000000, t.step1Idle, (n) => step("verify", n), { totalMs: t.step1Total });
-    dev.link.close();
+    if (s1.finished || s1.lost) dev.link.detach(); else dev.link.close();   // (finished: it restarts into its loader now)
     this.log(`step 1: ${s1.served} requests in ${Math.round((Date.now() - t1) / 1000)} s: ${outcome(s1)}`);
     if (s1.timeout) throw fail("timeout", `the keyboard's check of the package did not finish within ${t.step1Total / 1000} s (${s1.served} requests): nothing was written. Switch it off and on.`);
     // some firmwares restart into their loader at once, without step 1: such a loader (ours, of this keyboard) goes on
     const jumped = !s1.finished && s1.lost && s1.served === 0;
     if (!s1.finished && !jumped) throw fail(s1.lost ? "lost" : "stopped", `the device ${s1.lost ? "was disconnected" : "stopped"} after ${s1.served} requests: nothing was written`);
     step("loader");
+    await gone(dev.link, 15000);                       // never probe a port while its device is still leaving the USB
     await sleep(t.reboot);
     const wait = jumped ? t.jumped : t.loader;
     const ota = await this.waitFor(IS_OTA, wait, (s) => step("wait", s + Math.round(t.reboot / 1000)));
@@ -1010,6 +1066,7 @@ class Updater {
     const s2 = await this.write(ota, image, step);
     if (!s2.finished) throw this.writeFail(s2);
     step("reboot");
+    await gone(ota.link, 15000);
     await sleep(t.reboot);
     const back = await this.waitFor((id) => !IS_OTA(id), t.back, (s) => step("back", s));
     if (!back) throw fail("noreturn", "the device did not come back: power-cycle it");
@@ -1030,7 +1087,7 @@ class Updater {
     const s2 = await this.serve(ota.link, image, 0xF0000000, t.idle, (n) => step("write", n), {
       firstMs: t.firstReq, maxReq: 3 * Math.ceil(image.length / MAXDATA) + 64,
       resend: OUR_LOADER(ota.id) ? t.resend : [], onWait: (s) => { if (s >= 3) step("noreq", s); } });
-    ota.link.close();
+    if (s2.finished || s2.lost) ota.link.detach(); else ota.link.close();   // (finished: it restarts into the new firmware)
     this.log(`step 2: ${s2.served} requests in ${Math.round((Date.now() - t2) / 1000)} s: ${outcome(s2)}`);
     return s2;
   }
@@ -1066,6 +1123,7 @@ class Updater {
     if (!s2.finished) { if (s2.norequest || s2.toomany) throw this.writeFail(s2); return false; }
     if (opts.product) {
       step("reboot");
+      await gone(ota.link, 15000);
       await sleep(this.t.reboot);
       const back = await this.waitFor((id) => !IS_OTA(id), this.t.back, (s) => step("back", s));
       if (!back) throw fail("noreturn", "the FM-1 did not come back after the write: power-cycle it");
@@ -1117,6 +1175,10 @@ function led(state, name, sub) {
   $("led").className = "led " + (state || "");
   if (name !== undefined) $("devname").textContent = name;
   if (sub !== undefined) $("devsub").textContent = sub;
+  if ($("rled")) {                                     // (the help page's step 1 shows the same)
+    $("rled").className = "led " + (state || "");
+    $("rdev").textContent = $("devname").textContent + ($("devsub").textContent ? ": " + $("devsub").textContent : "");
+  }
 }
 function running(dev) {                                  // what the keyboard runs, from its port name and identity
   const n = dev.name || "", id = dev.id.text;
@@ -1252,12 +1314,20 @@ function ov(title, sub, col, info) {
   $("ovcopy").textContent = "Copy log";
   $("ovtitle").textContent = title; $("ovfw").textContent = "// " + sub;
   document.querySelector(".ovbox").style.borderColor = col || "var(--cyan)";
+  $("rsteps").hidden = true;
+  document.querySelectorAll("#ovsteps li").forEach((li) => li.style.removeProperty("--p"));
   LOG.length = 0; $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true;
   document.querySelectorAll("#ovsteps li").forEach((li) => { li.className = ""; });
   $("ovl").hidden = false;
 }
+const chip = (k, f) => {                              // the step's chip fills with its progress (0..1)
+  const li = document.querySelector('#ovsteps li[data-k="' + k + '"]');
+  if (li) li.style.setProperty("--p", Math.round(Math.max(0, Math.min(1, f)) * 100) + "%");
+};
 function mark(k) {
   const i = ORDER.indexOf(k);
+  document.querySelectorAll("#ovsteps li").forEach((li, j) => { if (j > i) li.style.removeProperty("--p"); });
+  chip(k, k === "start" || k === "done" ? 1 : 0.04);
   document.querySelectorAll("#ovsteps li").forEach((li, j) => { li.className = j < i ? "ok" : j === i ? (k === "done" ? "ok" : "on") : ""; });
   $("ovstatus").textContent = SAY[k];
 }
@@ -1271,12 +1341,14 @@ function stepper(image) {
   return (k, a) => {
     if (WAITING[k]) {                                  // a live line; the log gets one every 10 s
       $("ovstatus").textContent = WAITING[k](a);
+      if (k === "back") chip("reboot", a / 30); else chip("loader", a / 30);
       if (a % 10 === 0) logln(k + " " + a + " s");
       return;
     }
     if ((k !== "verify" && k !== "write") || a === 1 || a % 64 === 0) logln(k + " " + (a ?? ""));
     if (ORDER.includes(k)) mark(k);
-    if (k === "verify") $("ovbar").style.width = Math.min(12, a / 8) + "%";
+    if (k === "verify") { $("ovbar").style.width = Math.min(12, a / 8) + "%"; chip("verify", a / 20); }
+    if (k === "write") chip("write", a * 512 / image.length);
     if (k === "write") $("ovbar").style.width = Math.min(97, 12 + (a * 512 / image.length) * 85) + "%";
     if (k === "reboot") $("ovbar").style.width = "98%";
     if (k === "done") $("ovbar").style.width = "100%";
@@ -1458,6 +1530,7 @@ function stockShow() {
 }
 function stockLock() {
   const f = stockFitNow;
+  if (typeof rlock === "function") setTimeout(rlock, 0);
   $("sinst").disabled = busy || !midi || !connected || !stockPkg || !f || f === "refuse" || (f !== "same" && !$("sconfirm").checked);
 }
 async function stockFile(file) {
@@ -1516,6 +1589,181 @@ async function stockInstall() {
   }
 }
 $("sinst").addEventListener("click", stockInstall);
+
+/* ---- the repair wizard (#repair): repair firmware (STASH) -> V016 (rebuilds the mapping) -> repair firmware (RESTORE)
+   -> V016. The repair firmware answers F0 7D 52 45 50 02 <state> <flags> F7 and writes only on a command from here ---- */
+const REPAIR = [/*REPAIR*/][0] || null;
+const REPAIR_ID = (id) => !/^ota-/i.test(id.model) && /_49\d+$/.test(id.text);
+const RQ = { query: [0xF0, 0x7D, 0x52, 0x45, 0x50, 0x01, 0xF7], stash: [0xF0, 0x7D, 0x52, 0x45, 0x50, 0x03, 0xF7],
+             restore: [0xF0, 0x7D, 0x52, 0x45, 0x50, 0x04, 0xF7] };
+const RSTATE = { 0: "busy", 1: "ready", 2: "copied, mapping released", 3: "copy kept, mapping not rebuilt yet",
+                 4: "copy kept, mapping rebuilt", 5: "restored", 0x10: "flash error", 0x11: "refused" };
+const rsleep = (ms) => new Promise((r) => setTimeout(r, ms));
+let rfileErr = "";
+function rlock() {
+  if (!$("rinst")) return;
+  const f = stockFitNow;
+  $("rinst").disabled = busy || !REPAIR || !midi || !connected || !stockPkg || !f || f === "refuse" || (stockPkg && stockPkg.version !== "016" && stockPkg.version !== 16);
+  const k = stockPkg, what = k ? "M-Vave " + k.name + " V" + k.version : "";
+  const say = !REPAIR || busy ? "" : rfileErr ? rfileErr : !connected ? (k ? what + ". " : "") + "Connect the keyboard in step 1."
+    : !k ? "Connected: " + keyboardId() + ". Now download V016 for it and drop the file in step 2."
+    : String(k.version).replace(/^0+/, "") !== "16" ? what + ": please use V016."
+    : f === "refuse" ? what + " does not fit this keyboard (" + keyboardId() + ")."
+    : f === "same" ? what + " fits your keyboard (" + keyboardId() + "). Ready: press Repair."
+    : what + ": your keyboard reports " + keyboardId() + ". Make sure the file is for the model printed on it, then press Repair.";
+  $("rinfo").textContent = say; $("rinfo").hidden = !say;
+  $("rconn").disabled = busy || !navigator.requestMIDIAccess;
+  $("rconn").textContent = connected ? "Connect again" : "Connect";
+  if (lastId && $("rlinks")) {                           // the download for the connected model first
+    const m = modelOf(lastId), a = $("rlinks").querySelectorAll("a");
+    a.forEach((x, i) => { x.style.fontWeight = (m === "pro" && i === 0) || (m === "elite" && i === 1) || (m === "mke" && i === 2) ? "700" : ""; });
+  }
+}
+async function rfile(file) {
+  if (!file || busy) return;
+  rfileErr = ""; $("rdroptext").textContent = file.name;
+  await stockFile(file);                               // (the same check as the M-Vave return: CRCs, model, version)
+  if (!stockPkg) rfileErr = "That is not M-Vave's firmware for the SMK-37 range. Download V016 with the link in step 2 and drop that file, unchanged.";
+  rlock();
+}
+if ($("rfile")) {
+  $("rfile").addEventListener("change", (e) => rfile(e.target.files[0]));
+  const rd = $("rdrop");
+  rd.addEventListener("dragover", (e) => { e.preventDefault(); rd.classList.add("over"); });
+  rd.addEventListener("dragleave", () => rd.classList.remove("over"));
+  rd.addEventListener("drop", (e) => { e.preventDefault(); rd.classList.remove("over"); rfile(e.dataTransfer.files[0]); });
+}
+function rstage(n) {                                     // 0..4: the chip of the stage that runs, the ones before done
+  $("rsteps").hidden = false;
+  $("rsteps").querySelectorAll("li").forEach((li, i) => { li.className = i < n ? "ok" : i === n ? "on" : ""; });
+}
+// one command to the repair firmware -> {state, flags} (its first non-busy answer), or null
+async function rstatus(up, cmd, ms) {
+  const dev = await up.waitFor(REPAIR_ID, 20000);
+  if (!dev) return null;
+  try {
+    dev.link.drain();
+    dev.link.send(cmd);
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      const p = await dev.link.read(Math.min(1000, end - Date.now()));
+      if (!p) { if (cmd === RQ.query) dev.link.send(RQ.query); continue; }
+      if (p.length === 9 && p[1] === 0x7D && p[2] === 0x52 && p[3] === 0x45 && p[4] === 0x50 && p[5] === 0x02 && p[6] !== 0)
+        return { state: p[6], flags: p[7] };
+    }
+    return null;
+  } finally { dev.link.close(); }
+}
+// one install over whatever runs now; from update mode (an install cut off) it goes on there
+async function rinstall(up, image, product, step, official) {
+  const ota = await up.find(IS_OTA_ID);
+  if (ota) {
+    ota.link.close();
+    if (!official && !OUR_LOADER(ota.id))               // (our package only into our own loader)
+      throw new Error("The keyboard is in another firmware's update mode (" + ota.id.text + "). Switch it off and on, connect and press Repair again.");
+    if (!(await up.resume(image, step, { product, anyModel: true })))
+      throw new Error("Stopped. Replug the USB cable and press Repair again: it goes on where it stopped.");
+    return;
+  }
+  await up.install(image, product, step, true, official ? {} : { refuseOldStock: true });
+}
+// M-Vave's package from the repair firmware; its update entry refuses it at once when the keyboard's boot area is not
+// M-Vave's (m-bootloader installed): say so, nothing was written
+async function rstock(up, k, step) {
+  try { await rinstall(up, k.image, k.product, step, true); }
+  catch (e) {
+    if (e && e.code === "stopped" && /after [0-9] requests/.test(e.message))
+      throw new Error("The keyboard refused M-Vave's package at once: nothing was written. This happens when another bootloader " +
+        "(for example m-bootloader) is installed. Put M-Vave's bootloader back with M-Flasher, then press Repair again: it goes on where it stopped.");
+    throw e;
+  }
+}
+async function repairRun() {
+  const k = stockPkg;
+  if (busy || !k || !REPAIR) return;
+  busy = true; lockCards(); rlock();
+  const { pkg, refuse } = choosePackage(REPAIR, detected, chosen);
+  if (refuse) { ov("Repair: not started", REPAIR.name, "#7cf0a8", {}); finish(false, refuse); rlock(); return; }
+  const ok = await confirmInstall("Repair the key mapping?",
+    "Repair the key mapping of the connected keyboard (" + keyboardId() + ")? The page installs the repair firmware and M-Vave " + k.name + " V" + k.version + ", twice each. It takes about 10 minutes.",
+    stockFitNow && stockFitNow !== "same" ? "The keyboard reports " + keyboardId() + ". Make sure the M-Vave file is for the model printed on your keyboard." : "",
+    ["The firmware on the keyboard, and the sounds and settings it saved, are replaced: afterwards it runs M-Vave's firmware with its factory presets.",
+     "Your calibration, wheel values and Bluetooth pairings are copied first and put back at the end.",
+     "Keep the USB cable connected and this tab open until it says Done (about 10 minutes). If it stops, press Repair again: it goes on where it stopped."]);
+  if (!ok) { busy = false; lockCards(); rlock(); return; }
+  ov("Repairing the key mapping", "about 10 min · repair firmware + M-Vave " + k.name + " V" + k.version, "#7cf0a8",
+     { firmware: "repair wizard", package: pkg.product + " + " + k.product });
+  const PHASE = ["Installs the small repair firmware, which copies your calibration, wheel values and pairings to a free area.",
+                 "Installs M-Vave's V016. On its first start it writes a clean factory key mapping (this erases the calibration: it comes back in step 4).",
+                 "Installs the repair firmware once more.",
+                 "Writes your calibration, wheel values and pairings back, checks them and deletes the copy.",
+                 "Installs M-Vave's V016 again: the keyboard is done."];
+  const phase = (t, n) => {
+    $("ovtitle").textContent = t; logln("== " + t);
+    if (n !== undefined) { rstage(n); $("ovfw").textContent = "// step " + (n + 1) + " of 5 · " + PHASE[n]; }
+  };
+  try {
+    const up = new Updater(await access(), logln, { all: allPorts });
+    const rimage = await load(pkg);
+    let st = null;
+    const now = await up.find();                       // (a second press goes on where the first one stopped)
+    if (now) now.link.close();
+    if (now && REPAIR_ID(now.id)) st = await rstatus(up, RQ.query, 8000);
+    for (let round = 0; round < 8; round++) {
+      logln("state: " + (st ? (RSTATE[st.state] || st.state) + " (flags " + st.flags + ")" : "the repair firmware is not running"));
+      if (!st) {
+        phase("Installing the repair firmware", 0); mark("start");
+        await rinstall(up, rimage, pkg.product, stepper(rimage), false);
+        st = await rstatus(up, RQ.query, 8000);
+        if (!st) throw new Error("The repair firmware does not answer. Switch the keyboard off and on, connect and press Repair again.");
+      } else if (st.state === 1) {
+        phase("Copying calibration and pairings", 0);
+        st = await rstatus(up, RQ.stash, 30000);
+        if (!st || st.state !== 2) throw new Error("The copy did not finish (" + (st ? RSTATE[st.state] || st.state : "no answer") + "). Press Repair again.");
+      } else if (st.state === 2 || st.state === 3) {
+        phase("M-Vave's firmware rebuilds its mapping", 1); mark("start");
+        await rstock(up, k, stepper(k.image));
+        // its first start writes the factory presets: leave the ports alone meanwhile, then wait for it to answer
+        // twice (probing a keyboard that is still busy has hung Chrome's MIDI on Windows)
+        $("ovstatus").textContent = "M-Vave's firmware writes its factory mapping. Please wait…";
+        const dl = document.querySelector('#ovsteps li[data-k="done"]');
+        dl.textContent = "Waiting for rewrite"; dl.className = "on";
+        for (let w = 0; w < 12; w++) { dl.style.setProperty("--p", Math.round(w / 12 * 100) + "%"); await rsleep(1000); }
+        dl.textContent = "Done";
+        for (let n = 0; n < 2; n++) {
+          const s = await up.waitFor((id) => /_0\d\d$/.test(id.text), 40000);
+          if (!s) throw new Error("M-Vave's firmware does not answer. Switch the keyboard off and on, connect and press Repair again: it goes on where it stopped.");
+          s.link.close();
+          await rsleep(2000);
+        }
+        phase("Installing the repair firmware again", 2); mark("start");
+        await rinstall(up, rimage, pkg.product, stepper(rimage), false);
+        st = await rstatus(up, RQ.query, 8000);
+        if (!st) throw new Error("The repair firmware does not answer. Switch the keyboard off and on, connect and press Repair again.");
+        if (st.state === 3) throw new Error("M-Vave's firmware did not rebuild its mapping. Switch the keyboard off and on, connect and press Repair again.");
+      } else if (st.state === 4) {
+        phase("Putting calibration and pairings back", 3);
+        st = await rstatus(up, RQ.restore, 30000);
+        if (!st || st.state !== 5) throw new Error("Putting them back did not finish (" + (st ? (RSTATE[st.state] || st.state) + ", flags " + st.flags : "no answer") + "). The copy is kept: press Repair again.");
+      } else if (st.state === 5) {
+        const f = st.flags;
+        phase("Back to M-Vave's firmware", 4); mark("start");
+        await rstock(up, k, stepper(k.image));
+        rstage(5);
+        finish(true, "Done: the keyboard runs M-Vave " + k.product + " with a clean key mapping. " +
+          (f & 4 ? "Calibration, wheel values and pairings are back." : "Calibration and pairings are back (there were no wheel values to keep).") +
+          (f & 0x18 ? " Some of it could not be put back (flags " + f + "): please Copy log and send it to us." : ""));
+        return;
+      } else throw new Error("The repair firmware reports: " + (RSTATE[st.state] || st.state) + " (flags " + st.flags + "). Nothing more was written. Please Copy log and send it to us.");
+    }
+    throw new Error("The repair did not finish. Please Copy log and send it to us.");
+  } catch (e) {
+    logln(String((e && e.stack) || e));
+    finish(false, (e && e.message) || String(e));
+  } finally { rlock(); }
+}
+if ($("rinst")) $("rinst").addEventListener("click", repairRun);
+if ($("rconn")) $("rconn").addEventListener("click", () => { connected = false; scan(); });
 
 /* ---- the counter: installs and likes per card (site/test_site.mjs runs this block); the page works without it ---- */
 const COUNTER = "https://smk37-counter.makkuro.workers.dev";
