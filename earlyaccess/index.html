@@ -698,7 +698,7 @@ const IS_OTA = (id) => /^ota-/i.test(id.model);
 // Elite's and the MKE-P37's model name, Makkuro37 _7XX). A device left in the update mode of another firmware (the
 // stock updater's loader) is never written: its loader may lay the image out differently. The bare "SMK-37" name
 // ("ota-SMK-37_931") is ChanceTheMaker's SMK firmwares' RAM updater: another package format, so not ours.
-const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[5-9]\d\d$/i.test(id.text);   // (also Speak37 _5XX, Gen37 _6XX)
+const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[3-9]\d\d$/i.test(id.text);   // (also Polly _3XX, Speak37 _5XX, Gen37 _6XX, DUB-1 _8XX)
 // ChanceTheMaker's SMK firmwares (Felucca SMK, Sloop SMK, Melodee SMK, Doom): "SMK-37_9NN", their own updater
 const OTHER_SMK = (id) => /^(ota-)?SMK-37_9\d\d$/i.test(id.text);
 // the SMK-37 Pro, SMK-37 Elite, MKE-P37, Starrykey 37 Play and the SMK-37+VA mod: one keyboard under several model
@@ -912,6 +912,13 @@ class Updater {
         : "the device was disconnected after 0 requests: nothing was written", ota ? ota.id.text : "");
     }
     if (!ota) throw fail("noloader", "the update loader did not appear. Replug the USB cable and press Install again: the device stays in update mode until it is finished.");
+    // one of our packages goes only to our loader, of this keyboard: never into another firmware's (the official one
+    // lays the image out its own way). An official package (identity _0NN, the way back) keeps the path it had.
+    const official = /_0\d\d$/.test(product);
+    if (!official && !(OUR_LOADER(ota.id) && sameKeyboard(ota.id.model.replace(/^ota-/i, ""), dev.id.model))) {
+      ota.link.close();
+      throw fail("foreign", `the device started the update mode of another firmware (${ota.id.text}): nothing was written. Switch it off and on.`, ota.id.text);
+    }
     const s2 = await this.write(ota, image, step);
     if (!s2.finished) throw fail(s2.lost ? "lost" : "stopped", `the loader ${s2.lost ? "was disconnected" : "stopped"} after ${s2.served} requests. Replug and press Install again to resume.`);
     step("reboot");
@@ -1125,7 +1132,7 @@ const SAY = { start: "Talking to the keyboard", verify: "The keyboard checks the
 function ov(title, sub, col) {
   $("ovtitle").textContent = title; $("ovfw").textContent = "// " + sub;
   document.querySelector(".ovbox").style.borderColor = col || "var(--cyan)";
-  $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true;
+  LOG.length = 0; $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true;
   document.querySelectorAll("#ovsteps li").forEach((li) => { li.className = ""; });
   $("ovl").hidden = false;
 }
@@ -1134,7 +1141,12 @@ function mark(k) {
   document.querySelectorAll("#ovsteps li").forEach((li, j) => { li.className = j < i ? "ok" : j === i ? (k === "done" ? "ok" : "on") : ""; });
   $("ovstatus").textContent = SAY[k];
 }
-const logln = (t) => { $("ovlog").textContent += t + "\n"; };
+const LOG = [];                                         // the install log: the last 300 lines, drawn at most 4 times a second
+let logTimer = 0;
+const logln = (t) => {
+  LOG.push(t); if (LOG.length > 300) LOG.splice(0, LOG.length - 300);
+  if (!logTimer) logTimer = setTimeout(() => { logTimer = 0; $("ovlog").textContent = LOG.join("\n") + "\n"; }, 250);
+};
 function stepper(image) {
   return (k, a) => {
     logln(k + " " + (a ?? ""));
