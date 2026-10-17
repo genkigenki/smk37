@@ -274,6 +274,7 @@ label.file input { display: none; }
 body[data-dev="fm1"] .fm1only { display: block; }
 body[data-dev="fm1"] .card.fw:not([data-fm1]), body[data-dev="fm1"] #fm1-ports, body[data-dev="fm1"] #stock { display: none; }
 body[data-dev="fm1"] .ghead .smkword { display: none; }
+.card .warnnote { font-size: 14px; color: var(--amber); margin: 8px 0 0; }
 .fm1note { display: none; font-size: 14px; color: var(--amber); }
 body[data-dev="fm1"] .fm1note { display: block; }
 .card .foot .tag { border: 0; padding: 0; }                      /* a label, not a button */
@@ -1225,7 +1226,7 @@ async function install(fw) {
   }
   const ok = await confirmInstall("Install " + fw.name + "?",
     "Install " + fw.name + " " + fw.version + " for the " + MODELS[model] + " on the connected keyboard (" + keyboardId() + ")?",
-    model !== detected ? "You picked the " + MODELS[model] + " build under Flash another keyboard version; the keyboard was detected as the " + MODELS[detected] + "." : "",
+    [fw.warn ? "⚠ " + fw.warn : "", model !== detected ? "You picked the " + MODELS[model] + " build under Flash another keyboard version; the keyboard was detected as the " + MODELS[detected] + "." : ""].filter(Boolean).join(" "),
     RISKS);
   if (!ok) { busy = false; lockCards(); return; }
   ov("Installing " + fw.name, fw.name + " " + fw.version + " · for the " + MODELS[model], fw.col);
