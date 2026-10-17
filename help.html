@@ -278,6 +278,7 @@ label.file input { display: none; }
 .ovbox details summary { cursor: pointer; color: var(--dim); font-size: 12px; }
 .ovbox pre { max-height: 160px; overflow: auto; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: pre-wrap; }
 .ovbtns { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+.ovstatus.late { color: #ff5c7a; }
 .ovhang { flex: 1 1 260px; align-self: center; font-size: 12px; color: var(--dim); }
 .ovbtns .btn { cursor: pointer; }
 .ovbtns #ovcopy { padding: 10px 14px; font-size: 11px; border-color: var(--dim); color: var(--dim); box-shadow: none; background: transparent; }
@@ -918,7 +919,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
           <a href="https://www.m-vave.com/download" target="_blank" rel="noopener">other models</a></span>. Then drop the file here:</span>
           <label class="drop" id="rdrop"><input type="file" id="rfile" accept=".fwsc"><span id="rdroptext">Drop the .fwsc file here, or click to choose it</span></label></div>
         <div><b class="n">3 · REPAIR</b><span>Press Repair. Keep the cable in and this tab open until it says Done. If it stops, press Repair again: it goes on where it stopped.</span>
-          <span class="small"><b>If Chrome freezes</b> (a known Chrome bug on some Windows PCs when M-Vave's firmware restarts): end Chrome in the Task Manager, open this page again, press Connect and Repair. It goes on where it stopped; your keyboard is safe in update mode.</span>
+          <span class="small"><b>If Chrome freezes</b> (a known Chrome bug on some Windows PCs when M-Vave's firmware restarts): end Chrome in the Task Manager, open this page again, press Connect and the Repair button again. It goes on where it stopped; your keyboard is safe in update mode.</span>
           <p class="sinfo" id="rinfo" hidden></p>
           <button class="btn inst" id="rinst" type="button" disabled>Repair</button></div>
       </div>
@@ -961,15 +962,14 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
       <li data-k="start">Connect</li><li data-k="verify">Verify</li><li data-k="loader">Update mode</li>
       <li data-k="write">Write</li><li data-k="reboot">Restart</li><li data-k="done">Done</li>
     </ol>
-    <p class="small" id="rfreeze" hidden style="color:#ffd27a"><b>If Chrome freezes</b> (a known Chrome bug on some Windows PCs when M-Vave's firmware restarts): end Chrome in the Task Manager, open this page again, press Connect and Repair. It goes on where it stopped; your keyboard is safe in update mode.</p>
+    <p class="small" id="rfreeze" hidden style="color:#ffd27a"><b>If Chrome freezes</b> (a known Chrome bug on some Windows PCs when M-Vave's firmware restarts): end Chrome in the Task Manager, open this page again, press Connect and the Repair button again. It goes on where it stopped; your keyboard is safe in update mode.</p>
     <div class="bar"><i id="ovbar"></i></div>
     <p id="ovstatus" class="ovstatus">Starting</p>
     <details><summary>Log</summary><pre id="ovlog"></pre></details>
     <div class="ovbtns">
-      <button class="btn" id="ovreconn" type="button" hidden>Reconnect</button>
       <button class="btn" id="ovclose" type="button" hidden>Close</button>
       <button class="btn" id="ovcopy" type="button" title="Copies the log, the browser, the keyboard's and the package's identity (nothing personal), to paste into a message to us">Copy log</button>
-      <span class="ovhang">If Chrome hangs: close it (Task Manager), open this page again, Connect and press the same button. It goes on where it stopped.</span>
+      <span class="ovhang">If Chrome hangs: close it (Task Manager), open this page again, Connect and press the <span class="btnname">Install</span> button again. It goes on where it stopped.</span>
     </div>
   </div>
 </div>
@@ -1950,7 +1950,7 @@ class Updater {
       throw fail(ota ? "foreign" : "lost", ota ? `the device restarted into the update mode of another firmware (${ota.id.text}): nothing was written`
         : "the device was disconnected after 0 requests: nothing was written", ota ? ota.id.text : "");
     }
-    if (!ota) throw fail("noloader", `the update loader did not appear within ${Math.round((wait + t.reboot) / 1000)} s. Switch the keyboard off and on, press Reconnect, then Install again: it stays in update mode until the install is finished.`);
+    if (!ota) throw fail("noloader", `the update loader did not appear within ${Math.round((wait + t.reboot) / 1000)} s. Close Chrome, open this page again, press Connect and the Install or Repair button again: it goes on where it stopped.`);
     // one of our packages goes only to our loader, of this keyboard: never into another firmware's (the official one
     // lays the image out its own way). An official package (identity _0NN, the way back) keeps the path it had.
     const official = /_0\d\d$/.test(product);
@@ -1960,6 +1960,7 @@ class Updater {
     }
     const s2 = await this.write(ota, image, step);
     if (!s2.finished) throw this.writeFail(s2);
+    step("written");
     step("reboot");
     await gone(ota.link, 15000);
     await sleep(t.reboot);
@@ -2016,6 +2017,7 @@ class Updater {
     const step = onStep || (() => {});
     const s2 = await this.write(ota, image, step);
     if (!s2.finished) { if (s2.norequest || s2.toomany) throw this.writeFail(s2); return false; }
+    step("written");
     if (opts.product) {
       step("reboot");
       await gone(ota.link, 15000);
@@ -2211,7 +2213,7 @@ function ov(title, sub, col, info) {
   document.querySelector(".ovbox").style.borderColor = col || "var(--cyan)";
   $("rsteps").hidden = true; $("rfreeze").hidden = true;
   document.querySelectorAll("#ovsteps li").forEach((li) => li.style.removeProperty("--p"));
-  LOG.length = 0; $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true; $("ovreconn").hidden = true;
+  LOG.length = 0; $("ovlog").textContent = ""; $("ovbar").style.width = "0"; $("ovclose").hidden = true;
   document.querySelectorAll("#ovsteps li").forEach((li) => { li.className = ""; });
   $("ovl").hidden = false;
 }
@@ -2226,6 +2228,8 @@ function mark(k) {
   document.querySelectorAll("#ovsteps li").forEach((li, j) => { li.className = j < i ? "ok" : j === i ? (k === "done" ? "ok" : "on") : ""; });
   $("ovstatus").textContent = SAY[k];
 }
+const BTN = () => document.body.dataset.page === "help" ? "Repair" : "Install";
+document.querySelectorAll(".btnname").forEach((n) => { n.textContent = BTN(); });
 const LOG = [];                                         // the install log: the last 300 lines, drawn at most 4 times a second
 let logTimer = 0;
 const logln = (t) => {
@@ -2235,11 +2239,14 @@ const logln = (t) => {
 function stepper(image) {
   return (k, a) => {
     if (WAITING[k]) {                                  // a live line; the log gets one every 10 s
-      $("ovstatus").textContent = WAITING[k](a);
+      const late = a >= 15;
+      $("ovstatus").textContent = WAITING[k](a) + (late ? " Not connected yet: restart Chrome, open this page again, press Connect and the " + BTN() + " button again. It goes on where it stopped." : "");
+      $("ovstatus").classList.toggle("late", late);
       if (k === "back") chip("reboot", a / 30); else chip("loader", a / 30);
       if (a % 10 === 0) logln(k + " " + a + " s");
       return;
     }
+    $("ovstatus").classList.remove("late");
     if ((k !== "verify" && k !== "write") || a === 1 || a % 64 === 0) logln(k + " " + (a ?? ""));
     if (ORDER.includes(k)) mark(k);
     if (k === "verify") { $("ovbar").style.width = Math.min(12, a / 8) + "%"; chip("verify", a / 20); }
@@ -2252,12 +2259,10 @@ function stepper(image) {
 function finish(ok, msg) {
   $("ovstatus").textContent = msg;
   $("ovclose").hidden = false;
-  $("ovreconn").hidden = ok || !/did not appear|did not come back|not found|disconnected|does not answer|off and on/i.test(msg);   // (only when it waits for the keyboard)
   if (!ok) document.querySelector(".ovbox").style.borderColor = "#ff3c5a";
   busy = false; lockCards();
 }
 $("ovclose").addEventListener("click", () => { $("ovl").hidden = true; scan(); });
-$("ovreconn").addEventListener("click", () => { $("ovl").hidden = true; connected = false; scan(); });
 // the log for a bug report: the page, the browser, the keyboard's and the package's identity and the install log.
 // Nothing personal: the names of MIDI ports that are not an SMK-37 / firmware port (other gear, a phone) are left out
 function logText() {
@@ -2612,7 +2617,12 @@ async function repairRun() {
                  "Installs the repair firmware once more.",
                  "Writes your calibration, wheel values and pairings back, checks them and deletes the copy.",
                  "Installs M-Vave's V016 again: the keyboard is done."];
+  const RKEY = "smk37.repairstage";
+  const saved = () => { try { return +(localStorage.getItem(RKEY) || 0); } catch (_) { return 0; } };
+  const keep = (n) => { try { n === null ? localStorage.removeItem(RKEY) : localStorage.setItem(RKEY, String(n)); } catch (_) {} };
   const phase = (t, n) => {
+    if (n === 0 && saved() >= 2) { n = 2; t = "Installing the repair firmware again"; }   // (the copy is made: this is step 3)
+    if (n !== undefined && n > saved()) keep(n);
     $("ovtitle").textContent = t; logln("== " + t);
     if (n !== undefined) { rstage(n); $("ovfw").textContent = "// step " + (n + 1) + " of 5 · " + PHASE[n]; }
   };
@@ -2631,6 +2641,7 @@ async function repairRun() {
         st = await rstatus(up, RQ.query, 8000);
         if (!st) throw new Error("The repair firmware does not answer. Switch the keyboard off and on, connect and press Repair again.");
       } else if (st.state === 1) {
+        keep(0);                                        // (a new copy: a new run)
         phase("Copying calibration and pairings", 0);
         st = await rstatus(up, RQ.stash, 30000);
         if (!st || st.state !== 2) throw new Error("The copy did not finish (" + (st ? RSTATE[st.state] || st.state : "no answer") + "). Press Repair again.");
@@ -2662,11 +2673,28 @@ async function repairRun() {
       } else if (st.state === 5) {
         const f = st.flags;
         phase("Back to M-Vave's firmware", 4); mark("start");
-        await rstock(up, k, stepper(k.image));
-        rstage(5);
-        finish(true, "Done: the keyboard runs M-Vave " + k.product + " with a clean key mapping. " +
+        const st5 = stepper(k.image);
+        const done = "Done! Your keyboard's key mapping is repaired. " +
           (f & 4 ? "Calibration, wheel values and pairings are back." : "Calibration and pairings are back (there were no wheel values to keep).") +
-          (f & 0x18 ? " Some of it could not be put back (flags " + f + "): please Copy log and send it to us." : ""));
+          (f & 0x18 ? " Some of it could not be put back (flags " + f + "): please Copy log and send it to us." : "") +
+          " M-Vave's firmware starts in a moment.";
+        await new Promise((resolve, reject) => {
+          let written = false;
+          rstock(up, k, (key, a) => {
+            if (written) return;                         // (the restart afterwards is not the page's business)
+            st5(key, a);
+            if (key === "written") {
+              written = true; keep(null);
+              rstage(5); mark("done");
+              $("ovtitle").textContent = "Repaired";
+              $("ovfw").textContent = "// done";
+              logln("written: the repair is complete");
+              finish(true, done);
+              resolve();
+            }
+          }).then(() => { if (!written) { keep(null); rstage(5); finish(true, done); resolve(); } },
+                  (e) => { if (!written) reject(e); else logln("after the write: " + ((e && e.message) || e)); });
+        });
         return;
       } else throw new Error("The repair firmware reports: " + (RSTATE[st.state] || st.state) + " (flags " + st.flags + "). Nothing more was written. Please Copy log and send it to us.");
     }
