@@ -697,7 +697,7 @@ const IS_OTA = (id) => /^ota-/i.test(id.model);
 // Elite's and the MKE-P37's model name, Makkuro37 _7XX). A device left in the update mode of another firmware (the
 // stock updater's loader) is never written: its loader may lay the image out differently. The bare "SMK-37" name
 // ("ota-SMK-37_931") is ChanceTheMaker's SMK firmwares' RAM updater: another package format, so not ours.
-const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[789]\d\d$/i.test(id.text);
+const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[5-9]\d\d$/i.test(id.text);   // (also Speak37 _5XX, Gen37 _6XX)
 // ChanceTheMaker's SMK firmwares (Felucca SMK, Sloop SMK, Melodee SMK, Doom): "SMK-37_9NN", their own updater
 const OTHER_SMK = (id) => /^(ota-)?SMK-37_9\d\d$/i.test(id.text);
 // the SMK-37 Pro, SMK-37 Elite, MKE-P37, Starrykey 37 Play and the SMK-37+VA mod: one keyboard under several model
@@ -716,7 +716,7 @@ function stockFit(deviceModel, product) {
   return NAMED.test(dm) ? "other" : "unknown";
 }
 // the MIDI ports find() probes: the FM-1 / SMK models' and the firmwares' names; other gear is never sent anything
-const PORT_RE = /fm-1|smk|elite|mke-p37|starry|felucca|sloop|clipper|melodee|fomni|x0x|makkuro|maku|rainbow|amb-1|choral|orbit|snoop|vector|vox|gen37|ota|composite|sinco|usb-midi/i;
+const PORT_RE = /fm-1|smk|speak|dub|elite|mke-p37|starry|felucca|sloop|clipper|melodee|fomni|x0x|makkuro|maku|rainbow|amb-1|choral|orbit|snoop|vector|vox|gen37|ota|composite|sinco|usb-midi/i;
 // a port name without its in / out part (Windows names a device's second port pair "MIDIIN2 (X)" / "MIDIOUT2 (X)")
 const portBase = (n) => n.replace(/^MIDI(?:IN|OUT)(\d*) \((.*)\)$/i, "$2 $1").replace(/[ -](?:in|out|input|output)$/i, "").trim().toLowerCase();
 
