@@ -2252,7 +2252,7 @@ function stepper(image) {
 function finish(ok, msg) {
   $("ovstatus").textContent = msg;
   $("ovclose").hidden = false;
-  $("ovreconn").hidden = ok;
+  $("ovreconn").hidden = ok || !/did not appear|did not come back|not found|disconnected|does not answer|off and on/i.test(msg);   // (only when it waits for the keyboard)
   if (!ok) document.querySelector(".ovbox").style.borderColor = "#ff3c5a";
   busy = false; lockCards();
 }
