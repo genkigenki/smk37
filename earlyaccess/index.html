@@ -423,24 +423,6 @@ body[data-dev="fm1"] .fm1note { display: block; }
               reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
           </details>
       </article>
-      <article class="card fw reveal" id="fw-vector37" data-fw="vector37" data-fm1="1" data-name="Vector37 0.3 beta" style="--c: #8a7dff">
-        <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Vector37 0.3 beta" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
-        <div class="screen"><img src="assets/shot-vector37-beta.webp" width="240" height="240" alt="Vector37 0.3 beta on the display"></div>
-        <h3>Vector37 0.3 beta</h3>
-        <div class="from">new firmware · genkigenki · SMK-37 and FM-1</div>
-        <p>The next Vector37: stereo that moves with the sun (WIDTH on K7 with no planet selected), the tilted solar-system boot, and a first build for the FM-1.</p>
-        <ul><li>Stereo: the planets spread left and right, the sun moves the image</li><li>FM-1: hold EDIT, the lowest 16 keys are the pads; SEL pages the knobs (untested on a unit)</li><li>Install the release on the main page if you just want to play</li></ul>
-        
-        <div class="foot"><div class="info"><span class="tag ">beta</span>
-          <span class="meta">v0.3 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
-          <span class="act"><button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></span></div>
-          <details class="model"><summary>Flash another keyboard version</summary>
-            <div class="models"><label><input type="radio" name="model-vector37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vector37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vector37" value="mke"> MKE-P37</label></div>
-            <p>The same firmware under another model name. Pick your keyboard's own model (an Elite running an older build here
-              reports SMK-37 Pro), so M-Vave's updater accepts its factory firmware again. Starrykey 37 Play: use SMK-37 Pro.</p>
-          </details>
-      </article>
       <article class="card fw reveal" id="fw-gen37" data-fw="gen37" data-name="Gen37" style="--c: #ff8a3d">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Gen37" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
         <div class="screen"><img src="assets/shot-gen37.webp" width="240" height="240" alt="Gen37 on the display"></div>
@@ -1095,7 +1077,7 @@ class Updater {
   }
 }
 
-const FW = [{"id": "vox37", "name": "Vox37", "version": "2.4", "col": "#50ff50", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/vox37-2.4.fwsc", "sha256": "c35b488f4c6c333ef02b58811ec48985db3ec9eae97bd2be55373ca35c582214", "size": 651208}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/vox37-2.4-elite.fwsc", "sha256": "52a0f0f60416978b3fa5df3cd256b0b2c7841d9a74ace829d229c3e98596e4ff", "size": 651208}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/vox37-2.4-mke.fwsc", "sha256": "d08205fff02f05427e756235e9643f6c4224aef4be63ec3218272f2e837a4acf", "size": 651204}, "fm1": {"product": "FM-1_900", "pkg": "firmware/vox37-2.4-fm1.fwsc", "sha256": "e3230422d985199d387203da4391e69ef4b8bcac716e18c4fd25b2137b65b28b", "size": 610086}}}, {"id": "vector37", "name": "Vector37 0.3 beta", "version": "0.3", "col": "#8a7dff", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/vector37-0.3.fwsc", "sha256": "c4e7bb18992a9d7379565c162fb15f9f7f79b036abd5c134fc635822c1d5e2a7", "size": 651194}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/vector37-0.3-elite.fwsc", "sha256": "0eb0b1db58d1cc7111066295c67470b27a23fa86c49f727c899a5943737819d2", "size": 651194}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/vector37-0.3-mke.fwsc", "sha256": "678a4e7f4c9e566977e5a089b33f20d8d75201c0f9058efd47e843d862c9f59e", "size": 651190}, "fm1": {"product": "FM-1_700", "pkg": "firmware/vector37-0.3-fm1.fwsc", "sha256": "01c178f69899d97b7b4205993c38542e9ef50e7c3756defc573a8b2157a52773", "size": 610019}}}, {"id": "gen37", "name": "Gen37", "version": "0.2", "col": "#ff8a3d", "v": {"pro": {"product": "SMK-37 Pro_600", "pkg": "firmware/gen37-0.2.fwsc", "sha256": "0329a95e70cd3869a3dd05377d9073a878bbea9fa46d94baa88d2c18b2f55f2d", "size": 651206}, "elite": {"product": "SMK-37 Elite_600", "pkg": "firmware/gen37-0.2-elite.fwsc", "sha256": "556a2e4bf748cf86b1e6625afb70c7ea31fdd7976b1e09327c12fcca004ed466", "size": 651206}, "mke": {"product": "MKE-P37_600", "pkg": "firmware/gen37-0.2-mke.fwsc", "sha256": "2cf368ff806b211dd15d369758a2f7b8c1ac22a3f61ad87a7a6fdd6938583054", "size": 651202}}}];
+const FW = [{"id": "vox37", "name": "Vox37", "version": "2.4", "col": "#50ff50", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/vox37-2.4.fwsc", "sha256": "c35b488f4c6c333ef02b58811ec48985db3ec9eae97bd2be55373ca35c582214", "size": 651208}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/vox37-2.4-elite.fwsc", "sha256": "52a0f0f60416978b3fa5df3cd256b0b2c7841d9a74ace829d229c3e98596e4ff", "size": 651208}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/vox37-2.4-mke.fwsc", "sha256": "d08205fff02f05427e756235e9643f6c4224aef4be63ec3218272f2e837a4acf", "size": 651204}, "fm1": {"product": "FM-1_900", "pkg": "firmware/vox37-2.4-fm1.fwsc", "sha256": "e3230422d985199d387203da4391e69ef4b8bcac716e18c4fd25b2137b65b28b", "size": 610086}}}, {"id": "gen37", "name": "Gen37", "version": "0.2", "col": "#ff8a3d", "v": {"pro": {"product": "SMK-37 Pro_600", "pkg": "firmware/gen37-0.2.fwsc", "sha256": "0329a95e70cd3869a3dd05377d9073a878bbea9fa46d94baa88d2c18b2f55f2d", "size": 651206}, "elite": {"product": "SMK-37 Elite_600", "pkg": "firmware/gen37-0.2-elite.fwsc", "sha256": "556a2e4bf748cf86b1e6625afb70c7ea31fdd7976b1e09327c12fcca004ed466", "size": 651206}, "mke": {"product": "MKE-P37_600", "pkg": "firmware/gen37-0.2-mke.fwsc", "sha256": "2cf368ff806b211dd15d369758a2f7b8c1ac22a3f61ad87a7a6fdd6938583054", "size": 651202}}}];
 const $ = (id) => document.getElementById(id);
 const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
 const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
