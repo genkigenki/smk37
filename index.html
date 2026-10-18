@@ -183,6 +183,10 @@ footer .coffee a { color: var(--amber); font-weight: 600; }
 .card .cnt { display: inline-flex; align-items: center; gap: 4px; font: 11px "JetBrains Mono", monospace; color: var(--dim); white-space: nowrap; }
 .card .cnt[hidden] { display: none; }
 .card .cnt b { font-weight: 500; color: #c3d8e3; }
+.card .cnt i { font-style: normal; }
+.card .cnt .cf { margin-left: 8px; }
+body[data-dev="smk"] .card .cnt .cf, body[data-dev="fm1"] .card .cnt .ck { display: none; }   /* (each tab: its device's installs) */
+body[data-dev="fm1"] .card .cnt .cf { margin-left: 0; }
 .card .likebox { position: absolute; top: 12px; right: 30px; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 2px; }
 .card .likebox[hidden] { display: none; }
 .card .likebox b { font: 500 12px "JetBrains Mono", monospace; color: #c3d8e3; }
@@ -520,7 +524,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span>
           <span class="meta">v0.3 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/Makkuro37/discussions" title="Your feedback and ideas">Feedback</a><span class="act"><a class="btn alt" href="makkuro37-sim/">Simulator</a><button class="btn inst" type="button" data-fw="makkuro37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-makkuro37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-makkuro37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-makkuro37" value="mke"> MKE-P37</label></div>
@@ -538,7 +542,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p class="fm1note">FM-1 build: experimental. Hold EDIT: the lowest 16 keys are the pads; SEL pages the knobs.</p>
         <div class="foot"><div class="info"><span class="tag ">experimental</span>
           <span class="meta">v0.3.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span><span class="cf" title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="cfi">0</b> <i>FM-1</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/Vector37/discussions" title="Your feedback and ideas">Feedback</a><span class="act"><a class="btn alt" href="vector37-sim/">Simulator</a><button class="btn inst" type="button" data-fw="vector37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-vector37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-vector37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-vector37" value="mke"> MKE-P37</label></div>
@@ -556,7 +560,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p class="fm1note">FM-1: Need feedback how to improve the usage on the FM-1. Hold EDIT for MOPE.</p>
         <div class="foot"><div class="info"><span class="tag ">experimental</span>
           <span class="meta">v1.0 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span><span class="cf" title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="cfi">0</b> <i>FM-1</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/Speak37/discussions" title="Your feedback and ideas">Feedback</a><span class="act"><a class="btn alt" href="speak37-sim/">Simulator</a><button class="btn inst" type="button" data-fw="speak37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-speak37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-speak37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-speak37" value="mke"> MKE-P37</label></div>
@@ -574,7 +578,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p class="fm1note">FM-1: untested on a unit, feedback welcome. KNOB 1-4 the page, SELECT the page, ALGORITHM the voices, PRESETS your sounds.</p>
         <div class="foot"><div class="info"><span class="tag ">experimental</span>
           <span class="meta">v1.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span><span class="cf" title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="cfi">0</b> <i>FM-1</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/erik37/discussions" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="erik37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-erik37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-erik37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-erik37" value="mke"> MKE-P37</label></div>
@@ -602,7 +606,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v2.7.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Snoop37%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="snoop37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-snoop37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-snoop37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-snoop37" value="mke"> MKE-P37</label></div>
@@ -620,7 +624,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=X0X%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="x0x37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-x0x37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-x0x37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-x0x37" value="mke"> MKE-P37</label></div>
@@ -638,7 +642,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=FoMni%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fomni37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-fomni37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-fomni37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-fomni37" value="mke"> MKE-P37</label></div>
@@ -656,7 +660,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=MAKU%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="maku37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-maku37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-maku37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-maku37" value="mke"> MKE-P37</label></div>
@@ -674,7 +678,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.2 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Rainbow%20mode%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="rainbow37" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-rainbow37" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-rainbow37" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-rainbow37" value="mke"> MKE-P37</label></div>
@@ -692,7 +696,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v2.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=GHOULBOX%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="ghoulbox" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-ghoulbox" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-ghoulbox" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-ghoulbox" value="mke"> MKE-P37</label></div>
@@ -710,7 +714,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.24-beta3 · 636 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=ChoralRoot%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="choralroot" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-choralroot" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-choralroot" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-choralroot" value="mke"> MKE-P37</label></div>
@@ -728,7 +732,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.7.0 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=ORBIT%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="orbit" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-orbit" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-orbit" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-orbit" value="mke"> MKE-P37</label></div>
@@ -746,7 +750,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v1.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=AMB-1%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="amb" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-amb" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-amb" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-amb" value="mke"> MKE-P37</label></div>
@@ -764,7 +768,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.4.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Polly%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="polly" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-polly" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-polly" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-polly" value="mke"> MKE-P37</label></div>
@@ -782,7 +786,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.1 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=winampFM%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="winamp" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-winamp" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-winamp" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-winamp" value="mke"> MKE-P37</label></div>
@@ -800,7 +804,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v1.0.0 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=DUB-1%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="dub" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-dub" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-dub" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-dub" value="mke"> MKE-P37</label></div>
@@ -818,7 +822,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.1 · 636 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Ketch%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="ketch" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-ketch" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-ketch" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-ketch" value="mke"> MKE-P37</label></div>
@@ -836,7 +840,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p class="warnnote">&#9888; SMK-37 Elite: please wait with this one; an Elite report is being checked. The Pro build is tested.</p>
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v1.4.3 · 636 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Melodee%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="melodee" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-melodee" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-melodee" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-melodee" value="mke"> MKE-P37</label></div>
@@ -854,7 +858,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.1-beta · 636 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=FMEL-1%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fmel" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-fmel" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-fmel" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-fmel" value="mke"> MKE-P37</label></div>
@@ -872,7 +876,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v0.9.2 · 636 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=Frodhes%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="frodhes" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-frodhes" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-frodhes" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-frodhes" value="mke"> MKE-P37</label></div>
@@ -890,7 +894,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info"><span class="tag ">experimental</span><span class="tag ">FM-1 port</span>
           <span class="meta">v1.0.2 · 635 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=ZEN-1%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="zen" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-zen" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-zen" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-zen" value="mke"> MKE-P37</label></div>
@@ -908,7 +912,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         
         <div class="foot"><div class="info">
           <span class="meta">v1.5-beta · 636 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span></div>
+          <span class="cnt" hidden><span class="ck" title="Installs on the SMK-37"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>SMK-37</i><span class="sr"> installs</span></span></span></div>
           <a class="btn fb" href="https://github.com/genkigenki/fm1-to-smk37/discussions/new?category=general&amp;title=OberVave%20on%20the%20SMK-37%3A%20" title="Your feedback and ideas">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="obervave" disabled>Install</button></span></div>
           <details class="model"><summary>Flash another keyboard version</summary>
             <div class="models"><label><input type="radio" name="model-obervave" value="pro"> SMK-37 Pro</label><label><input type="radio" name="model-obervave" value="elite"> SMK-37 Elite</label><label><input type="radio" name="model-obervave" value="mke"> MKE-P37</label></div>
@@ -935,7 +939,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Ambient music that plays itself from power-on: soft voices and bells on uneven tape loops, a gliding bass, tape echo and plate reverb.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.3 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-amb" title="AMB-1 — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/charlesvestal/fm1-amb/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://charlesvestal.github.io/fm1-amb/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-amb" disabled>Install</button></span></div>
       </article>
@@ -947,7 +951,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>An open six-lane tracker with a built-in digital drum machine: five synth lanes and a drum lane, step patterns chained in song mode.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.04-RC · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of BEETLE">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/SikkenWorks/BEETLE/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://sikkenworks.github.io/BEETLE/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-beetle" disabled>Install</button></span></div>
       </article>
@@ -959,7 +963,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Root notes under one hand, chord shapes under the other: a chord instrument with voicing control, a bass part, playing modes and a loop recorder.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.25.1 · 596 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-choralroot" title="ChoralRoot — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/Quixotic7/ChoralRootFM1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://quixotic7.github.io/ChoralRootFM1/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-choralroot" disabled>Install</button></span></div>
       </article>
@@ -971,7 +975,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Each note you play turns into a full chord with a bass underneath, while a small pixel flower grows on the screen from your harmony.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.2 · 596 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of CoralFlower">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/FicusFicusov/CoralFlower/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://ficusficusov.github.io/CoralFlower/play/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-coralflower" disabled>Install</button></span></div>
       </article>
@@ -983,7 +987,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A late-1970s style eight-voice polysynth made to be played over MIDI, two channels per voice with filters in series, ring modulator and chorus.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.3.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of CS-1">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/twochannels/CS-1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://twochannels.github.io/CS-1/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-cs1" disabled>Install</button></span></div>
       </article>
@@ -995,7 +999,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Makes the keyboard a MIDI controller for USB, Bluetooth and TRS, with velocity, aftertouch, knob banks, an arpeggiator, Euclidean drums and onboard sounds.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.0 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of CTL-1">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/charlesvestal/fm1-ctl/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://charlesvestal.github.io/fm1-ctl/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-ctl" disabled>Install</button></span></div>
       </article>
@@ -1007,7 +1011,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Self-playing dub techno: chord stabs into tape echo, sub bass grooves and a ducking kick, and you steer the filter, feedback and arrangement.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.1.0 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-dub" title="DUB-1 — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/sbegueria/fm1-dub/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://sbegueria.github.io/fm1-dub/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-dub" disabled>Install</button></span></div>
       </article>
@@ -1019,7 +1023,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Two complete synth parts in one, with three ways to combine them and a morph control that glides between two versions of every sound.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span><span class="tag">pre-release</span>
           <span class="meta">v0.2.20-beta · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of DUELL">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/oscillr/DUELL/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://oscillr.github.io/DUELL/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-duell" disabled>Install</button></span></div>
       </article>
@@ -1031,7 +1035,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Draw single-cycle waveforms right on the device, blend two of them with a morph control and modulate the result with a third.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.38 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of ETCH">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/SikkenWorks/ETCH/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://sikkenworks.github.io/ETCH/sim/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-etch" disabled>Install</button></span></div>
       </article>
@@ -1043,7 +1047,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Fantasy firmware for live roleplay and tabletop games: acoustic models such as hurdy-gurdy, harp and bagpipes, scene soundtracks and a four-track workshop.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.5.2 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Evander&#x27;s Music Box">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/MikeTsak/Evanders-Music-Box--FM-1-LARP-firmware/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-emb" disabled>Install</button></span></div>
       </article>
@@ -1055,19 +1059,19 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>The open multi-engine synth firmware that most projects here grew from: several sound engines, four tracks and a step sequencer, playable in a browser too.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.6.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Felucca">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/hugelton/Felucca/discussions" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-felucca" disabled>Install</button></span></div>
       </article>
       <article class="card fw reveal" id="fw-fm1-felucca8" data-fw="fm1-felucca8" data-fm1="1" data-community="1" data-name="Felucca 8 Patterns" style="--c: #5ec8a0">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Felucca 8 Patterns" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
-        
+        <div class="screen"><img src="assets/fm1/fm1-felucca8.webp" width="240" height="240" loading="lazy" alt="Felucca 8 Patterns, from the project"></div>
         <h3><a href="https://github.com/echoe/Felucca_8_patterns">Felucca 8 Patterns</a></h3>
         <div class="from">by echoe · GPL-3.0<br><a href="https://github.com/echoe/Felucca_8_patterns">source</a> · <a href="https://github.com/echoe/Felucca_8_patterns/releases/tag/1.5.1_and_sequences">release 1.5.1_and_sequences</a></div>
         <p>A fork of Felucca 1.5.1 that keeps eight patterns per project and lets you chain them into a longer arrangement.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.5.1-sequences · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Felucca 8 Patterns">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/echoe/Felucca_8_patterns/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-felucca8" disabled>Install</button></span></div>
       </article>
@@ -1079,7 +1083,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A beta fork of Felucca adding MIDI input on the jack, selectable clock sources, many screen colour schemes, favourites and a browser studio.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span><span class="tag">pre-release</span>
           <span class="meta">v0.9-salt14 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Felucca [Salt]">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/ChanceTheMaker/Felucca/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://chancethemaker.github.io/Felucca/webapp/editor/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-felucca-salt" disabled>Install</button></span></div>
       </article>
@@ -1091,7 +1095,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A physically modelled thumb piano: tines of metal, bamboo or glass on a selectable body, with roll chords, buzzers, delay and reverb.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span><span class="tag">pre-release</span>
           <span class="meta">v0.6.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of FiMba-1">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/jadamsowers/fm1-fimba/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://jadamsowers.github.io/fm1-fimba/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-fimba" disabled>Install</button></span></div>
       </article>
@@ -1103,7 +1107,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Emulates a six-voice analog polysynth from the 1980s using both processor cores, with 128 factory patches, stereo chorus, a librarian and SysEx editing.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">vbeta4 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of FM-106">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/patttf/fm-106/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://patttf.github.io/fm-106/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-fm106" disabled>Install</button></span></div>
       </article>
@@ -1115,7 +1119,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Keeps a full four-track groovebox but draws it as a side-scrolling adventure where tracks are heroes, steps are attacks and recordings become boss fights.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v38 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of FM1 Quest">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/hericdk/fm1-quest/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://hericdk.github.io/fm1-quest/sim/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-quest" disabled>Install</button></span></div>
       </article>
@@ -1127,7 +1131,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A chord machine: the left white keys play scale-degree chords, the rest strum them, and black keys add sevenths, suspensions and borrowed chords.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.3 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of fm1-chord">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/math0ne/fm1-chord/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-chord" disabled>Install</button></span></div>
       </article>
@@ -1139,21 +1143,9 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Plays recordings of real vintage tape-replay keyboard tapes, blends two sounds together and colours them with wow, flutter and lo-fi effects.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span><span class="tag">pre-release</span>
           <span class="meta">v0.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-fmel" title="FMEL-1 — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/AntonioAltea/fmel-1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://antonioaltea.github.io/fmel-1/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-fmel" disabled>Install</button></span></div>
-      </article>
-      <article class="card fw reveal" id="fw-fm1-fomajam" data-fw="fm1-fomajam" data-fm1="1" data-community="1" data-name="FOMAJAM" style="--c: #7fbf6a">
-        <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like FOMAJAM" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
-        
-        <h3><a href="https://konsumer.js.org/fomajam/">FOMAJAM</a></h3>
-        <div class="from">by konsumer · GPL-3.0<br><a href="https://konsumer.js.org/fomajam/">website</a> · <a href="https://github.com/konsumer/fomajam">source</a> · <a href="https://github.com/konsumer/fomajam/releases/tag/v0.1.2">release v0.1.2</a></div>
-        <p>A nine-track groovebox mixing modelled and sampled vintage drum machines with synth engines, accents, slides, ratchets, send effects and MIDI out.</p>
-        <div class="foot"><div class="info"><span class="tag">FM-1</span>
-          <span class="meta">v0.1.2 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of FOMAJAM">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
-          <a class="btn fb" href="https://github.com/konsumer/fomajam/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://konsumer.js.org/fomajam/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-fomajam" disabled>Install</button></span></div>
       </article>
       <article class="card fw reveal" id="fw-fm1-fomni" data-fw="fm1-fomni" data-fm1="1" data-community="1" data-name="FoMni-1" style="--c: #5ec8a0">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like FoMni-1" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
@@ -1163,7 +1155,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Pick a chord on the black keys, sweep a finger over the white ones to ring it out, and let preset rhythms keep time.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.4 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-fomni37" title="FoMni — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/charlesvestal/fm1-fomni/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://charlesvestal.github.io/fm1-fomni/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-fomni" disabled>Install</button></span></div>
       </article>
@@ -1175,7 +1167,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A physically modelled vintage electric piano computed live from hammer, tine and pickup, with four piano types, an effects chain, looper and arpeggiator.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.9.2 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-frodhes" title="Frodhes — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/leonardoMirabal/frodhes/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://leonardomirabal.github.io/frodhes/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-frodhes" disabled>Install</button></span></div>
       </article>
@@ -1187,7 +1179,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>An accompaniment instrument for Japanese recited poetry, with koto and other voices on an FM engine and a switch between equal and just tuning.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.0.7 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of FuMi-1">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/cartesive/fumi-1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://cartesive.github.io/fumi-1/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-fumi" disabled>Install</button></span></div>
       </article>
@@ -1199,7 +1191,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Gloomy medieval music on tap: a huge hall reverb, a buzzing hurdy-gurdy voice and drones, all wrapped in an old role-play game look.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v2.3.2 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-ghoulbox" title="GHOULBOX — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/jasonpersinger/ghoulbox-fm1-dungeon-synth/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://ghoulbox.messy.quest/webapp/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-ghoulbox" disabled>Install</button></span></div>
       </article>
@@ -1211,7 +1203,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>One deep analog-style synth with two oscillators, five filters, a patch bay, arpeggiator and sequencer, where each page draws the shape it edits.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.0 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Golana">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/Gadlele/Golana/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://gadlele.github.io/Golana/try/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-golana" disabled>Install</button></span></div>
       </article>
@@ -1223,7 +1215,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>An eight-track drum machine with a step sequencer, generative rhythm grids, a pumping compressor, resonators and live effects, playable in a browser.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.16.0 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Hortator">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/DeadActive/hortator/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://deadactive.github.io/hortator/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-hortator" disabled>Install</button></span></div>
       </article>
@@ -1235,7 +1227,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A dark, industrial groovebox with a Brazilian accent: evolving drones, many synth engines, four tracks, a modulation matrix and its own drum kits.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.0.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Jangada">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/zednaked/jangada/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://zednaked.github.io/jangada/webapp/studio/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-jangada" disabled>Install</button></span></div>
       </article>
@@ -1247,7 +1239,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A tracker in the old handheld style, with song, chain and phrase screens, row commands and a mixer, playing four channels of Felucca sounds.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span><span class="tag">pre-release</span>
           <span class="meta">v0.1-beta · 596 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-ketch" title="Ketch — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/risseraka/fm1-tracker-ketch/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://risseraka.github.io/fm1-tracker-ketch/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-ketch" disabled>Install</button></span></div>
       </article>
@@ -1259,7 +1251,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A four-track pocket groovebox of drums and three circuit-modelled synths, chained sixteen-step patterns, punch-in effects and a little animated handheld game per sound.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.1.2 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of LCD-4">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/devrvega/LCD-4/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://devrvega.github.io/LCD-4/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-lcd4" disabled>Install</button></span></div>
       </article>
@@ -1271,7 +1263,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>An ambience machine that starts a fresh random in-key world at every boot and leans towards your taste the more worlds you like.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.0 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-maku37" title="MAKU — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/okumurari2/maku/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://okumurari2.github.io/maku/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-maku" disabled>Install</button></span></div>
       </article>
@@ -1283,7 +1275,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>An original four-part groovebox in the spirit of 1990s machines: three melodic parts, a sixteen-lane drum part, 128 presets and song arrangement.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.0.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of MC-1">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/dspaudio/mc-1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://dspaudio.github.io/mc-1-web/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-mc1" disabled>Install</button></span></div>
       </article>
@@ -1295,7 +1287,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Four tracks of sound engines, among them a vintage analog poly model, phase distortion and six-operator FM, plus microtonal tunings and SysEx transfer.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.4.3 · 596 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-melodee" title="Melodee — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/keremimo/melodee/discussions" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-melodee" disabled>Install</button></span></div>
       </article>
@@ -1307,7 +1299,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A small minimalist ensemble of repeating figures and slow chord cycles that plays from power-on, with easy chord keys so you can take over.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.2.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of MIN-1">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/Reytian/fm1-min1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://reytian.github.io/fm1-min1/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-min1" disabled>Install</button></span></div>
       </article>
@@ -1319,7 +1311,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A drone synthesizer with two always-on voices you tune, filter and move rather than play note by note, plus scenes, delay and reverb.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span><span class="tag">pre-release</span>
           <span class="meta">v0.1-beta · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Niagara Drift">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/evanyerburgh/niagara-drift/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-niagara" disabled>Install</button></span></div>
       </article>
@@ -1331,7 +1323,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Turns sound randomising into a ritual: each new roll summons one of thirty demons, whose rank decides how far your sound is pulled away.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v666 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of NOIZ DEMONS">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/SPIKE-the-Percussionist/noiz_demons/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-noizdemons" disabled>Install</button></span></div>
       </article>
@@ -1343,7 +1335,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A single eight-voice analog-style polysynth after the big American poly synths of 1979 to 1984, with arpeggiator, step sequencer and three effects.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.5 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-obervave" title="OberVave — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/zvenson/obervave/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-obervave" disabled>Install</button></span></div>
       </article>
@@ -1355,7 +1347,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Recreates the two sound chips of a 16-bit games console, FM channels and square waves, with a 128-patch library and a companion web app.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v2.0.0 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of OPN-1">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/putchdev/opn-1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-opn1" disabled>Install</button></span></div>
       </article>
@@ -1367,21 +1359,9 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A four-track groovebox of three synths and a drum machine, with a colour-coded workflow, user macros and an event tape for rearranging loops.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.7.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-orbit" title="ORBIT — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/dspaudio/orbit/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://dspaudio.github.io/orbit-web-emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-orbit" disabled>Install</button></span></div>
-      </article>
-      <article class="card fw reveal" id="fw-fm1-pigeon" data-fw="fm1-pigeon" data-fm1="1" data-community="1" data-name="PIGEON" style="--c: #9be564">
-        <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like PIGEON" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
-        
-        <h3><a href="https://theshrimpblimp.com/pigeon/">PIGEON</a></h3>
-        <div class="from">by The Shrimp Blimp · GPL-3.0<br><a href="https://theshrimpblimp.com/pigeon/">website</a> · <a href="https://github.com/TheShrimpBlimp/pigeon">source</a> · <a href="https://github.com/TheShrimpBlimp/pigeon/releases/tag/v0.3.1">release v0.3.1</a></div>
-        <p>A performance sampler for chopping songs into up to 32 pieces, playing a sixteen-pad drum kit and sequencing beats live.</p>
-        <div class="foot"><div class="info"><span class="tag">FM-1</span>
-          <span class="meta">v0.3.1 · 596 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
-          <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of PIGEON">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
-          <a class="btn fb" href="https://github.com/TheShrimpBlimp/pigeon/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://theshrimpblimp.com/pigeon/webapp/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-pigeon" disabled>Install</button></span></div>
       </article>
       <article class="card fw reveal" id="fw-fm1-polly" data-fw="fm1-polly" data-fm1="1" data-community="1" data-name="Polly" style="--c: #9be564">
         <span class="likebox" hidden><button class="heart" type="button" aria-pressed="false" aria-label="Like Polly" title="Like">&#x2661;&#xfe0e;</button><b class="cl">0</b><span class="sr"> likes</span></span>
@@ -1391,7 +1371,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Accompaniment in your pocket: an eight-piece band plays a style and follows the chords you play, and it doubles as a General MIDI sound module.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.5 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-polly" title="Polly — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/charlesvestal/fm1-polly/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://charlesvestal.github.io/fm1-polly/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-polly" disabled>Install</button></span></div>
       </article>
@@ -1403,7 +1383,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Made for small children: every key plays something pleasant on a pentatonic scale over a backing beat, with animal friends and no menus.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span><span class="tag">pre-release</span>
           <span class="meta">v0.11 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of PurpleMonkey">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/Quixotic7/PurpleMonkeyFM1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://quixotic7.github.io/PurpleMonkeyFM1/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-purplemonkey" disabled>Install</button></span></div>
       </article>
@@ -1415,7 +1395,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A six-track groovebox with fourteen synth and drum engines, a 64-step sequencer with parameter locks and conditions, scenes and a live performance layer.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.3.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Skiff">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/illuminus5/skiff/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-skiff" disabled>Install</button></span></div>
       </article>
@@ -1427,7 +1407,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A live four-track looper groovebox with three synths and a drum machine, many engines and kits, your own samples, song mode and USB audio.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v2.7.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-snoop37" title="Snoop37 (SLOOP for the SMK-37)">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/isod89/sloop-fm1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-sloop" disabled>Install</button></span></div>
       </article>
@@ -1439,7 +1419,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A SLOOP fork that adds a four-operator FM engine and shows the envelopes moving live on the screen.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v2.4 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of SLOOP Floyd FM">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/renebohne/sloop-fm1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-floydfm" disabled>Install</button></span></div>
       </article>
@@ -1451,7 +1431,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A SLOOP fork reduced to one six-operator FM engine, with FM drums built from the same engine and SLOOP&#x27;s live workflow kept.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v2.6 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of sloopDX">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/zvenson/dxsloop/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-sloopdx" disabled>Install</button></span></div>
       </article>
@@ -1463,7 +1443,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Generative drone firmware that rolls an ambient arrangement in one key, pad, sequence and chord arpeggio, leaving a fourth voice for your hands.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span><span class="tag">pre-release</span>
           <span class="meta">v0.2.3 · 596 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of Unholy Union">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/actuallysparky/FM-1-Unholy-Union-generative-drone-firmware/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><button class="btn inst" type="button" data-fw="fm1-unholyunion" disabled>Install</button></span></div>
       </article>
@@ -1475,7 +1455,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A SLOOP-based synth groovebox dressed as a late-1990s desktop music player: sounds as a playlist, effects on sliders and full-screen visualizers.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v0.12 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-winamp" title="winampFM — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/hericdk/winampFM/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://hericdk.github.io/winampFM/sim/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-winamp" disabled>Install</button></span></div>
       </article>
@@ -1487,7 +1467,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>A stereo groovebox running two drum machines, two acid bass synths with a line generator and a breakbeat player at once, with song mode.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.1.0 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-x0x37" title="X0X — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/charlesvestal/fm1-x0x/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://charlesvestal.github.io/fm1-x0x/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-x0x" disabled>Install</button></span></div>
       </article>
@@ -1499,7 +1479,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Builds on X0X with separate bank and pattern choices per part for remixing, generated drum rhythms, extra acid controls and new colour themes.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.0.1 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <span class="reqbox" hidden><button class="req" type="button" aria-pressed="false" title="Ask for an SMK-37 port of X0X-RMX">Request SMK-37 port</button><b class="cr">0</b><span class="sr"> requests</span></span></div>
           <a class="btn fb" href="https://github.com/Mr-Roboto/fm1-x0x-rmx/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://mr-roboto.github.io/fm1-x0x-rmx/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-x0x-rmx" disabled>Install</button></span></div>
       </article>
@@ -1511,7 +1491,7 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <p>Self-playing ambient scenes, a cherry tree over a river or koi in a pond, where every movement you see on the screen is a note.</p>
         <div class="foot"><div class="info"><span class="tag">FM-1</span>
           <span class="meta">v1.0.2 · 595 KB</span>
-          <span class="cnt" hidden><span aria-hidden="true">↓</span> <b class="ci">0</b><span class="sr"> installs</span></span>
+          <span class="cnt" hidden title="Installs on the FM-1"><span aria-hidden="true">↓</span> <b class="ci">0</b> <i>FM-1</i><span class="sr"> installs</span></span>
           <a class="onsmk" href="#fw-zen" title="ZEN-1 — SMK-37 build">on the SMK-37 too ↗</a></div>
           <a class="btn fb" href="https://github.com/aceyprime/zen-1/issues" title="Your feedback and bug reports go to the author">Feedback</a><span class="act"><a class="btn alt" href="https://aceyprime.github.io/zen-1/emu/">Simulator</a><button class="btn inst" type="button" data-fw="fm1-zen" disabled>Install</button></span></div>
       </article>
@@ -2235,7 +2215,7 @@ function badPackage(code, msg) { const e = new Error(msg); e.code = code; return
 // logical image the loader writes, as fm1_install.py --force: the detected block count). Accepted by structure, so
 // M-Vave's next release works too: the package parses, its files' CRCs agree, its identity is an SMK-37 range model
 // with a stock version (_000.._099); known: the SHA-256 is one of STOCK_SMK (informational). Refused (code):
-// "fm1" (an FM-1 package, another device), "ours" (one of our firmwares, _7xx/_8xx/_9xx: installed above),
+// "fm1" (an FM-1 package, another device), "ours" (one of our firmwares, _5xx (Speak37) .. _9xx: installed above),
 // "damaged" (the files' CRCs disagree), "unknown" (anything else)
 async function identifyStockPackage(bytes) {
   const sha = await sha256hex(bytes);
@@ -2248,7 +2228,7 @@ async function identifyStockPackage(bytes) {
   const m = /^(.+)_(\d{3})$/.exec(product);
   if (/^FM-1(_|$)/i.test(product))
     throw badPackage("fm1", "this is an FM-1 firmware: it is for the FM-1, not for an SMK-37 keyboard");
-  if (m && /^[789]\d\d$/.test(m[2]) && (STOCK_MODELS[m[1].toUpperCase()] || /^SMK-37/i.test(m[1])))
+  if (m && /^[56789]\d\d$/.test(m[2]) && (STOCK_MODELS[m[1].toUpperCase()] || /^SMK-37/i.test(m[1])))
     throw badPackage("ours", "this is one of our firmwares (" + product + "): install it above, not here");
   const known = k && k.product.startsWith(product), name = m && STOCK_MODELS[m[1].toUpperCase()];
   if (!known && (!name || Number(m[2]) > 99)) throw badPackage("unknown", "not an M-Vave firmware package for the SMK-37 range");
@@ -2278,10 +2258,10 @@ const MAXDATA = 512;
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 const IS_OTA = (id) => /^ota-/i.test(id.model);
 // the update loader of SLOOP / Felucca packages ("ota-FM-1_9XX", "ota-SMK-37 Pro_9XX"; the SMK ports also under the
-// Elite's and the MKE-P37's model name, Makkuro37 _7XX). A device left in the update mode of another firmware (the
+// Elite's and the MKE-P37's model name, Makkuro37 / Vector37 _7XX, Gen37 _6XX, Speak37 _5XX: "ota-FM-1_500" on the FM-1). A device left in the update mode of another firmware (the
 // stock updater's loader) is never written: its loader may lay the image out differently. The bare "SMK-37" name
 // ("ota-SMK-37_931") is ChanceTheMaker's SMK firmwares' RAM updater: another package format, so not ours.
-const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[3-9]\d\d$/i.test(id.text);   // (also Polly _3XX, Speak37 _5XX, Gen37 _6XX, DUB-1 _8XX)
+const OUR_LOADER = (id) => /^ota-(FM-1|SMK-37 Pro|SMK-37 Elite|MKE-P37)_[56789]\d\d$/i.test(id.text);
 // ChanceTheMaker's SMK firmwares (Felucca SMK, Sloop SMK, Melodee SMK, Doom): "SMK-37_9NN", their own updater
 const OTHER_SMK = (id) => /^(ota-)?SMK-37_9\d\d$/i.test(id.text);
 // the SMK-37 Pro, SMK-37 Elite, MKE-P37, Starrykey 37 Play and the SMK-37+VA mod: one keyboard under several model
@@ -2300,49 +2280,13 @@ function stockFit(deviceModel, product) {
   return NAMED.test(dm) ? "other" : "unknown";
 }
 // the MIDI ports find() probes: the FM-1 / SMK models' and the firmwares' names; other gear is never sent anything
-const PORT_RE = /fm-1|smk|speak|dub|elite|mke-p37|starry|felucca|sloop|clipper|melodee|fomni|x0x|makkuro|maku|rainbow|amb-1|choral|orbit|snoop|vector|vox|gen37|ota|composite|sinco|usb-midi/i;
+const PORT_RE = /fm-1|smk|elite|mke-p37|starry|felucca|sloop|clipper|melodee|fomni|x0x|makkuro|maku|rainbow|amb-1|choral|orbit|snoop|vector|vox|gen37|speak37|ota|composite|sinco|usb-midi/i;
 // a port name without its in / out part (Windows names a device's second port pair "MIDIIN2 (X)" / "MIDIOUT2 (X)")
 const portBase = (n) => n.replace(/^MIDI(?:IN|OUT)(\d*) \((.*)\)$/i, "$2 $1").replace(/[ -](?:in|out|input|output)$/i, "").trim().toLowerCase();
 
 // errors carry a code the pages translate: notfound, model, stopped, noloader, lost, noreturn,
-// mismatch (detail: the identity the device reports), badreq, foreign (detail: the loader's identity),
-// norequest (the loader never asked for data), toomany (more requests than any write needs), timeout (step 1 took
-// too long), oldstock (detail: the stock identity: an M-Vave firmware before V016, refused before anything is sent)
+// mismatch (detail: the identity the device reports), badreq, foreign (detail: the loader's identity)
 function fail(code, msg, detail = "") { const e = new Error(msg); e.code = code; e.detail = detail; return e; }
-// a serve() result in words (the log)
-const outcome = (r) => r.finished ? "finished" : r.lost ? "port gone" : r.timeout ? "deadline" : r.norequest ? "no request"
-  : r.toomany ? "too many requests" : "idle";
-
-// every wait has an end (ms): a port open (Windows can leave one pending forever), step 1 in all, the wait for the
-// loader, the loader's first request (our loader gets UPGRADE again at resend), the idle time once writing has
-// started, the wait for the new firmware. Updater's opts.timing overrides single values (the tests)
-const TIMING = { open: 3000, step1Idle: 8000, step1Total: 60000, loader: 30000, jumped: 15000, firstReq: 30000,
-  resend: [5000, 15000], idle: 180000, back: 40000, settle: 2000, reboot: 3000 };
-const QMAX = 256;                                      // SysEx messages queued per link: the oldest go first
-// the M-Vave firmwares of the SMK-37 range before V016: their update mode was not built for this installer
-const OLD_STOCK = (id) => SMK_FAMILY.test(id.model) && !/^ota-/i.test(id.model) && !OTHER_SMK(id) && id.version < 16;
-
-// a promise that gives up after ms (the value is then `fallback`); the timer never outlives it
-function within(p, ms, fallback) {
-  let tm;
-  return Promise.race([p, new Promise((r) => { tm = setTimeout(() => r(fallback), ms); })]).finally(() => clearTimeout(tm));
-}
-// the ports this page opened: closed again once the last user lets go (a short delay lets the last answer leave;
-// a find() that opens the port again in the meantime keeps it open)
-const portUsers = new WeakMap();
-async function openPort(port, ms) {
-  portUsers.set(port, (portUsers.get(port) || 0) + 1);
-  const r = await within(Promise.resolve().then(() => port.open()).then(() => true, () => false), ms, "timeout");
-  if (r !== true) releasePort(port, 0);
-  return r;
-}
-function releasePort(port, delay = 300) {
-  setTimeout(() => {
-    const n = (portUsers.get(port) || 1) - 1;
-    portUsers.set(port, n);
-    if (n <= 0 && port.close && port.state !== "disconnected") Promise.resolve().then(() => port.close()).catch(() => {});
-  }, delay);
-}
 
 function pack7(data) {
   const out = []; let acc = 0, nb = 0;
@@ -2395,10 +2339,9 @@ function parseIdentity(pkt) {
 // one MIDI in/out pair with a SysEx queue
 class Link {
   constructor(input, output) {
-    this.input = input; this.output = output; this.q = []; this.waiter = null; this.dropped = 0; this.closed = false;
+    this.input = input; this.output = output; this.q = []; this.waiter = null;
     input.onmidimessage = (ev) => {
       if (ev.data[0] !== 0xF0) return;
-      if (this.q.length >= QMAX) { this.q.shift(); this.dropped++; }   // a device that floods: never unbounded
       this.q.push(Array.from(ev.data));
       if (this.waiter) { const w = this.waiter; this.waiter = null; w(); }
     };
@@ -2418,41 +2361,7 @@ class Link {
     }
     return this.q.shift() || null;
   }
-  // done with a device that restarts now (after step 1, after step 2): no more messages, but the ports are not
-  // closed. Closing a port while its device leaves the USB has hung Chrome's MIDI on Windows; the browser drops
-  // the ports of a device that is gone by itself
-  detach() {
-    if (this.closed) return;
-    this.closed = true;
-    this.input.onmidimessage = null;
-    for (const port of [this.input, this.output]) portUsers.set(port, Math.max(0, (portUsers.get(port) || 1) - 1));
-  }
-  // done with a device that restarts in a moment: the ports are closed now, while it is still there
-  closeNow() {
-    if (this.closed) return;
-    this.closed = true;
-    this.input.onmidimessage = null;
-    for (const port of [this.input, this.output]) {
-      const n = Math.max(0, (portUsers.get(port) || 1) - 1);
-      portUsers.set(port, n);
-      if (n <= 0 && port.close && port.state !== "disconnected") Promise.resolve().then(() => port.close()).catch(() => {});
-    }
-  }
-  // done with this pair: no more messages, and the ports are closed (after the last answer left)
-  close() {
-    if (this.closed) return;
-    this.closed = true;
-    this.input.onmidimessage = null;
-    releasePort(this.input); releasePort(this.output);
-  }
-}
-
-// a device that restarts: wait (at most ms) until the browser reports its ports as gone. Opening a port whose device
-// is leaving the USB has hung Chrome's MIDI on Windows (the whole browser), so nothing is probed before that
-async function gone(link, ms) {
-  const end = Date.now() + ms;
-  while (Date.now() < end && !link.lost) await sleep(100);
-  return link.lost;
+  close() { this.input.onmidimessage = null; }
 }
 
 async function handshake(link, tries = 3) {
@@ -2477,7 +2386,6 @@ class Updater {
     this.log = log || (() => {});
     this.all = !!opts.all;
     this.said = new Set();
-    this.t = { ...TIMING, ...(opts.timing || {}) };
   }
 
   say(t) { if (!this.said.has(t)) { this.said.add(t); this.log(t); } }   // each port line once
@@ -2486,20 +2394,13 @@ class Updater {
   async find(filter) {
     const outs = [...this.access.outputs.values()];
     for (const input of this.access.inputs.values()) {
-      if (input.state !== "connected") continue;
+      if (input.state === "disconnected") continue;
       const name = input.name || "";
-      if (/^MIDI(IN|OUT)\d+ \(/i.test(name)) { this.say(`port "${name}": a device's extra port, not probed`); continue; }
       if (!this.all && !PORT_RE.test(name)) { this.say(`port "${name}": not probed`); continue; }   // never probe other gear
       const output = outs.find((o) => o.name === input.name) ||
         outs.find((o) => portBase(o.name || "") === portBase(name)) || (outs.length === 1 ? outs[0] : null);
       if (!output) { this.say(`port "${name}": no output of that name`); continue; }
-      const oi = await openPort(input, this.t.open);
-      const oo = oi === true ? await openPort(output, this.t.open) : oi;
-      if (oo !== true) {
-        if (oi === true) releasePort(input, 0);
-        this.say(`port "${name}": ${oo === "timeout" ? `did not open within ${this.t.open / 1000} s (replug the cable, close other MIDI apps)` : "cannot open (in use?)"}`);
-        continue;
-      }
+      try { await input.open(); await output.open(); } catch (_) { this.say(`port "${name}": cannot open (in use?)`); continue; }
       const link = new Link(input, output);
       const id = await handshake(link, 2);
       this.say(`port "${name}" / "${output.name}": ${id ? id.text : "no answer"}`);
@@ -2509,65 +2410,39 @@ class Updater {
     return null;
   }
 
-  // onTick(seconds waited): about once a second, for a live status; the deadline counts the probing too (a find()
-  // still running at the end is left to finish on its own; what it opens it closes again)
-  async waitFor(filter, ms, onTick) {
-    const t0 = Date.now(), end = t0 + ms;
-    const timer = onTick ? setInterval(() => onTick(Math.round((Date.now() - t0) / 1000)), 1000) : null;
-    try {
-      while (Date.now() < end) {
-        const run = { gaveUp: false, got: null };
-        const dev = await within(this.find(filter).then((d) => { if (run.gaveUp && d) d.link.close(); else run.got = d; return d; }),
-          Math.max(0, end - Date.now()), null);
-        if (dev) return dev;
-        run.gaveUp = true;
-        if (run.got) run.got.link.close();             // (it came in just as the time ran out)
-        if (Date.now() < end) await sleep(Math.min(1000, end - Date.now()));
-      }
-      return null;
-    } finally { if (timer) clearInterval(timer); }
+  async waitFor(filter, ms) {
+    const end = Date.now() + ms;
+    while (Date.now() < end) {
+      const dev = await this.find(filter);
+      if (dev) return dev;
+      await sleep(1000);
+    }
+    return null;
   }
 
   // serve read requests until the device asks for one of the finish addresses; stops early
-  // when the port disappears (lost: true) instead of waiting out idleMs. o: firstMs (no valid request at all by then:
-  // norequest; idleMs counts only from the first one), totalMs (a hard end: timeout), maxReq (more data requests:
-  // toomany, a device that loops), onWait(s) (no request yet, about once a second), resend (ms after the start with no
-  // request yet: UPGRADE again)
-  async serve(link, image, finishAddr, idleMs, onProgress, o = {}) {
-    const t0 = Date.now(), resend = [...(o.resend || [])];
-    let served = 0, seen = 0, last = t0, said = 0;
-    const out = (r) => {
-      if (link.dropped) this.log(`(${link.dropped} messages dropped: the device sent faster than they were read)`);
-      return { served, ...r };
-    };
+  // when the port disappears (lost: true) instead of waiting out idleMs
+  async serve(link, image, finishAddr, idleMs, onProgress) {
+    let served = 0, last = Date.now();
     for (;;) {
-      const now = Date.now();
-      if (o.totalMs && now - t0 > o.totalMs) return out({ finished: false, timeout: true });
-      if (!seen) {
-        if (o.firstMs && now - t0 > o.firstMs) return out({ finished: false, norequest: true });
-        const s = Math.floor((now - t0) / 1000);
-        if (o.onWait && s > said) { said = s; o.onWait(s); }
-        if (resend.length && now - t0 >= resend[0]) { resend.shift(); this.log("no request yet: UPGRADE again"); link.send(UPGRADE); }
-      }
-      const pkt = await link.read(seen ? 1000 : 250);
+      const pkt = await link.read(1000);
       if (!pkt) {
-        if (link.lost) return out({ finished: false, lost: true });
-        if ((seen || !o.firstMs) && Date.now() - last > idleMs) return out({ finished: false });
+        if (link.lost) return { served, finished: false, lost: true };
+        if (Date.now() - last > idleMs) return { served, finished: false };
         continue;
       }
       const r = parseRequest(pkt);
       if (!r) continue;
-      seen++; last = Date.now();
+      last = Date.now();
       if (r.addr === 0xE0000000 || r.addr === 0xF0000000) {
         link.send(response(r.addr, [...new TextEncoder().encode("success"), 0]));
-        if (r.addr === finishAddr) return out({ finished: true });
+        if (r.addr === finishAddr) return { served, finished: true };
         continue;
       }
       if (r.len > MAXDATA || r.addr + r.len > image.length) throw fail("badreq", `bad request ${r.addr.toString(16)}+${r.len}`);
-      if (o.maxReq && served >= o.maxReq) return out({ finished: false, toomany: true });
       await sleep(10);
       if (!link.send(response(r.addr, Array.from(image.subarray(r.addr, r.addr + r.len)), r.fl))) {
-        return out({ finished: false, lost: true });
+        return { served, finished: false, lost: true };
       }
       served++;
       if (onProgress) onProgress(served, r.addr);
@@ -2576,56 +2451,35 @@ class Updater {
 
   // full install: running firmware -> loader -> new firmware. anyModel: the package may be for another model of the
   // same keyboard (an SMK-37 Elite package on a unit that reports SMK-37 Pro); never an FM-1 one on an SMK, nor back
-  // opts.refuseOldStock: an M-Vave SMK firmware before V016 is refused before anything is sent (for our packages, not
-  // the return to the official firmware), also when the page did not identify the keyboard first
-  async install(image, product, onStep, anyModel = false, opts = {}) {
-    const step = onStep || (() => {}), t = this.t;
+  async install(image, product, onStep, anyModel = false) {
+    const step = onStep || (() => {});
     const dev = await this.find((id) => !IS_OTA(id));
     if (!dev) throw fail("notfound", "FM-1 not found (USB cable, and no other app using it?)");
     if (OTHER_SMK(dev.id)) { dev.link.close(); throw fail("other", `the keyboard runs a firmware with its own updater (${dev.id.text}): nothing was sent`, dev.id.text); }
-    if (opts.refuseOldStock && OLD_STOCK(dev.id)) {
-      dev.link.close();
-      throw fail("oldstock", `the keyboard runs M-Vave's firmware ${dev.id.text}: update it to V016 with M-Vave's updater first. Nothing was sent.`, dev.id.text);
-    }
     const [model] = product.split("_");
     if (dev.id.model !== model && !(anyModel && sameKeyboard(dev.id.model, model))) { dev.link.close(); throw fail("model", `the device is ${dev.id.text}, the package is for ${product}`); }
     step("start", dev.id.text);
     dev.link.send(UPGRADE);
-    const t1 = Date.now();
-    await sleep(t.settle);
-    const s1 = await this.serve(dev.link, image, 0xE0000000, t.step1Idle, (n) => step("verify", n), { totalMs: t.step1Total });
-    if (s1.finished) { await sleep(40); dev.link.closeNow(); }              // (it restarts into its loader now: close
-    else if (s1.lost) dev.link.detach(); else dev.link.close();             //  before it leaves the USB)
-    this.log(`step 1: ${s1.served} requests in ${Math.round((Date.now() - t1) / 1000)} s: ${outcome(s1)}`);
-    if (s1.timeout) throw fail("timeout", `the keyboard's check of the package did not finish within ${t.step1Total / 1000} s (${s1.served} requests): nothing was written. Switch it off and on.`);
+    await sleep(2000);
+    const s1 = await this.serve(dev.link, image, 0xE0000000, 8000, (n) => step("verify", n));
+    dev.link.close();
     // some firmwares restart into their loader at once, without step 1: such a loader (ours, of this keyboard) goes on
     const jumped = !s1.finished && s1.lost && s1.served === 0;
     if (!s1.finished && !jumped) throw fail(s1.lost ? "lost" : "stopped", `the device ${s1.lost ? "was disconnected" : "stopped"} after ${s1.served} requests: nothing was written`);
     step("loader");
-    await gone(dev.link, 15000);                       // never probe a port while its device is still leaving the USB
-    await sleep(t.reboot);
-    const wait = jumped ? t.jumped : t.loader;
-    const ota = await this.waitFor(IS_OTA, wait, (s) => step("wait", s + Math.round(t.reboot / 1000)));
+    await sleep(3000);
+    const ota = await this.waitFor(IS_OTA, jumped ? 15000 : 30000);
     if (jumped && !(ota && OUR_LOADER(ota.id) && sameKeyboard(ota.id.model.replace(/^ota-/i, ""), dev.id.model))) {
       if (ota) ota.link.close();
       throw fail(ota ? "foreign" : "lost", ota ? `the device restarted into the update mode of another firmware (${ota.id.text}): nothing was written`
         : "the device was disconnected after 0 requests: nothing was written", ota ? ota.id.text : "");
     }
-    if (!ota) throw fail("noloader", `the update loader did not appear within ${Math.round((wait + t.reboot) / 1000)} s. Close Chrome, open this page again, press Connect and the Install or Repair button again: it goes on where it stopped.`);
-    // one of our packages goes only to our loader, of this keyboard: never into another firmware's (the official one
-    // lays the image out its own way). An official package (identity _0NN, the way back) keeps the path it had.
-    const official = /_0\d\d$/.test(product);
-    if (!official && !(OUR_LOADER(ota.id) && sameKeyboard(ota.id.model.replace(/^ota-/i, ""), dev.id.model))) {
-      ota.link.close();
-      throw fail("foreign", `the device started the update mode of another firmware (${ota.id.text}): nothing was written. Switch it off and on.`, ota.id.text);
-    }
+    if (!ota) throw fail("noloader", "the update loader did not appear. Replug the USB cable and press Install again: the device stays in update mode until it is finished.");
     const s2 = await this.write(ota, image, step);
-    if (!s2.finished) throw this.writeFail(s2);
-    step("written");
+    if (!s2.finished) throw fail(s2.lost ? "lost" : "stopped", `the loader ${s2.lost ? "was disconnected" : "stopped"} after ${s2.served} requests. Replug and press Install again to resume.`);
     step("reboot");
-    await gone(ota.link, 15000);
-    await sleep(t.reboot);
-    const back = await this.waitFor((id) => !IS_OTA(id), t.back, (s) => step("back", s));
+    await sleep(3000);
+    const back = await this.waitFor((id) => !IS_OTA(id), 40000);
     if (!back) throw fail("noreturn", "the device did not come back: power-cycle it");
     back.link.close();
     if (back.id.text !== product) throw fail("mismatch", `installed, but the device reports ${back.id.text}`, back.id.text);
@@ -2633,27 +2487,13 @@ class Updater {
     return back.id.text;
   }
 
-  // step 2 with the loader found by find()/waitFor(): the loader must ask within firstReq (our loader gets UPGRADE
-  // again meanwhile); the long idle timeout only once it writes; never more requests than three passes of the image
+  // step 2 with the loader found by find()/waitFor()
   async write(ota, image, step) {
-    const t = this.t;
-    step = step || (() => {});
-    this.log(`loader ${ota.id.text} on "${ota.name}"`);
     ota.link.send(UPGRADE);
-    const t2 = Date.now();
-    const s2 = await this.serve(ota.link, image, 0xF0000000, t.idle, (n) => step("write", n), {
-      firstMs: t.firstReq, maxReq: 3 * Math.ceil(image.length / MAXDATA) + 64,
-      resend: OUR_LOADER(ota.id) ? t.resend : [], onWait: (s) => { if (s >= 3) step("noreq", s); } });
-    if (s2.finished || s2.lost) ota.link.detach(); else ota.link.close();   // (finished: it restarts into the new firmware)
-    this.log(`step 2: ${s2.served} requests in ${Math.round((Date.now() - t2) / 1000)} s: ${outcome(s2)}`);
+    await sleep(2000);
+    const s2 = await this.serve(ota.link, image, 0xF0000000, 180000, (n) => step("write", n));
+    ota.link.close();
     return s2;
-  }
-
-  // the error for a write that did not finish
-  writeFail(s2) {
-    if (s2.norequest) return fail("norequest", `the update loader appeared but did not ask for data within ${this.t.firstReq / 1000} s: nothing was written. Replug the USB cable and press Install again.`);
-    if (s2.toomany) return fail("toomany", `the loader kept asking (${s2.served} requests, more than a write needs): stopped. Replug and press Install again.`);
-    return fail(s2.lost ? "lost" : "stopped", `the loader ${s2.lost ? "was disconnected" : "stopped"} after ${s2.served} requests. Replug and press Install again to resume.`);
   }
 
   // resume: the device is already in update mode (loader) -> true when the write finished. Only SLOOP's
@@ -2676,14 +2516,11 @@ class Updater {
       throw fail("model", `the device is in the update mode of ${ota.id.text}, the package is for ${want || "an unknown model"}`, ota.id.text);
     }
     const step = onStep || (() => {});
-    const s2 = await this.write(ota, image, step);
-    if (!s2.finished) { if (s2.norequest || s2.toomany) throw this.writeFail(s2); return false; }
-    step("written");
+    if (!(await this.write(ota, image, step)).finished) return false;
     if (opts.product) {
       step("reboot");
-      await gone(ota.link, 15000);
-      await sleep(this.t.reboot);
-      const back = await this.waitFor((id) => !IS_OTA(id), this.t.back, (s) => step("back", s));
+      await sleep(3000);
+      const back = await this.waitFor((id) => !IS_OTA(id), 40000);
       if (!back) throw fail("noreturn", "the FM-1 did not come back after the write: power-cycle it");
       back.link.close();
       if (back.id.text !== opts.product) throw fail("mismatch", `written, but the FM-1 reports ${back.id.text}`, back.id.text);
@@ -2693,7 +2530,7 @@ class Updater {
   }
 }
 
-const FW = [{"id": "makkuro37", "name": "Makkuro37", "version": "0.3", "col": "var(--mag)", "v": {"pro": {"product": "SMK-37 Pro_703", "pkg": "firmware/makkuro37-0.3.fwsc", "sha256": "9b17ea5647d009d421fe01d03384330a8dc52607ac510e5d3fcb045190ae03cb", "size": 651195}, "elite": {"product": "SMK-37 Elite_703", "pkg": "firmware/makkuro37-0.3-elite.fwsc", "sha256": "f52f420c3d385781692befc5e390ea78008710d38910e9a3651549ccf87bae5e", "size": 651199}, "mke": {"product": "MKE-P37_703", "pkg": "firmware/makkuro37-0.3-mke.fwsc", "sha256": "3d5889aa42e510e87d30909b4f225307a9a98309afe62ecc538a247e8fe9f946", "size": 651191}}}, {"id": "vector37", "name": "Vector37", "version": "0.3.1", "col": "#8a7dff", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/vector37-0.3.1.fwsc", "sha256": "c7efb0a7519ce6cd6bb6d93498b426354228a4540da70f5de154b90e186306f4", "size": 651194}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/vector37-0.3.1-elite.fwsc", "sha256": "becdcfd72c496c877bb2c58ef4490009ab5041b9e8c75fe5a47dc92c94546f11", "size": 651194}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/vector37-0.3.1-mke.fwsc", "sha256": "d7ca363c1d435d9e2b98ba54caefe85e8faa4e8152e42fc4e02012a8fdf56c8f", "size": 651190}, "fm1": {"product": "FM-1_700", "pkg": "firmware/vector37-0.3.1-fm1.fwsc", "sha256": "b6404f716c303e76e31245cb09bd4ea247eea1cbe93ba650eae8cab571c2d7b3", "size": 610019}}}, {"id": "speak37", "name": "Speak37", "version": "1.0", "col": "#5fd7ff", "v": {"pro": {"product": "SMK-37 Pro_510", "pkg": "firmware/speak37-1.0.fwsc", "sha256": "033f23bf63de35f60ba6e2b98a3fd264b4a34aafb790c178f9ad7c1d5db11cce", "size": 651060}, "elite": {"product": "SMK-37 Elite_510", "pkg": "firmware/speak37-1.0-elite.fwsc", "sha256": "14065f0571dac4e8c12b05512832fda7676681d085dfebbac869688d9a73e6a0", "size": 651064}, "mke": {"product": "MKE-P37_510", "pkg": "firmware/speak37-1.0-mke.fwsc", "sha256": "3580a0e2c7d07f9e1b0c453c2b313ee9c27e895b5d8215e9ddbd31b0bf641a57", "size": 651056}, "fm1": {"product": "FM-1_510", "pkg": "firmware/speak37-1.0-fm1.fwsc", "sha256": "3441ba1d65a3be72adcd89e144571eb483beb0a310ea992841100e26c163c476", "size": 610087}}}, {"id": "erik37", "name": "Erik37", "version": "1.1", "col": "#d8b46a", "v": {"pro": {"product": "SMK-37 Pro_480101", "pkg": "firmware/erik37-1.1.fwsc", "sha256": "2fbc73ba7526c3767d36228ad8cd8182fd5ab0bac801fe18f30dfd6ad144d6a8", "size": 651224}, "elite": {"product": "SMK-37 Elite_480101", "pkg": "firmware/erik37-1.1-elite.fwsc", "sha256": "2702a7c8a3fdcbdc6969a1433fa9dadf72c48b80a71722f86176d1ceafcfd51c", "size": 651228}, "mke": {"product": "MKE-P37_480101", "pkg": "firmware/erik37-1.1-mke.fwsc", "sha256": "63d9d88c5cc09e04ac5e641dfcb63f06688a095cc55cc7d62ef9c5cdc2f75d32", "size": 651220}, "fm1": {"product": "FM-1_480101", "pkg": "firmware/erik37-1.1-fm1.fwsc", "sha256": "45b3d93643f9f2f7a45db393e65dad09b4a963b709b8ca423a948e8526ee48f3", "size": 610108}}}, {"id": "snoop37", "name": "Snoop37 (SLOOP for the SMK-37)", "version": "2.7.1", "col": "var(--cyan)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-2.7.1.fwsc", "sha256": "80376cad096c5e2d8306a0159c307e292eeb4dab27517d7efa5223f8b96f75bb", "size": 651206}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/snoop37-2.7.1-elite.fwsc", "sha256": "00ca5e6b5dad2f577a2add5c1a94068d00a345f982bf1db408805ce934ccb832", "size": 651210}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/snoop37-2.7.1-mke.fwsc", "sha256": "338415ae1f9be8b3ac4abfec6ccd67532032e4dc624d433782e30c066b4c1690", "size": 651202}}}, {"id": "x0x37", "name": "X0X \u2014 SMK-37 build", "version": "0.2", "col": "var(--t3)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.2.fwsc", "sha256": "983402ce49bac7dab2b36b30eddf9e5a1ae7a36e63dd35717bd6479a63dcd26d", "size": 650816}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/x0x37-0.2-elite.fwsc", "sha256": "b577c6aceac17ebe94753046394775153a743eb29502806478fbb2303a416e61", "size": 650820}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/x0x37-0.2-mke.fwsc", "sha256": "1cd132eb5db3b70f7b5fcde7175a262569d3ee087460a1acd0fb425f0905b53b", "size": 650812}}}, {"id": "fomni37", "name": "FoMni \u2014 SMK-37 build", "version": "0.2", "col": "var(--t4)", "v": {"pro": {"product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.2.fwsc", "sha256": "d7dfe5583b4314eb8aa1b6158553dc6234d8aaf6aaeac4087820086303c0cd76", "size": 650795}, "elite": {"product": "SMK-37 Elite_800", "pkg": "firmware/fomni37-0.2-elite.fwsc", "sha256": "8e7f68295dc99c34307ab523436f85f49f5f074b9f92738a72e7c2a631734cfa", "size": 650799}, "mke": {"product": "MKE-P37_800", "pkg": "firmware/fomni37-0.2-mke.fwsc", "sha256": "d99cabd903362d6c5bd05065a63f1cd052eac68f59503d8c7505d630e5ddf7eb", "size": 650791}}}, {"id": "maku37", "name": "MAKU \u2014 SMK-37 build", "version": "0.1", "col": "#ed7962", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/maku37-0.1.fwsc", "sha256": "cf8b69b26ef7ea6aba37039dd55ed2db9d7dbd7b9b44e9d6aeab67f9fcdb5868", "size": 651211}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/maku37-0.1-elite.fwsc", "sha256": "97198b9de4ab44ebf0cc1c4222d224860fca9b3bb3fb51d2e1a0fa0e5c0e4824", "size": 651211}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/maku37-0.1-mke.fwsc", "sha256": "79e8d39c711ca82b9e554426c2712491c09778c2bb84d70f457207a1d05bea7c", "size": 651207}}}, {"id": "rainbow37", "name": "Rainbow mode \u2014 SMK-37 build", "version": "0.2", "col": "#f7c948", "v": {"pro": {"product": "SMK-37 Pro_902", "pkg": "firmware/rainbow37-0.2.fwsc", "sha256": "37f923087ae93599cdae5ac27ab02166f8a8888e30d436973fd8a0762d357210", "size": 651211}, "elite": {"product": "SMK-37 Elite_902", "pkg": "firmware/rainbow37-0.2-elite.fwsc", "sha256": "5a2b5f0f5a5d14df8f38c9e43b7214a672f20aeee716ed385f398a3457b34645", "size": 651211}, "mke": {"product": "MKE-P37_902", "pkg": "firmware/rainbow37-0.2-mke.fwsc", "sha256": "31b78015c76eba31fa6016c7cb9072f30883565e9b37d767d4b11775d3f0b351", "size": 651207}}}, {"id": "ghoulbox", "name": "GHOULBOX \u2014 SMK-37 build", "version": "2.1", "col": "#7fbf6a", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/ghoulbox-2.1.fwsc", "sha256": "923339ebdc49490deec33c608f68e9237f667ed9b9f0dced1c6dfdcaa18f36f3", "size": 651211}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/ghoulbox-2.1-elite.fwsc", "sha256": "206a97fefb25adbcc4e0b0847544f635cd06ecf2faf2603c9991d04e09d6209f", "size": 651211}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/ghoulbox-2.1-mke.fwsc", "sha256": "0efda315b7005f02153a109be06f27fb4baac787fdacb5d039066394672aacff", "size": 651207}}}, {"id": "choralroot", "name": "ChoralRoot \u2014 SMK-37 build", "version": "0.24-beta3", "col": "#c9a2ff", "v": {"pro": {"product": "SMK-37 Pro_920", "pkg": "firmware/choralroot-0.24-beta3.fwsc", "sha256": "34821d76c917268e94626b016a7fec0ca441aa3c6f0d99d2bc2f1c44fc9dca05", "size": 651496}, "elite": {"product": "SMK-37 Elite_920", "pkg": "firmware/choralroot-0.24-beta3-elite.fwsc", "sha256": "467ae6da25470f0968dfdd9ee6b48054035398da7fb29447730ac0ed6fbf6a44", "size": 651500}, "mke": {"product": "MKE-P37_920", "pkg": "firmware/choralroot-0.24-beta3-mke.fwsc", "sha256": "70c5e472f49258da994c326c8143961d7ac7dd104d21fd41236a561e0a5ba2b0", "size": 651492}}}, {"id": "orbit", "name": "ORBIT \u2014 SMK-37 build", "version": "0.7.0", "col": "#ff8a3d", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/orbit-0.7.0.fwsc", "sha256": "e3aab2db84940173dfe045304815ffcb51bd22852ed7c3dce08dec6f0a521363", "size": 651190}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/orbit-0.7.0-elite.fwsc", "sha256": "b6439abd5641e5867182db3f29363f5ca7a785b92f4645978a1533eea125d7a4", "size": 651194}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/orbit-0.7.0-mke.fwsc", "sha256": "6e90ae7e491ea186ba22a78373eed18984b0f5ef2fc5df9cd58e8258b0d87439", "size": 651186}}}, {"id": "amb", "name": "AMB-1 \u2014 SMK-37 build", "version": "1.1", "col": "#8fd3c7", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/amb-1.1.fwsc", "sha256": "756f7a49dcb4972d44cb08d4a9f82b10a61c9bb787c5fcd347533fc145081196", "size": 650795}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/amb-1.1-elite.fwsc", "sha256": "7b2c3db3dbcdb8171a873f10b186ccdfc460cf033f90bb08a142cfe5bd15617b", "size": 650799}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/amb-1.1-mke.fwsc", "sha256": "9710aebf5f4090dc6b8915a99672174f77aba46d95ef830635a23d834192ef12", "size": 650791}}}, {"id": "polly", "name": "Polly \u2014 SMK-37 build", "version": "0.4.1", "col": "#ffd166", "v": {"pro": {"product": "SMK-37 Pro_300", "pkg": "firmware/polly-0.4.1.fwsc", "sha256": "cdbc2808b71ca37386a08d3544378f8bc529fa74133b48aed3dfae7c3c961cbe", "size": 650984}, "elite": {"product": "SMK-37 Elite_300", "pkg": "firmware/polly-0.4.1-elite.fwsc", "sha256": "8ac9e2de432fb86a546f1c5312403990227d84d4cbdd399ea0f6ebda1cdcdf52", "size": 650988}, "mke": {"product": "MKE-P37_300", "pkg": "firmware/polly-0.4.1-mke.fwsc", "sha256": "061db7375d5a722f864dba56df6b61ccf534a875b756807f3fd747a2ae4e746d", "size": 650980}}}, {"id": "winamp", "name": "winampFM \u2014 SMK-37 build", "version": "0.1", "col": "#9be564", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/winamp-0.1.fwsc", "sha256": "3675e503ce9778675eec04ff95082ddb26fe4d73c3a54f6993eed3f692dc6ae8", "size": 651190}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/winamp-0.1-elite.fwsc", "sha256": "07713808fffa2e8cad8c3fe5014ccbffd13d55bd6da6f4f7c145eb949cac6514", "size": 651194}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/winamp-0.1-mke.fwsc", "sha256": "1f6da9710b1a4bbfe2242f8d66a9ce57a71200b2b32f8f950fe4ff9fa358d14d", "size": 651186}}}, {"id": "dub", "name": "DUB-1 \u2014 SMK-37 build", "version": "1.0.0", "col": "#e0453a", "v": {"pro": {"product": "SMK-37 Pro_800", "pkg": "firmware/dub-1.0.0.fwsc", "sha256": "c185e35c52de1222e98fe25190fc0ea96f9006130d32a7df3dba37a1afae745f", "size": 650803}, "elite": {"product": "SMK-37 Elite_800", "pkg": "firmware/dub-1.0.0-elite.fwsc", "sha256": "c2e8ff0f55981ac25d1e201e4aadae202f9efaf9e8549608c2737871e68eae24", "size": 650807}, "mke": {"product": "MKE-P37_800", "pkg": "firmware/dub-1.0.0-mke.fwsc", "sha256": "48ab26fe312e4a04d29e0e97b534140fdbe794f751aad374c7adfc2775c50db3", "size": 650799}}}, {"id": "ketch", "name": "Ketch \u2014 SMK-37 build", "version": "0.1", "col": "#ff9a2e", "v": {"pro": {"product": "SMK-37 Pro_951", "pkg": "firmware/ketch-0.1.fwsc", "sha256": "84be6c37fe7a1c5d63df46ac6bd3c6c2b06d49ce128d9416d7940816c4aa2f78", "size": 651944}, "elite": {"product": "SMK-37 Elite_951", "pkg": "firmware/ketch-0.1-elite.fwsc", "sha256": "accd7cef122f37c83da71229633a7ad6f1597d31875879cc3d093a8e73c2bb55", "size": 651944}, "mke": {"product": "MKE-P37_951", "pkg": "firmware/ketch-0.1-mke.fwsc", "sha256": "60f84f933f64247130b928624283fff29c2da3bf5ef5ebc40d57fe1c7fcbcc3c", "size": 651942}}}, {"id": "melodee", "name": "Melodee \u2014 SMK-37 build", "version": "1.4.3", "col": "#5ec8a0", "v": {"pro": {"product": "SMK-37 Pro_91043", "pkg": "firmware/melodee-1.4.3.fwsc", "sha256": "8a268756a89bfe8aa953ab8c4118df9ccf8af2fc8f054b0e0e8f08ea6743f191", "size": 651645}, "elite": {"product": "SMK-37 Elite_91043", "pkg": "firmware/melodee-1.4.3-elite.fwsc", "sha256": "c7cdc788f0ba67d62db4a91826e7b77febcf0d2796ff265aa4edadd5da4cd5e8", "size": 651649}, "mke": {"product": "MKE-P37_91043", "pkg": "firmware/melodee-1.4.3-mke.fwsc", "sha256": "2ab46eef32a6dd318d1af9f2862206e62a1e309a48a09708e10829b6975afeca", "size": 651645}}, "warn": "SMK-37 Elite: please wait with this one; an Elite report is being checked. The Pro build is tested."}, {"id": "fmel", "name": "FMEL-1 \u2014 SMK-37 build", "version": "0.1-beta", "col": "#c8914a", "v": {"pro": {"product": "SMK-37 Pro_451", "pkg": "firmware/fmel-0.1-beta.fwsc", "sha256": "4fb10421f223bb71000e461f1262e5b4b1dc5e61c9e9fb475c3c990b07b11660", "size": 651266}, "elite": {"product": "SMK-37 Elite_451", "pkg": "firmware/fmel-0.1-beta-elite.fwsc", "sha256": "4af1372b518cdba5d999793dccd5e367feb7fc09de24b03dde0b4f8501c12b92", "size": 651270}, "mke": {"product": "MKE-P37_451", "pkg": "firmware/fmel-0.1-beta-mke.fwsc", "sha256": "8bdf83818063b06570f8ed8273ff67045511c6b7d4eebf05f3006d7c585e2a21", "size": 651262}}}, {"id": "frodhes", "name": "Frodhes \u2014 SMK-37 build", "version": "0.9.2", "col": "#d9734a", "v": {"pro": {"product": "SMK-37 Pro_470", "pkg": "firmware/frodhes-0.9.2.fwsc", "sha256": "3363807b50524989a3d0bc2a0e03649f8b79a73d6b804359a554e0cbea110463", "size": 651270}, "elite": {"product": "SMK-37 Elite_470", "pkg": "firmware/frodhes-0.9.2-elite.fwsc", "sha256": "0ca594e75e4683cf5f559a169972e064cd894a5b8e074b9a059e8baf57e039bc", "size": 651270}, "mke": {"product": "MKE-P37_470", "pkg": "firmware/frodhes-0.9.2-mke.fwsc", "sha256": "09974f1fb9470a23b83dc5e524508b83acf2c6057959caada5b125e67ba3e06c", "size": 651266}}}, {"id": "zen", "name": "ZEN-1 \u2014 SMK-37 build", "version": "1.0.2", "col": "#c44830", "v": {"pro": {"product": "SMK-37 Pro_460102", "pkg": "firmware/zen-1.0.2.fwsc", "sha256": "5d950e4537403adc9ac8d053fd67eca4b0fa1770f52660df8575dc361e292f11", "size": 650795}, "elite": {"product": "SMK-37 Elite_460102", "pkg": "firmware/zen-1.0.2-elite.fwsc", "sha256": "bae2bd96581f18a3cf79668a6c17610b330ba5f1ee0a7b5f368175626a976a70", "size": 650799}, "mke": {"product": "MKE-P37_460102", "pkg": "firmware/zen-1.0.2-mke.fwsc", "sha256": "944782878c0b5630d5af17ce163f17d942e2bee86af90d6659d8a48930c8f38f", "size": 650791}}}, {"id": "obervave", "name": "OberVave \u2014 SMK-37 build", "version": "1.5-beta", "col": "#ff5a5a", "v": {"pro": {"product": "SMK-37 Pro_955", "pkg": "firmware/obervave-1.5-beta.fwsc", "sha256": "f24d3a72d68b7edc9efdf354e3c997cfdbd7088fb49a9b388083160d1952b266", "size": 651270}, "elite": {"product": "SMK-37 Elite_955", "pkg": "firmware/obervave-1.5-beta-elite.fwsc", "sha256": "f5e24e8880b23ce135e2f952248a4f704617b3b0ef78d8cb2ac615c4cda562b4", "size": 651270}, "mke": {"product": "MKE-P37_955", "pkg": "firmware/obervave-1.5-beta-mke.fwsc", "sha256": "7c52d9569761a993deaeee71f1185802eb9c6f352cf0198f64885447959052d3", "size": 651266}}}, {"id": "fm1-amb", "name": "AMB-1", "version": "1.3", "col": "#ff5a5a", "community": true, "v": {"fm1": {"product": "FM-1_7010300", "pkg": "firmware/fm1-amb-1.3.fwsc", "sha256": "59dbc6b688e3a64bb0da912c1e40890da7bc214b2a3269704627369b776707cb", "size": 610108}}}, {"id": "fm1-beetle", "name": "BEETLE", "version": "1.04-RC", "col": "#8a7dff", "community": true, "v": {"fm1": {"product": "FM-1_2101", "pkg": "firmware/fm1-beetle-1.04-RC.fwsc", "sha256": "4040617baca2ae418b54640a5a1cca4a2203a93a63fe3a771304ada490d63234", "size": 610086}}}, {"id": "fm1-choralroot", "name": "ChoralRoot", "version": "0.25.1", "col": "#ffd166", "community": true, "v": {"fm1": {"product": "FM-1_920", "pkg": "firmware/fm1-choralroot-0.25.1.fwsc", "sha256": "ef57eaccf6e7452317a1603b8de09662a0a74b77828ecd3f20b896ffe22504d5", "size": 610313}}}, {"id": "fm1-coralflower", "name": "CoralFlower", "version": "0.2", "col": "#5ec8a0", "community": true, "v": {"fm1": {"product": "FM-1_930", "pkg": "firmware/fm1-coralflower-0.2.fwsc", "sha256": "8b2eb5131ea31738d96a62e45b3d9873d3aa0e2b27ca821df816e7cc6feee039", "size": 610313}}}, {"id": "fm1-cs1", "name": "CS-1", "version": "0.3.1", "col": "#ff8a3d", "community": true, "v": {"fm1": {"product": "FM-1_950", "pkg": "firmware/fm1-cs1-0.3.1.fwsc", "sha256": "2ae21d67e95bb5f47675c9200aa3edf311944adb2e3bb2ec7118685e8d069e2a", "size": 610113}}}, {"id": "fm1-ctl", "name": "CTL-1", "version": "1.0", "col": "#8a7dff", "community": true, "v": {"fm1": {"product": "FM-1_6010000", "pkg": "firmware/fm1-ctl-1.0.fwsc", "sha256": "fd9df8eac1d37a1bb296842728057b42bb5e666f4b0112ece01f5f179cd82f75", "size": 610108}}}, {"id": "fm1-dub", "name": "DUB-1", "version": "1.1.0", "col": "#8a7dff", "community": true, "v": {"fm1": {"product": "FM-1_8010100", "pkg": "firmware/fm1-dub-1.1.0.fwsc", "sha256": "e25bbd38782494d018314829a3c9b7f5ea478afa6ee06e5e84873231d54256a2", "size": 609666}}}, {"id": "fm1-duell", "name": "DUELL", "version": "0.2.20-beta", "col": "#ffd166", "community": true, "v": {"fm1": {"product": "FM-1_901", "pkg": "firmware/fm1-duell-0.2.20-beta.fwsc", "sha256": "bdb12cf2b476124b7b82f2cacdf6ed6a047f33a550eb74a0434183dd527f4478", "size": 610086}}}, {"id": "fm1-etch", "name": "ETCH", "version": "1.38", "col": "#c8914a", "community": true, "v": {"fm1": {"product": "FM-1_1038", "pkg": "firmware/fm1-etch-1.38.fwsc", "sha256": "095ef70ccf50a2677d794a0a9d939742c574cf42713c733c9ad7553c1fdbba8a", "size": 610086}}}, {"id": "fm1-emb", "name": "Evander's Music Box", "version": "1.5.2", "col": "#ed7962", "community": true, "v": {"fm1": {"product": "FM-1_777", "pkg": "firmware/fm1-emb-1.5.2.fwsc", "sha256": "4316a6e114912952ed70e1b230b0fc199b353f1fa0bc5c8c04ebb4bcd4801b57", "size": 610090}}}, {"id": "fm1-felucca", "name": "Felucca", "version": "1.6.1", "col": "#5fd7ff", "community": true, "v": {"fm1": {"product": "FM-1_916", "pkg": "firmware/fm1-felucca-1.6.1.fwsc", "sha256": "dff3a38f7e5b9833e15aba322558c9485e9e422e3ff813c616c91b3584a2d909", "size": 610090}}}, {"id": "fm1-felucca8", "name": "Felucca 8 Patterns", "version": "1.5.1-sequences", "col": "#5ec8a0", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-felucca8-1.5.1-sequences.fwsc", "sha256": "c5a23348d71f74e043957ba8315d2f8e19645463cc11224c64f88a588c5c9955", "size": 610086}}}, {"id": "fm1-felucca-salt", "name": "Felucca [Salt]", "version": "0.9-salt14", "col": "#ff8a3d", "community": true, "v": {"fm1": {"product": "FM-1_909", "pkg": "firmware/fm1-felucca-salt-0.9-salt14.fwsc", "sha256": "efb516a7131d12eb5c008ff9af5a380d07e82eb1040bd03990f28d1233417e28", "size": 609662}}}, {"id": "fm1-fimba", "name": "FiMba-1", "version": "0.6.1", "col": "#ff5a5a", "community": true, "v": {"fm1": {"product": "FM-1_8000601", "pkg": "firmware/fm1-fimba-0.6.1.fwsc", "sha256": "2ce744411ab6142a27e5c6238b8eb2f3875ccaa1e6fc47726211bf09f1393fa7", "size": 609657}}}, {"id": "fm1-fm106", "name": "FM-106", "version": "beta4", "col": "#9be564", "community": true, "v": {"fm1": {"product": "FM-1_907", "pkg": "firmware/fm1-fm106-beta4.fwsc", "sha256": "2339bd6438ed23fa95bb1f60b1ff888c9fe2861e28608ce5de904aad1e288baf", "size": 610265}}}, {"id": "fm1-quest", "name": "FM1 Quest", "version": "38", "col": "#7fbf6a", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-quest-38.fwsc", "sha256": "9c29c3e72e4380c478faf68f77e418c05f2a8ae2dc08bdce8d84fd6619130a64", "size": 610019}}}, {"id": "fm1-chord", "name": "fm1-chord", "version": "0.3", "col": "#7fbf6a", "community": true, "v": {"fm1": {"product": "FM-1_903", "pkg": "firmware/fm1-chord-0.3.fwsc", "sha256": "e2d06d0bfd4cd93bb0913494496a526775cb4661a3f2973818c4dd696807d145", "size": 609851}}}, {"id": "fm1-fmel", "name": "FMEL-1", "version": "0.1", "col": "#f7c948", "community": true, "v": {"fm1": {"product": "FM-1_951", "pkg": "firmware/fm1-fmel-0.1.fwsc", "sha256": "ab6bedf165376177b231a4a2464dfc4cdc30c4b472818d481b2114f2420d250f", "size": 610124}}}, {"id": "fm1-fomajam", "name": "FOMAJAM", "version": "0.1.2", "col": "#7fbf6a", "community": true, "v": {"fm1": {"product": "FM-1_961", "pkg": "firmware/fm1-fomajam-0.1.2.fwsc", "sha256": "e3ad1a765b7b564f79eff5c7259fd789ecbca9d7ded57533d79f0b11a40144bc", "size": 610110}}}, {"id": "fm1-fomni", "name": "FoMni-1", "version": "0.4", "col": "#5ec8a0", "community": true, "v": {"fm1": {"product": "FM-1_8000400", "pkg": "firmware/fm1-fomni-0.4.fwsc", "sha256": "71fa8304b91bff89078bfd27e981ed28ca4f0d3c5f406e8fdb5a2ab240fbdbb5", "size": 609661}}}, {"id": "fm1-frodhes", "name": "Frodhes", "version": "0.9.2", "col": "#c9a2ff", "community": true, "v": {"fm1": {"product": "FM-1_958", "pkg": "firmware/fm1-frodhes-0.9.2.fwsc", "sha256": "f5facb8811bf7e15c4de1588f6dfd716681894c8064df814890b322c5f10499a", "size": 610110}}}, {"id": "fm1-fumi", "name": "FuMi-1", "version": "1.0.7", "col": "#f7c948", "community": true, "v": {"fm1": {"product": "FM-1_7010007", "pkg": "firmware/fm1-fumi-1.0.7.fwsc", "sha256": "817845fb4a6f6f232693bd4e643874fdad1ba36775acbbf53a1695421abdb57f", "size": 609657}}}, {"id": "fm1-ghoulbox", "name": "GHOULBOX", "version": "2.3.2", "col": "#e0453a", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-ghoulbox-2.3.2.fwsc", "sha256": "069f6d783db1e05776a89006ecba07a0abfcd2cc7a0fe6fa64db096b5ecad4c8", "size": 610086}}}, {"id": "fm1-golana", "name": "Golana", "version": "1.0", "col": "#ed7962", "community": true, "v": {"fm1": {"product": "FM-1_910", "pkg": "firmware/fm1-golana-1.0.fwsc", "sha256": "8f9788da8cced7ae88a632b01b74a325c10f2bd14f0884f15611351f345ea54e", "size": 610086}}}, {"id": "fm1-hortator", "name": "Hortator", "version": "0.16.0", "col": "#ff8a3d", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-hortator-0.16.0.fwsc", "sha256": "93e40af6b4c4326d255245433899e6b05d26bebce796fa773923ccea5e44d1a0", "size": 609649}}}, {"id": "fm1-jangada", "name": "Jangada", "version": "1.0.1", "col": "#5fd7ff", "community": true, "v": {"fm1": {"product": "FM-1_910", "pkg": "firmware/fm1-jangada-1.0.1.fwsc", "sha256": "c382e334057bd107294940e456e5c1140754917ba152a1958af3aa1696333588", "size": 610133}}}, {"id": "fm1-ketch", "name": "Ketch", "version": "0.1-beta", "col": "#5ec8a0", "community": true, "v": {"fm1": {"product": "FM-1_951", "pkg": "firmware/fm1-ketch-0.1-beta.fwsc", "sha256": "1402e84bd2499a0861dc7c58f406bb0b52cd741f23e93944c04af04cee0904cf", "size": 610775}}}, {"id": "fm1-lcd4", "name": "LCD-4", "version": "0.1.2", "col": "#ff5a5a", "community": true, "v": {"fm1": {"product": "FM-1_4000102", "pkg": "firmware/fm1-lcd4-0.1.2.fwsc", "sha256": "56716b513a2483028a597fbcd18588db7edc3d9fff5ac3717c2ea4148aab4e0f", "size": 609672}}}, {"id": "fm1-maku", "name": "MAKU", "version": "1.0", "col": "#8fd3c7", "community": true, "v": {"fm1": {"product": "FM-1_910", "pkg": "firmware/fm1-maku-1.0.fwsc", "sha256": "b55d471fd179008511dfea032530750f0692d5be8eab263970f5c3c2162b53ea", "size": 610086}}}, {"id": "fm1-mc1", "name": "MC-1", "version": "1.0.1", "col": "#ed7962", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-mc1-1.0.1.fwsc", "sha256": "a09e763e6000f25dec63eb5feeb6251389dce33bf5abe2eb4746f1f1c7091ab5", "size": 610089}}}, {"id": "fm1-melodee", "name": "Melodee", "version": "1.4.3", "col": "#c9a2ff", "community": true, "v": {"fm1": {"product": "FM-1_91043", "pkg": "firmware/fm1-melodee-1.4.3.fwsc", "sha256": "efa44743be492278e25261f012b02425f373b8f31e9e396ef5e47b240a79be80", "size": 610534}}}, {"id": "fm1-min1", "name": "MIN-1", "version": "0.2.1", "col": "#ffd166", "community": true, "v": {"fm1": {"product": "FM-1_5000201", "pkg": "firmware/fm1-min1-0.2.1.fwsc", "sha256": "82715d6ee18c8b12c287d614c131a4fb37f8606d811ae23301f1cd42bd4548c3", "size": 609657}}}, {"id": "fm1-niagara", "name": "Niagara Drift", "version": "0.1-beta", "col": "#8fd3c7", "community": true, "v": {"fm1": {"product": "FM-1_8000100", "pkg": "firmware/fm1-niagara-0.1-beta.fwsc", "sha256": "ff17a634c9785e9a859285a9e502d4547f5e6ad28f616b3c6dce7f0558e70a73", "size": 609657}}}, {"id": "fm1-noizdemons", "name": "NOIZ DEMONS", "version": "666", "col": "#c8914a", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-noizdemons-666.fwsc", "sha256": "b1c14859d45bd8ea1d5ea6ca630083e2a647178f1a45b33865e92da7a01e9b8a", "size": 610086}}}, {"id": "fm1-obervave", "name": "OberVave", "version": "1.5", "col": "#e0453a", "community": true, "v": {"fm1": {"product": "FM-1_955", "pkg": "firmware/fm1-obervave-1.5.fwsc", "sha256": "852c1dfea772a57f3e350e03e42d33a0063fe71df1db062ddb55127d62e90fdb", "size": 610110}}}, {"id": "fm1-opn1", "name": "OPN-1", "version": "2.0.0", "col": "#5fd7ff", "community": true, "v": {"fm1": {"product": "FM-1_950", "pkg": "firmware/fm1-opn1-2.0.0.fwsc", "sha256": "31b88c6fd4ec081ce85393977453e61ff86c6f545f10e7b1db2023986803675c", "size": 610110}}}, {"id": "fm1-orbit", "name": "ORBIT", "version": "0.7.1", "col": "#8fd3c7", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-orbit-0.7.1.fwsc", "sha256": "842a69569eaedd0e063e8caa13e7de5f6fb0412bed5b6fccbf11ed3dbdd8c68d", "size": 610019}}}, {"id": "fm1-pigeon", "name": "PIGEON", "version": "0.3.1", "col": "#9be564", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-pigeon-0.3.1.fwsc", "sha256": "b93e37a6dfde2ab5fb73baa1cb2e623bb6e1e91c16ed3b3901b4f3f79a526f9c", "size": 610990}}}, {"id": "fm1-polly", "name": "Polly", "version": "0.5", "col": "#9be564", "community": true, "v": {"fm1": {"product": "FM-1_3000500", "pkg": "firmware/fm1-polly-0.5.fwsc", "sha256": "2dea2914b4628f075cf3605fae7a75afc03a4b2ae2d7823d8ccf4bf16dd986c7", "size": 610136}}}, {"id": "fm1-purplemonkey", "name": "PurpleMonkey", "version": "0.11", "col": "#8fd3c7", "community": true, "v": {"fm1": {"product": "FM-1_927", "pkg": "firmware/fm1-purplemonkey-0.11.fwsc", "sha256": "edf961e7a85e8795747d1624b828a70bc8f6b0e065bdb019c106ee9a7d43b606", "size": 609857}}}, {"id": "fm1-skiff", "name": "Skiff", "version": "1.3.1", "col": "#f7c948", "community": true, "v": {"fm1": {"product": "FM-1_713", "pkg": "firmware/fm1-skiff-1.3.1.fwsc", "sha256": "158ed997f7a248a390e809a53fde437c732122c60b6e247816e9b0bc7520a139", "size": 610090}}}, {"id": "fm1-sloop", "name": "SLOOP", "version": "2.7.1", "col": "#5fd7ff", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-sloop-2.7.1.fwsc", "sha256": "7c9d269d15d1c1a48e0ebada7ffa2c2aa196c19d51056fd3f760d322322b335f", "size": 610035}}}, {"id": "fm1-floydfm", "name": "SLOOP Floyd FM", "version": "2.4", "col": "#c9a2ff", "community": true, "v": {"fm1": {"product": "FM-1_924", "pkg": "firmware/fm1-floydfm-2.4.fwsc", "sha256": "d70301ad3e1f67a71792a2644829658a8570eceb0681ba2ac6eb41d771cc7560", "size": 609802}}}, {"id": "fm1-sloopdx", "name": "sloopDX", "version": "2.6", "col": "#ff8a3d", "community": true, "v": {"fm1": {"product": "FM-1_926", "pkg": "firmware/fm1-sloopdx-2.6.fwsc", "sha256": "51befaaff7fda55832c9d3a373642b95b60b5536e34944beaf55bc4c61704066", "size": 610110}}}, {"id": "fm1-unholyunion", "name": "Unholy Union", "version": "0.2.3", "col": "#e0453a", "community": true, "v": {"fm1": {"product": "FM-1_80023", "pkg": "firmware/fm1-unholyunion-0.2.3.fwsc", "sha256": "025bec05d71da1b106ecb05d52e165ea6592812e92209cfe2626278047f7abba", "size": 610567}}}, {"id": "fm1-winamp", "name": "winampFM", "version": "0.12", "col": "#ffd166", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-winamp-0.12.fwsc", "sha256": "32a78b18132be64b83557886f9fc1c8c4419adb8932a2b8bc83bb5fb7e681b0b", "size": 610019}}}, {"id": "fm1-x0x", "name": "X0X", "version": "1.1.0", "col": "#ed7962", "community": true, "v": {"fm1": {"product": "FM-1_9010100", "pkg": "firmware/fm1-x0x-1.1.0.fwsc", "sha256": "a0c29deb930c65f1d40b5691b7d673f861418b438b7e65027cb9c671e6f44f5b", "size": 609684}}}, {"id": "fm1-x0x-rmx", "name": "X0X-RMX", "version": "1.0.1", "col": "#f7c948", "community": true, "v": {"fm1": {"product": "FM-1_987010001", "pkg": "firmware/fm1-x0x-rmx-1.0.1.fwsc", "sha256": "42190c2dffbda6d89807e40b68dd8d2426ef502fa3848dc47bb1af37e34a2fd3", "size": 609680}}}, {"id": "fm1-zen", "name": "ZEN-1", "version": "1.0.2", "col": "#ff5a5a", "community": true, "v": {"fm1": {"product": "FM-1_6010002", "pkg": "firmware/fm1-zen-1.0.2.fwsc", "sha256": "d80b6b63b170d442e8bf6462a3ca3d7bbebedad58872812ba395b64c02e40f02", "size": 609657}}}];
+const FW = [{"id": "makkuro37", "name": "Makkuro37", "version": "0.3", "col": "var(--mag)", "v": {"pro": {"product": "SMK-37 Pro_703", "pkg": "firmware/makkuro37-0.3.fwsc", "sha256": "9b17ea5647d009d421fe01d03384330a8dc52607ac510e5d3fcb045190ae03cb", "size": 651195}, "elite": {"product": "SMK-37 Elite_703", "pkg": "firmware/makkuro37-0.3-elite.fwsc", "sha256": "f52f420c3d385781692befc5e390ea78008710d38910e9a3651549ccf87bae5e", "size": 651199}, "mke": {"product": "MKE-P37_703", "pkg": "firmware/makkuro37-0.3-mke.fwsc", "sha256": "3d5889aa42e510e87d30909b4f225307a9a98309afe62ecc538a247e8fe9f946", "size": 651191}}}, {"id": "vector37", "name": "Vector37", "version": "0.3.1", "col": "#8a7dff", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/vector37-0.3.1.fwsc", "sha256": "c7efb0a7519ce6cd6bb6d93498b426354228a4540da70f5de154b90e186306f4", "size": 651194}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/vector37-0.3.1-elite.fwsc", "sha256": "becdcfd72c496c877bb2c58ef4490009ab5041b9e8c75fe5a47dc92c94546f11", "size": 651194}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/vector37-0.3.1-mke.fwsc", "sha256": "d7ca363c1d435d9e2b98ba54caefe85e8faa4e8152e42fc4e02012a8fdf56c8f", "size": 651190}, "fm1": {"product": "FM-1_700", "pkg": "firmware/vector37-0.3.1-fm1.fwsc", "sha256": "b6404f716c303e76e31245cb09bd4ea247eea1cbe93ba650eae8cab571c2d7b3", "size": 610019}}}, {"id": "speak37", "name": "Speak37", "version": "1.0", "col": "#5fd7ff", "v": {"pro": {"product": "SMK-37 Pro_510", "pkg": "firmware/speak37-1.0.fwsc", "sha256": "033f23bf63de35f60ba6e2b98a3fd264b4a34aafb790c178f9ad7c1d5db11cce", "size": 651060}, "elite": {"product": "SMK-37 Elite_510", "pkg": "firmware/speak37-1.0-elite.fwsc", "sha256": "14065f0571dac4e8c12b05512832fda7676681d085dfebbac869688d9a73e6a0", "size": 651064}, "mke": {"product": "MKE-P37_510", "pkg": "firmware/speak37-1.0-mke.fwsc", "sha256": "3580a0e2c7d07f9e1b0c453c2b313ee9c27e895b5d8215e9ddbd31b0bf641a57", "size": 651056}, "fm1": {"product": "FM-1_510", "pkg": "firmware/speak37-1.0-fm1.fwsc", "sha256": "3441ba1d65a3be72adcd89e144571eb483beb0a310ea992841100e26c163c476", "size": 610087}}}, {"id": "erik37", "name": "Erik37", "version": "1.1", "col": "#d8b46a", "v": {"pro": {"product": "SMK-37 Pro_480101", "pkg": "firmware/erik37-1.1.fwsc", "sha256": "2fbc73ba7526c3767d36228ad8cd8182fd5ab0bac801fe18f30dfd6ad144d6a8", "size": 651224}, "elite": {"product": "SMK-37 Elite_480101", "pkg": "firmware/erik37-1.1-elite.fwsc", "sha256": "2702a7c8a3fdcbdc6969a1433fa9dadf72c48b80a71722f86176d1ceafcfd51c", "size": 651228}, "mke": {"product": "MKE-P37_480101", "pkg": "firmware/erik37-1.1-mke.fwsc", "sha256": "63d9d88c5cc09e04ac5e641dfcb63f06688a095cc55cc7d62ef9c5cdc2f75d32", "size": 651220}, "fm1": {"product": "FM-1_480101", "pkg": "firmware/erik37-1.1-fm1.fwsc", "sha256": "45b3d93643f9f2f7a45db393e65dad09b4a963b709b8ca423a948e8526ee48f3", "size": 610108}}}, {"id": "snoop37", "name": "Snoop37 (SLOOP for the SMK-37)", "version": "2.7.1", "col": "var(--cyan)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/snoop37-2.7.1.fwsc", "sha256": "80376cad096c5e2d8306a0159c307e292eeb4dab27517d7efa5223f8b96f75bb", "size": 651206}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/snoop37-2.7.1-elite.fwsc", "sha256": "00ca5e6b5dad2f577a2add5c1a94068d00a345f982bf1db408805ce934ccb832", "size": 651210}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/snoop37-2.7.1-mke.fwsc", "sha256": "338415ae1f9be8b3ac4abfec6ccd67532032e4dc624d433782e30c066b4c1690", "size": 651202}}}, {"id": "x0x37", "name": "X0X \u2014 SMK-37 build", "version": "0.2", "col": "var(--t3)", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/x0x37-0.2.fwsc", "sha256": "983402ce49bac7dab2b36b30eddf9e5a1ae7a36e63dd35717bd6479a63dcd26d", "size": 650816}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/x0x37-0.2-elite.fwsc", "sha256": "b577c6aceac17ebe94753046394775153a743eb29502806478fbb2303a416e61", "size": 650820}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/x0x37-0.2-mke.fwsc", "sha256": "1cd132eb5db3b70f7b5fcde7175a262569d3ee087460a1acd0fb425f0905b53b", "size": 650812}}}, {"id": "fomni37", "name": "FoMni \u2014 SMK-37 build", "version": "0.2", "col": "var(--t4)", "v": {"pro": {"product": "SMK-37 Pro_800", "pkg": "firmware/fomni37-0.2.fwsc", "sha256": "d7dfe5583b4314eb8aa1b6158553dc6234d8aaf6aaeac4087820086303c0cd76", "size": 650795}, "elite": {"product": "SMK-37 Elite_800", "pkg": "firmware/fomni37-0.2-elite.fwsc", "sha256": "8e7f68295dc99c34307ab523436f85f49f5f074b9f92738a72e7c2a631734cfa", "size": 650799}, "mke": {"product": "MKE-P37_800", "pkg": "firmware/fomni37-0.2-mke.fwsc", "sha256": "d99cabd903362d6c5bd05065a63f1cd052eac68f59503d8c7505d630e5ddf7eb", "size": 650791}}}, {"id": "maku37", "name": "MAKU \u2014 SMK-37 build", "version": "0.1", "col": "#ed7962", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/maku37-0.1.fwsc", "sha256": "cf8b69b26ef7ea6aba37039dd55ed2db9d7dbd7b9b44e9d6aeab67f9fcdb5868", "size": 651211}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/maku37-0.1-elite.fwsc", "sha256": "97198b9de4ab44ebf0cc1c4222d224860fca9b3bb3fb51d2e1a0fa0e5c0e4824", "size": 651211}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/maku37-0.1-mke.fwsc", "sha256": "79e8d39c711ca82b9e554426c2712491c09778c2bb84d70f457207a1d05bea7c", "size": 651207}}}, {"id": "rainbow37", "name": "Rainbow mode \u2014 SMK-37 build", "version": "0.2", "col": "#f7c948", "v": {"pro": {"product": "SMK-37 Pro_902", "pkg": "firmware/rainbow37-0.2.fwsc", "sha256": "37f923087ae93599cdae5ac27ab02166f8a8888e30d436973fd8a0762d357210", "size": 651211}, "elite": {"product": "SMK-37 Elite_902", "pkg": "firmware/rainbow37-0.2-elite.fwsc", "sha256": "5a2b5f0f5a5d14df8f38c9e43b7214a672f20aeee716ed385f398a3457b34645", "size": 651211}, "mke": {"product": "MKE-P37_902", "pkg": "firmware/rainbow37-0.2-mke.fwsc", "sha256": "31b78015c76eba31fa6016c7cb9072f30883565e9b37d767d4b11775d3f0b351", "size": 651207}}}, {"id": "ghoulbox", "name": "GHOULBOX \u2014 SMK-37 build", "version": "2.1", "col": "#7fbf6a", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/ghoulbox-2.1.fwsc", "sha256": "923339ebdc49490deec33c608f68e9237f667ed9b9f0dced1c6dfdcaa18f36f3", "size": 651211}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/ghoulbox-2.1-elite.fwsc", "sha256": "206a97fefb25adbcc4e0b0847544f635cd06ecf2faf2603c9991d04e09d6209f", "size": 651211}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/ghoulbox-2.1-mke.fwsc", "sha256": "0efda315b7005f02153a109be06f27fb4baac787fdacb5d039066394672aacff", "size": 651207}}}, {"id": "choralroot", "name": "ChoralRoot \u2014 SMK-37 build", "version": "0.24-beta3", "col": "#c9a2ff", "v": {"pro": {"product": "SMK-37 Pro_920", "pkg": "firmware/choralroot-0.24-beta3.fwsc", "sha256": "34821d76c917268e94626b016a7fec0ca441aa3c6f0d99d2bc2f1c44fc9dca05", "size": 651496}, "elite": {"product": "SMK-37 Elite_920", "pkg": "firmware/choralroot-0.24-beta3-elite.fwsc", "sha256": "467ae6da25470f0968dfdd9ee6b48054035398da7fb29447730ac0ed6fbf6a44", "size": 651500}, "mke": {"product": "MKE-P37_920", "pkg": "firmware/choralroot-0.24-beta3-mke.fwsc", "sha256": "70c5e472f49258da994c326c8143961d7ac7dd104d21fd41236a561e0a5ba2b0", "size": 651492}}}, {"id": "orbit", "name": "ORBIT \u2014 SMK-37 build", "version": "0.7.0", "col": "#ff8a3d", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/orbit-0.7.0.fwsc", "sha256": "e3aab2db84940173dfe045304815ffcb51bd22852ed7c3dce08dec6f0a521363", "size": 651190}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/orbit-0.7.0-elite.fwsc", "sha256": "b6439abd5641e5867182db3f29363f5ca7a785b92f4645978a1533eea125d7a4", "size": 651194}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/orbit-0.7.0-mke.fwsc", "sha256": "6e90ae7e491ea186ba22a78373eed18984b0f5ef2fc5df9cd58e8258b0d87439", "size": 651186}}}, {"id": "amb", "name": "AMB-1 \u2014 SMK-37 build", "version": "1.1", "col": "#8fd3c7", "v": {"pro": {"product": "SMK-37 Pro_700", "pkg": "firmware/amb-1.1.fwsc", "sha256": "756f7a49dcb4972d44cb08d4a9f82b10a61c9bb787c5fcd347533fc145081196", "size": 650795}, "elite": {"product": "SMK-37 Elite_700", "pkg": "firmware/amb-1.1-elite.fwsc", "sha256": "7b2c3db3dbcdb8171a873f10b186ccdfc460cf033f90bb08a142cfe5bd15617b", "size": 650799}, "mke": {"product": "MKE-P37_700", "pkg": "firmware/amb-1.1-mke.fwsc", "sha256": "9710aebf5f4090dc6b8915a99672174f77aba46d95ef830635a23d834192ef12", "size": 650791}}}, {"id": "polly", "name": "Polly \u2014 SMK-37 build", "version": "0.4.1", "col": "#ffd166", "v": {"pro": {"product": "SMK-37 Pro_300", "pkg": "firmware/polly-0.4.1.fwsc", "sha256": "cdbc2808b71ca37386a08d3544378f8bc529fa74133b48aed3dfae7c3c961cbe", "size": 650984}, "elite": {"product": "SMK-37 Elite_300", "pkg": "firmware/polly-0.4.1-elite.fwsc", "sha256": "8ac9e2de432fb86a546f1c5312403990227d84d4cbdd399ea0f6ebda1cdcdf52", "size": 650988}, "mke": {"product": "MKE-P37_300", "pkg": "firmware/polly-0.4.1-mke.fwsc", "sha256": "061db7375d5a722f864dba56df6b61ccf534a875b756807f3fd747a2ae4e746d", "size": 650980}}}, {"id": "winamp", "name": "winampFM \u2014 SMK-37 build", "version": "0.1", "col": "#9be564", "v": {"pro": {"product": "SMK-37 Pro_900", "pkg": "firmware/winamp-0.1.fwsc", "sha256": "3675e503ce9778675eec04ff95082ddb26fe4d73c3a54f6993eed3f692dc6ae8", "size": 651190}, "elite": {"product": "SMK-37 Elite_900", "pkg": "firmware/winamp-0.1-elite.fwsc", "sha256": "07713808fffa2e8cad8c3fe5014ccbffd13d55bd6da6f4f7c145eb949cac6514", "size": 651194}, "mke": {"product": "MKE-P37_900", "pkg": "firmware/winamp-0.1-mke.fwsc", "sha256": "1f6da9710b1a4bbfe2242f8d66a9ce57a71200b2b32f8f950fe4ff9fa358d14d", "size": 651186}}}, {"id": "dub", "name": "DUB-1 \u2014 SMK-37 build", "version": "1.0.0", "col": "#e0453a", "v": {"pro": {"product": "SMK-37 Pro_800", "pkg": "firmware/dub-1.0.0.fwsc", "sha256": "c185e35c52de1222e98fe25190fc0ea96f9006130d32a7df3dba37a1afae745f", "size": 650803}, "elite": {"product": "SMK-37 Elite_800", "pkg": "firmware/dub-1.0.0-elite.fwsc", "sha256": "c2e8ff0f55981ac25d1e201e4aadae202f9efaf9e8549608c2737871e68eae24", "size": 650807}, "mke": {"product": "MKE-P37_800", "pkg": "firmware/dub-1.0.0-mke.fwsc", "sha256": "48ab26fe312e4a04d29e0e97b534140fdbe794f751aad374c7adfc2775c50db3", "size": 650799}}}, {"id": "ketch", "name": "Ketch \u2014 SMK-37 build", "version": "0.1", "col": "#ff9a2e", "v": {"pro": {"product": "SMK-37 Pro_951", "pkg": "firmware/ketch-0.1.fwsc", "sha256": "84be6c37fe7a1c5d63df46ac6bd3c6c2b06d49ce128d9416d7940816c4aa2f78", "size": 651944}, "elite": {"product": "SMK-37 Elite_951", "pkg": "firmware/ketch-0.1-elite.fwsc", "sha256": "accd7cef122f37c83da71229633a7ad6f1597d31875879cc3d093a8e73c2bb55", "size": 651944}, "mke": {"product": "MKE-P37_951", "pkg": "firmware/ketch-0.1-mke.fwsc", "sha256": "60f84f933f64247130b928624283fff29c2da3bf5ef5ebc40d57fe1c7fcbcc3c", "size": 651942}}}, {"id": "melodee", "name": "Melodee \u2014 SMK-37 build", "version": "1.4.3", "col": "#5ec8a0", "v": {"pro": {"product": "SMK-37 Pro_91043", "pkg": "firmware/melodee-1.4.3.fwsc", "sha256": "8a268756a89bfe8aa953ab8c4118df9ccf8af2fc8f054b0e0e8f08ea6743f191", "size": 651645}, "elite": {"product": "SMK-37 Elite_91043", "pkg": "firmware/melodee-1.4.3-elite.fwsc", "sha256": "c7cdc788f0ba67d62db4a91826e7b77febcf0d2796ff265aa4edadd5da4cd5e8", "size": 651649}, "mke": {"product": "MKE-P37_91043", "pkg": "firmware/melodee-1.4.3-mke.fwsc", "sha256": "2ab46eef32a6dd318d1af9f2862206e62a1e309a48a09708e10829b6975afeca", "size": 651645}}, "warn": "SMK-37 Elite: please wait with this one; an Elite report is being checked. The Pro build is tested."}, {"id": "fmel", "name": "FMEL-1 \u2014 SMK-37 build", "version": "0.1-beta", "col": "#c8914a", "v": {"pro": {"product": "SMK-37 Pro_451", "pkg": "firmware/fmel-0.1-beta.fwsc", "sha256": "4fb10421f223bb71000e461f1262e5b4b1dc5e61c9e9fb475c3c990b07b11660", "size": 651266}, "elite": {"product": "SMK-37 Elite_451", "pkg": "firmware/fmel-0.1-beta-elite.fwsc", "sha256": "4af1372b518cdba5d999793dccd5e367feb7fc09de24b03dde0b4f8501c12b92", "size": 651270}, "mke": {"product": "MKE-P37_451", "pkg": "firmware/fmel-0.1-beta-mke.fwsc", "sha256": "8bdf83818063b06570f8ed8273ff67045511c6b7d4eebf05f3006d7c585e2a21", "size": 651262}}}, {"id": "frodhes", "name": "Frodhes \u2014 SMK-37 build", "version": "0.9.2", "col": "#d9734a", "v": {"pro": {"product": "SMK-37 Pro_470", "pkg": "firmware/frodhes-0.9.2.fwsc", "sha256": "3363807b50524989a3d0bc2a0e03649f8b79a73d6b804359a554e0cbea110463", "size": 651270}, "elite": {"product": "SMK-37 Elite_470", "pkg": "firmware/frodhes-0.9.2-elite.fwsc", "sha256": "0ca594e75e4683cf5f559a169972e064cd894a5b8e074b9a059e8baf57e039bc", "size": 651270}, "mke": {"product": "MKE-P37_470", "pkg": "firmware/frodhes-0.9.2-mke.fwsc", "sha256": "09974f1fb9470a23b83dc5e524508b83acf2c6057959caada5b125e67ba3e06c", "size": 651266}}}, {"id": "zen", "name": "ZEN-1 \u2014 SMK-37 build", "version": "1.0.2", "col": "#c44830", "v": {"pro": {"product": "SMK-37 Pro_460102", "pkg": "firmware/zen-1.0.2.fwsc", "sha256": "5d950e4537403adc9ac8d053fd67eca4b0fa1770f52660df8575dc361e292f11", "size": 650795}, "elite": {"product": "SMK-37 Elite_460102", "pkg": "firmware/zen-1.0.2-elite.fwsc", "sha256": "bae2bd96581f18a3cf79668a6c17610b330ba5f1ee0a7b5f368175626a976a70", "size": 650799}, "mke": {"product": "MKE-P37_460102", "pkg": "firmware/zen-1.0.2-mke.fwsc", "sha256": "944782878c0b5630d5af17ce163f17d942e2bee86af90d6659d8a48930c8f38f", "size": 650791}}}, {"id": "obervave", "name": "OberVave \u2014 SMK-37 build", "version": "1.5-beta", "col": "#ff5a5a", "v": {"pro": {"product": "SMK-37 Pro_955", "pkg": "firmware/obervave-1.5-beta.fwsc", "sha256": "f24d3a72d68b7edc9efdf354e3c997cfdbd7088fb49a9b388083160d1952b266", "size": 651270}, "elite": {"product": "SMK-37 Elite_955", "pkg": "firmware/obervave-1.5-beta-elite.fwsc", "sha256": "f5e24e8880b23ce135e2f952248a4f704617b3b0ef78d8cb2ac615c4cda562b4", "size": 651270}, "mke": {"product": "MKE-P37_955", "pkg": "firmware/obervave-1.5-beta-mke.fwsc", "sha256": "7c52d9569761a993deaeee71f1185802eb9c6f352cf0198f64885447959052d3", "size": 651266}}}, {"id": "fm1-amb", "name": "AMB-1", "version": "1.3", "col": "#ff5a5a", "community": true, "v": {"fm1": {"product": "FM-1_7010300", "pkg": "firmware/fm1-amb-1.3.fwsc", "sha256": "59dbc6b688e3a64bb0da912c1e40890da7bc214b2a3269704627369b776707cb", "size": 610108}}}, {"id": "fm1-beetle", "name": "BEETLE", "version": "1.04-RC", "col": "#8a7dff", "community": true, "v": {"fm1": {"product": "FM-1_2101", "pkg": "firmware/fm1-beetle-1.04-RC.fwsc", "sha256": "4040617baca2ae418b54640a5a1cca4a2203a93a63fe3a771304ada490d63234", "size": 610086}}}, {"id": "fm1-choralroot", "name": "ChoralRoot", "version": "0.25.1", "col": "#ffd166", "community": true, "v": {"fm1": {"product": "FM-1_920", "pkg": "firmware/fm1-choralroot-0.25.1.fwsc", "sha256": "ef57eaccf6e7452317a1603b8de09662a0a74b77828ecd3f20b896ffe22504d5", "size": 610313}}}, {"id": "fm1-coralflower", "name": "CoralFlower", "version": "0.2", "col": "#5ec8a0", "community": true, "v": {"fm1": {"product": "FM-1_930", "pkg": "firmware/fm1-coralflower-0.2.fwsc", "sha256": "8b2eb5131ea31738d96a62e45b3d9873d3aa0e2b27ca821df816e7cc6feee039", "size": 610313}}}, {"id": "fm1-cs1", "name": "CS-1", "version": "0.3.1", "col": "#ff8a3d", "community": true, "v": {"fm1": {"product": "FM-1_950", "pkg": "firmware/fm1-cs1-0.3.1.fwsc", "sha256": "2ae21d67e95bb5f47675c9200aa3edf311944adb2e3bb2ec7118685e8d069e2a", "size": 610113}}}, {"id": "fm1-ctl", "name": "CTL-1", "version": "1.0", "col": "#8a7dff", "community": true, "v": {"fm1": {"product": "FM-1_6010000", "pkg": "firmware/fm1-ctl-1.0.fwsc", "sha256": "fd9df8eac1d37a1bb296842728057b42bb5e666f4b0112ece01f5f179cd82f75", "size": 610108}}}, {"id": "fm1-dub", "name": "DUB-1", "version": "1.1.0", "col": "#8a7dff", "community": true, "v": {"fm1": {"product": "FM-1_8010100", "pkg": "firmware/fm1-dub-1.1.0.fwsc", "sha256": "e25bbd38782494d018314829a3c9b7f5ea478afa6ee06e5e84873231d54256a2", "size": 609666}}}, {"id": "fm1-duell", "name": "DUELL", "version": "0.2.20-beta", "col": "#ffd166", "community": true, "v": {"fm1": {"product": "FM-1_901", "pkg": "firmware/fm1-duell-0.2.20-beta.fwsc", "sha256": "bdb12cf2b476124b7b82f2cacdf6ed6a047f33a550eb74a0434183dd527f4478", "size": 610086}}}, {"id": "fm1-etch", "name": "ETCH", "version": "1.38", "col": "#c8914a", "community": true, "v": {"fm1": {"product": "FM-1_1038", "pkg": "firmware/fm1-etch-1.38.fwsc", "sha256": "095ef70ccf50a2677d794a0a9d939742c574cf42713c733c9ad7553c1fdbba8a", "size": 610086}}}, {"id": "fm1-emb", "name": "Evander's Music Box", "version": "1.5.2", "col": "#ed7962", "community": true, "v": {"fm1": {"product": "FM-1_777", "pkg": "firmware/fm1-emb-1.5.2.fwsc", "sha256": "4316a6e114912952ed70e1b230b0fc199b353f1fa0bc5c8c04ebb4bcd4801b57", "size": 610090}}}, {"id": "fm1-felucca", "name": "Felucca", "version": "1.6.1", "col": "#5fd7ff", "community": true, "v": {"fm1": {"product": "FM-1_916", "pkg": "firmware/fm1-felucca-1.6.1.fwsc", "sha256": "dff3a38f7e5b9833e15aba322558c9485e9e422e3ff813c616c91b3584a2d909", "size": 610090}}}, {"id": "fm1-felucca8", "name": "Felucca 8 Patterns", "version": "1.5.1-sequences", "col": "#5ec8a0", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-felucca8-1.5.1-sequences.fwsc", "sha256": "c5a23348d71f74e043957ba8315d2f8e19645463cc11224c64f88a588c5c9955", "size": 610086}}}, {"id": "fm1-felucca-salt", "name": "Felucca [Salt]", "version": "0.9-salt14", "col": "#ff8a3d", "community": true, "v": {"fm1": {"product": "FM-1_909", "pkg": "firmware/fm1-felucca-salt-0.9-salt14.fwsc", "sha256": "efb516a7131d12eb5c008ff9af5a380d07e82eb1040bd03990f28d1233417e28", "size": 609662}}}, {"id": "fm1-fimba", "name": "FiMba-1", "version": "0.6.1", "col": "#ff5a5a", "community": true, "v": {"fm1": {"product": "FM-1_8000601", "pkg": "firmware/fm1-fimba-0.6.1.fwsc", "sha256": "2ce744411ab6142a27e5c6238b8eb2f3875ccaa1e6fc47726211bf09f1393fa7", "size": 609657}}}, {"id": "fm1-fm106", "name": "FM-106", "version": "beta4", "col": "#9be564", "community": true, "v": {"fm1": {"product": "FM-1_907", "pkg": "firmware/fm1-fm106-beta4.fwsc", "sha256": "2339bd6438ed23fa95bb1f60b1ff888c9fe2861e28608ce5de904aad1e288baf", "size": 610265}}}, {"id": "fm1-quest", "name": "FM1 Quest", "version": "38", "col": "#7fbf6a", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-quest-38.fwsc", "sha256": "9c29c3e72e4380c478faf68f77e418c05f2a8ae2dc08bdce8d84fd6619130a64", "size": 610019}}}, {"id": "fm1-chord", "name": "fm1-chord", "version": "0.3", "col": "#7fbf6a", "community": true, "v": {"fm1": {"product": "FM-1_903", "pkg": "firmware/fm1-chord-0.3.fwsc", "sha256": "e2d06d0bfd4cd93bb0913494496a526775cb4661a3f2973818c4dd696807d145", "size": 609851}}}, {"id": "fm1-fmel", "name": "FMEL-1", "version": "0.1", "col": "#f7c948", "community": true, "v": {"fm1": {"product": "FM-1_951", "pkg": "firmware/fm1-fmel-0.1.fwsc", "sha256": "ab6bedf165376177b231a4a2464dfc4cdc30c4b472818d481b2114f2420d250f", "size": 610124}}}, {"id": "fm1-fomni", "name": "FoMni-1", "version": "0.4", "col": "#5ec8a0", "community": true, "v": {"fm1": {"product": "FM-1_8000400", "pkg": "firmware/fm1-fomni-0.4.fwsc", "sha256": "71fa8304b91bff89078bfd27e981ed28ca4f0d3c5f406e8fdb5a2ab240fbdbb5", "size": 609661}}}, {"id": "fm1-frodhes", "name": "Frodhes", "version": "0.9.2", "col": "#c9a2ff", "community": true, "v": {"fm1": {"product": "FM-1_958", "pkg": "firmware/fm1-frodhes-0.9.2.fwsc", "sha256": "f5facb8811bf7e15c4de1588f6dfd716681894c8064df814890b322c5f10499a", "size": 610110}}}, {"id": "fm1-fumi", "name": "FuMi-1", "version": "1.0.7", "col": "#f7c948", "community": true, "v": {"fm1": {"product": "FM-1_7010007", "pkg": "firmware/fm1-fumi-1.0.7.fwsc", "sha256": "817845fb4a6f6f232693bd4e643874fdad1ba36775acbbf53a1695421abdb57f", "size": 609657}}}, {"id": "fm1-ghoulbox", "name": "GHOULBOX", "version": "2.3.2", "col": "#e0453a", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-ghoulbox-2.3.2.fwsc", "sha256": "069f6d783db1e05776a89006ecba07a0abfcd2cc7a0fe6fa64db096b5ecad4c8", "size": 610086}}}, {"id": "fm1-golana", "name": "Golana", "version": "1.0", "col": "#ed7962", "community": true, "v": {"fm1": {"product": "FM-1_910", "pkg": "firmware/fm1-golana-1.0.fwsc", "sha256": "8f9788da8cced7ae88a632b01b74a325c10f2bd14f0884f15611351f345ea54e", "size": 610086}}}, {"id": "fm1-hortator", "name": "Hortator", "version": "0.16.0", "col": "#ff8a3d", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-hortator-0.16.0.fwsc", "sha256": "93e40af6b4c4326d255245433899e6b05d26bebce796fa773923ccea5e44d1a0", "size": 609649}}}, {"id": "fm1-jangada", "name": "Jangada", "version": "1.0.1", "col": "#5fd7ff", "community": true, "v": {"fm1": {"product": "FM-1_910", "pkg": "firmware/fm1-jangada-1.0.1.fwsc", "sha256": "c382e334057bd107294940e456e5c1140754917ba152a1958af3aa1696333588", "size": 610133}}}, {"id": "fm1-ketch", "name": "Ketch", "version": "0.1-beta", "col": "#5ec8a0", "community": true, "v": {"fm1": {"product": "FM-1_951", "pkg": "firmware/fm1-ketch-0.1-beta.fwsc", "sha256": "1402e84bd2499a0861dc7c58f406bb0b52cd741f23e93944c04af04cee0904cf", "size": 610775}}}, {"id": "fm1-lcd4", "name": "LCD-4", "version": "0.1.2", "col": "#ff5a5a", "community": true, "v": {"fm1": {"product": "FM-1_4000102", "pkg": "firmware/fm1-lcd4-0.1.2.fwsc", "sha256": "56716b513a2483028a597fbcd18588db7edc3d9fff5ac3717c2ea4148aab4e0f", "size": 609672}}}, {"id": "fm1-maku", "name": "MAKU", "version": "1.0", "col": "#8fd3c7", "community": true, "v": {"fm1": {"product": "FM-1_910", "pkg": "firmware/fm1-maku-1.0.fwsc", "sha256": "b55d471fd179008511dfea032530750f0692d5be8eab263970f5c3c2162b53ea", "size": 610086}}}, {"id": "fm1-mc1", "name": "MC-1", "version": "1.0.1", "col": "#ed7962", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-mc1-1.0.1.fwsc", "sha256": "a09e763e6000f25dec63eb5feeb6251389dce33bf5abe2eb4746f1f1c7091ab5", "size": 610089}}}, {"id": "fm1-melodee", "name": "Melodee", "version": "1.4.3", "col": "#c9a2ff", "community": true, "v": {"fm1": {"product": "FM-1_91043", "pkg": "firmware/fm1-melodee-1.4.3.fwsc", "sha256": "efa44743be492278e25261f012b02425f373b8f31e9e396ef5e47b240a79be80", "size": 610534}}}, {"id": "fm1-min1", "name": "MIN-1", "version": "0.2.1", "col": "#ffd166", "community": true, "v": {"fm1": {"product": "FM-1_5000201", "pkg": "firmware/fm1-min1-0.2.1.fwsc", "sha256": "82715d6ee18c8b12c287d614c131a4fb37f8606d811ae23301f1cd42bd4548c3", "size": 609657}}}, {"id": "fm1-niagara", "name": "Niagara Drift", "version": "0.1-beta", "col": "#8fd3c7", "community": true, "v": {"fm1": {"product": "FM-1_8000100", "pkg": "firmware/fm1-niagara-0.1-beta.fwsc", "sha256": "ff17a634c9785e9a859285a9e502d4547f5e6ad28f616b3c6dce7f0558e70a73", "size": 609657}}}, {"id": "fm1-noizdemons", "name": "NOIZ DEMONS", "version": "666", "col": "#c8914a", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-noizdemons-666.fwsc", "sha256": "b1c14859d45bd8ea1d5ea6ca630083e2a647178f1a45b33865e92da7a01e9b8a", "size": 610086}}}, {"id": "fm1-obervave", "name": "OberVave", "version": "1.5", "col": "#e0453a", "community": true, "v": {"fm1": {"product": "FM-1_955", "pkg": "firmware/fm1-obervave-1.5.fwsc", "sha256": "852c1dfea772a57f3e350e03e42d33a0063fe71df1db062ddb55127d62e90fdb", "size": 610110}}}, {"id": "fm1-opn1", "name": "OPN-1", "version": "2.0.0", "col": "#5fd7ff", "community": true, "v": {"fm1": {"product": "FM-1_950", "pkg": "firmware/fm1-opn1-2.0.0.fwsc", "sha256": "31b88c6fd4ec081ce85393977453e61ff86c6f545f10e7b1db2023986803675c", "size": 610110}}}, {"id": "fm1-orbit", "name": "ORBIT", "version": "0.7.1", "col": "#8fd3c7", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-orbit-0.7.1.fwsc", "sha256": "842a69569eaedd0e063e8caa13e7de5f6fb0412bed5b6fccbf11ed3dbdd8c68d", "size": 610019}}}, {"id": "fm1-polly", "name": "Polly", "version": "0.5", "col": "#9be564", "community": true, "v": {"fm1": {"product": "FM-1_3000500", "pkg": "firmware/fm1-polly-0.5.fwsc", "sha256": "2dea2914b4628f075cf3605fae7a75afc03a4b2ae2d7823d8ccf4bf16dd986c7", "size": 610136}}}, {"id": "fm1-purplemonkey", "name": "PurpleMonkey", "version": "0.11", "col": "#8fd3c7", "community": true, "v": {"fm1": {"product": "FM-1_927", "pkg": "firmware/fm1-purplemonkey-0.11.fwsc", "sha256": "edf961e7a85e8795747d1624b828a70bc8f6b0e065bdb019c106ee9a7d43b606", "size": 609857}}}, {"id": "fm1-skiff", "name": "Skiff", "version": "1.3.1", "col": "#f7c948", "community": true, "v": {"fm1": {"product": "FM-1_713", "pkg": "firmware/fm1-skiff-1.3.1.fwsc", "sha256": "158ed997f7a248a390e809a53fde437c732122c60b6e247816e9b0bc7520a139", "size": 610090}}}, {"id": "fm1-sloop", "name": "SLOOP", "version": "2.7.1", "col": "#5fd7ff", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-sloop-2.7.1.fwsc", "sha256": "7c9d269d15d1c1a48e0ebada7ffa2c2aa196c19d51056fd3f760d322322b335f", "size": 610035}}}, {"id": "fm1-floydfm", "name": "SLOOP Floyd FM", "version": "2.4", "col": "#c9a2ff", "community": true, "v": {"fm1": {"product": "FM-1_924", "pkg": "firmware/fm1-floydfm-2.4.fwsc", "sha256": "d70301ad3e1f67a71792a2644829658a8570eceb0681ba2ac6eb41d771cc7560", "size": 609802}}}, {"id": "fm1-sloopdx", "name": "sloopDX", "version": "2.6", "col": "#ff8a3d", "community": true, "v": {"fm1": {"product": "FM-1_926", "pkg": "firmware/fm1-sloopdx-2.6.fwsc", "sha256": "51befaaff7fda55832c9d3a373642b95b60b5536e34944beaf55bc4c61704066", "size": 610110}}}, {"id": "fm1-unholyunion", "name": "Unholy Union", "version": "0.2.3", "col": "#e0453a", "community": true, "v": {"fm1": {"product": "FM-1_80023", "pkg": "firmware/fm1-unholyunion-0.2.3.fwsc", "sha256": "025bec05d71da1b106ecb05d52e165ea6592812e92209cfe2626278047f7abba", "size": 610567}}}, {"id": "fm1-winamp", "name": "winampFM", "version": "0.12", "col": "#ffd166", "community": true, "v": {"fm1": {"product": "FM-1_900", "pkg": "firmware/fm1-winamp-0.12.fwsc", "sha256": "32a78b18132be64b83557886f9fc1c8c4419adb8932a2b8bc83bb5fb7e681b0b", "size": 610019}}}, {"id": "fm1-x0x", "name": "X0X", "version": "1.1.0", "col": "#ed7962", "community": true, "v": {"fm1": {"product": "FM-1_9010100", "pkg": "firmware/fm1-x0x-1.1.0.fwsc", "sha256": "a0c29deb930c65f1d40b5691b7d673f861418b438b7e65027cb9c671e6f44f5b", "size": 609684}}}, {"id": "fm1-x0x-rmx", "name": "X0X-RMX", "version": "1.0.1", "col": "#f7c948", "community": true, "v": {"fm1": {"product": "FM-1_987010001", "pkg": "firmware/fm1-x0x-rmx-1.0.1.fwsc", "sha256": "42190c2dffbda6d89807e40b68dd8d2426ef502fa3848dc47bb1af37e34a2fd3", "size": 609680}}}, {"id": "fm1-zen", "name": "ZEN-1", "version": "1.0.2", "col": "#ff5a5a", "community": true, "v": {"fm1": {"product": "FM-1_6010002", "pkg": "firmware/fm1-zen-1.0.2.fwsc", "sha256": "d80b6b63b170d442e8bf6462a3ca3d7bbebedad58872812ba395b64c02e40f02", "size": 609657}}}];
 const $ = (id) => document.getElementById(id);
 const IS_OTA_ID = (id) => /^ota-/i.test(id.model);
 const PENDING = "smk37.pending";                       // the firmware an interrupted install was writing
@@ -3388,10 +3225,12 @@ async function tell(act, id, q) {                      // -> the card's {i, l}, 
   catch (_) { return null; }
 }
 const counted = (id, dev) => { tell("install", id, dev ? "?dev=" + dev : ""); };   // a finished install (dev: "fm1" or "smk", counted apart)
-const stats = {};                                      // fw id -> { i: installs, l: likes }
+const stats = {};                                      // fw id -> { i: installs, l: likes, f: FM-1 installs }
 function paint(card) {
   const id = card.dataset.fw, s = stats[id] || { i: 0, l: 0 }, on = likedSet().has(id), h = card.querySelector(".heart");
-  card.querySelector(".ci").textContent = compact(s.i);
+  const f = s.f || 0, cf = card.querySelector(".cfi");   // (the FM-1 build's installs, counted apart since 2026-10-18)
+  card.querySelector(".ci").textContent = compact(card.dataset.community ? s.i : Math.max(0, s.i - f));
+  if (cf) cf.textContent = compact(f);
   card.querySelector(".cl").textContent = compact(s.l);
   h.textContent = on ? "\u2665\ufe0e" : "\u2661\ufe0e";  // (text style, not emoji)
   h.setAttribute("aria-pressed", String(on));
@@ -3413,7 +3252,7 @@ async function request(card) {                        // as like(): optimistic, 
   s.r = Math.max(0, (s.r || 0) + (on ? 1 : -1));
   reqSave(id, on); b.disabled = true; paint(card);
   const r = await tell(on ? "req" : "unreq", id);
-  if (r && Number.isFinite(r.i) && Number.isFinite(r.l)) { s.i = r.i; s.l = r.l; s.r = Number.isFinite(r.r) ? r.r : 0; }
+  if (r && Number.isFinite(r.i) && Number.isFinite(r.l)) { s.i = r.i; s.l = r.l; s.r = Number.isFinite(r.r) ? r.r : 0; if (Number.isFinite(r.f)) s.f = r.f; }
   else { Object.assign(s, was); if (!("r" in was)) delete s.r; reqSave(id, !on); }
   b.disabled = false; paint(card);
 }
@@ -3424,7 +3263,7 @@ async function like(card) {                            // optimistic; back to th
   s.l = Math.max(0, s.l + (on ? 1 : -1));
   likedSave(id, on); h.disabled = true; paint(card);
   const r = await tell(on ? "like" : "unlike", id);
-  if (r && Number.isFinite(r.i) && Number.isFinite(r.l)) { s.i = r.i; s.l = r.l; }
+  if (r && Number.isFinite(r.i) && Number.isFinite(r.l)) { s.i = r.i; s.l = r.l; if (Number.isFinite(r.f)) s.f = r.f; }
   else { Object.assign(s, was); likedSave(id, !on); }
   h.disabled = false; paint(card);
 }
@@ -3459,7 +3298,7 @@ async function counter() {                             // -> true when the numbe
     if (!r.ok) return false;
     const got = await r.json();
     if (!got || typeof got !== "object") return false;
-    for (const [id, s] of Object.entries(got)) if (s && Number.isFinite(s.i) && Number.isFinite(s.l)) stats[id] = { i: s.i, l: s.l, ...(Number.isFinite(s.r) ? { r: s.r } : {}) };
+    for (const [id, s] of Object.entries(got)) if (s && Number.isFinite(s.i) && Number.isFinite(s.l)) stats[id] = { i: s.i, l: s.l, ...(Number.isFinite(s.r) ? { r: s.r } : {}), ...(Number.isFinite(s.f) ? { f: s.f } : {}) };
   } catch (_) { return false; }
   finally { clearTimeout(t); }
   sortCards(); toHash();
