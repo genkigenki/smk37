@@ -459,7 +459,10 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
         <li><b class="q">An install stopped part way (cable, power, closed tab)</b>
           Nothing serious. Plug the keyboard in, open the <a href="./#firmwares">firmware page</a>, press <b>Connect</b>, then Install again: it goes on where it stopped.</li>
         <li><b class="q">It hangs at "switching to update mode" from M-Vave's firmware</b>
-          The first install needs M-Vave's <b>V016</b>. On V013 or V015, update with M-Vave's updater (M-UPGRADE) first. Connect on the firmware page shows which version runs.</li>
+          <b>The browser freezes there (Windows, Chrome or Edge):</b> a known browser bug while M-Vave's firmware restarts into
+          update mode. Close the browser (Task Manager), open the page again, press Connect and Install again: the keyboard waits in
+          update mode and the install goes through.<br>
+          <b>Otherwise:</b> the first install needs M-Vave's <b>V016</b>. On V013 or V015, update with M-Vave's updater (M-UPGRADE) first. Connect on the firmware page shows which version runs.</li>
         <li><b class="q">The new firmware does not start (dark, or restarting)</b>
           Hold <b>OCTAVE−</b> and <b>OCTAVE+</b> for 5 s: most firmwares here open their update mode. Then install again,
           or go back to M-Vave's firmware (<a href="./#stock">on the firmware page</a>; it also finishes from update mode).</li>
