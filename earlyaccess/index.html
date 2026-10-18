@@ -191,6 +191,18 @@ footer .coffee a { color: var(--amber); font-weight: 600; }
 .card .heart:hover { color: var(--c, var(--mag)); }
 .card .heart:focus-visible { outline: 1px solid var(--c, var(--cyan)); outline-offset: 2px; }
 .card .heart:disabled { cursor: default; }
+/* the community cards: "Request SMK-37 port" and its count (the counter), or a quiet link to the SMK-37 port */
+.card .reqbox { display: inline-flex; align-items: center; gap: 6px; font: 11px "JetBrains Mono", monospace; color: var(--dim); }
+.card .reqbox[hidden] { display: none; }
+.card .reqbox b { font-weight: 500; color: #c3d8e3; }
+.card .req { padding: 3px 7px; border: 1px solid rgba(143, 166, 180, .45); border-radius: 4px; background: none; color: #8fa6b4;
+  font: 10px "JetBrains Mono", monospace; letter-spacing: .04em; cursor: pointer; }
+.card .req:hover { color: var(--c, var(--cyan)); border-color: var(--c, var(--cyan)); }
+.card .req[aria-pressed="true"] { color: var(--c, var(--cyan)); border-color: var(--c, var(--cyan)); }
+.card .req:disabled { cursor: default; }
+.card .onsmk { font: 11px "JetBrains Mono", monospace; color: var(--dim); text-decoration: none; }
+.card .onsmk:hover { color: var(--c, var(--cyan)); text-decoration: underline; }
+.card.fw[data-community] .screen img { image-rendering: auto; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .card .inst { border-color: var(--c); background: transparent; cursor: pointer;
   box-shadow: 0 0 14px -4px var(--c), inset 0 0 12px -6px var(--c); }
@@ -301,6 +313,9 @@ label.file input { display: none; }
 body[data-dev="fm1"] .fm1only { display: block; }
 body[data-dev="fm1"] .card.fw:not([data-fm1]), body[data-dev="fm1"] #fm1-ports, body[data-dev="fm1"] #stock { display: none; }
 body[data-dev="fm1"] .ghead .smkword { display: none; }
+#fm1-community { display: none; }                                 /* the community's FM-1 firmwares: the FM-1 tab only */
+body[data-dev="fm1"] #fm1-community { display: block; }
+#fm1-community .ghead p + p { margin-top: 8px; }
 .card .warnnote { font-size: 14px; color: var(--amber); margin: 8px 0 0; }
 .fm1note { display: none; font-size: 14px; color: var(--amber); }
 body[data-dev="fm1"] .fm1note { display: block; }
@@ -1289,7 +1304,8 @@ async function scan() {
     showModels();
     if (detected === "fm1") {                              // (a page with FM-1 packages)
       led("on", "FM-1 connected", (IS_OTA_ID(dev.id) ? "In update mode (" + dev.id.text + ")" : "Running " + dev.id.text) + " · port " + dev.name +
-        " · FM-1 builds here: " + FW.filter((f) => f.v.fm1).map((f) => f.name).join(", "));
+        " · FM-1 builds here: " + FW.filter((f) => f.v.fm1 && !f.community).map((f) => f.name).join(", ") +
+        (FW.some((f) => f.community) ? ", and the community's firmwares below" : ""));
       connected = true; return;
     }
     const model = dev.id.model.replace(/^ota-/i, "");
@@ -1836,6 +1852,11 @@ const likedSet = () => { try { return new Set(JSON.parse(localStorage.getItem(LI
 function likedSave(id, on) {
   try { const s = likedSet(); if (on) s.add(id); else s.delete(id); localStorage.setItem(LIKED, JSON.stringify([...s])); } catch (_) {}
 }
+const REQ = "smk37.requested";                        // the SMK-37 ports this browser asked for: kept only here, as the likes
+const reqSet = () => { try { return new Set(JSON.parse(localStorage.getItem(REQ) || "[]")); } catch (_) { return new Set(); } };
+function reqSave(id, on) {
+  try { const s = reqSet(); if (on) s.add(id); else s.delete(id); localStorage.setItem(REQ, JSON.stringify([...s])); } catch (_) {}
+}
 const compact = (n) => (n < 1000 ? String(n) : n < 1e6 ? +(n / 1e3).toFixed(n < 1e4 ? 1 : 0) + "k" : +(n / 1e6).toFixed(n < 1e7 ? 1 : 0) + "M");
 async function tell(act, id) {                         // -> the card's {i, l}, or null (offline, 429, ...); never throws
   try { const r = await fetch(COUNTER + "/" + act + "/" + id, { method: "POST", keepalive: true }); return r.ok ? await r.json() : null; }
@@ -1851,6 +1872,25 @@ function paint(card) {
   h.setAttribute("aria-pressed", String(on));
   card.querySelector(".cnt").hidden = false;
   card.querySelector(".likebox").hidden = false;
+  const rb = card.querySelector(".reqbox");             // (community cards: "Request SMK-37 port")
+  if (rb) {
+    const ron = reqSet().has(id), b = rb.querySelector(".req");
+    rb.querySelector(".cr").textContent = compact(s.r || 0);
+    b.setAttribute("aria-pressed", String(ron));
+    b.textContent = ron ? "SMK-37 port requested" : "Request SMK-37 port";
+    rb.hidden = false;
+  }
+}
+async function request(card) {                        // as like(): optimistic, one per browser, back if the counter says no
+  const id = card.dataset.fw, b = card.querySelector(".req");
+  if (b.disabled) return;
+  const on = !reqSet().has(id), s = stats[id] || (stats[id] = { i: 0, l: 0 }), was = { ...s };
+  s.r = Math.max(0, (s.r || 0) + (on ? 1 : -1));
+  reqSave(id, on); b.disabled = true; paint(card);
+  const r = await tell(on ? "req" : "unreq", id);
+  if (r && Number.isFinite(r.i) && Number.isFinite(r.l)) { s.i = r.i; s.l = r.l; s.r = Number.isFinite(r.r) ? r.r : 0; }
+  else { Object.assign(s, was); if (!("r" in was)) delete s.r; reqSave(id, !on); }
+  b.disabled = false; paint(card);
 }
 async function like(card) {                            // optimistic; back to the old state if the counter says no
   const id = card.dataset.fw, h = card.querySelector(".heart");
@@ -1894,11 +1934,15 @@ async function counter() {                             // -> true when the numbe
     if (!r.ok) return false;
     const got = await r.json();
     if (!got || typeof got !== "object") return false;
-    for (const [id, s] of Object.entries(got)) if (s && Number.isFinite(s.i) && Number.isFinite(s.l)) stats[id] = { i: s.i, l: s.l };
+    for (const [id, s] of Object.entries(got)) if (s && Number.isFinite(s.i) && Number.isFinite(s.l)) stats[id] = { i: s.i, l: s.l, ...(Number.isFinite(s.r) ? { r: s.r } : {}) };
   } catch (_) { return false; }
   finally { clearTimeout(t); }
   sortCards(); toHash();
-  document.querySelectorAll(".card.fw").forEach((c) => { paint(c); c.querySelector(".heart").addEventListener("click", () => like(c)); });
+  document.querySelectorAll(".card.fw").forEach((c) => {
+    paint(c); c.querySelector(".heart").addEventListener("click", () => like(c));
+    const rq = c.querySelector(".req");
+    if (rq) rq.addEventListener("click", () => request(c));
+  });
   return true;
 }
 const counterReady = counter();
