@@ -1278,14 +1278,15 @@ async function access() {
 }
 async function scan() {
   if (busy) return;
-  led("busy", "Looking for the SMK-37…", "");
+  const devName = document.body.dataset.dev === "fm1" ? "FM-1" : "SMK-37";   // (the tab picked: SMK-37 or FM-1)
+  led("busy", "Looking for the " + devName + "…", "");
   try {
     const up = new Updater(await access(), () => {}, { all: allPorts });
     const dev = await up.find();
     connected = false;
     if (!dev) {
       lastId = null; lastPort = ""; stockShow();
-      led("err", "No SMK-37 found", "Check the USB cable (a data cable), close other apps that use MIDI, then press Connect.");
+      led("err", "No " + devName + " found", "Check the USB cable (a data cable), close other apps that use MIDI, then press Connect.");
       portList([...midi.inputs.values()].filter((i) => i.state !== "disconnected").map((i) => i.name || "(no name)"));
       return;
     }
