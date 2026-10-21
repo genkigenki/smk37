@@ -1820,7 +1820,7 @@ async function repairRun() {
         const done = "Done! Your keyboard's key mapping is repaired. " +
           (f & 4 ? "Calibration, wheel values and pairings are back." : "Calibration and pairings are back (there were no wheel values to keep).") +
           (f & 0x18 ? " Some of it could not be put back (flags " + f + "): please Copy log and send it to us." : "") +
-          " M-Vave's firmware starts in a moment.";
+          " M-Vave's firmware starts in a moment. If the wheels don't respond, run the wheel calibration in M-Vave's settings once.";
         await new Promise((resolve, reject) => {
           let written = false;
           rstock(up, k, (key, a) => {
