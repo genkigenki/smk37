@@ -1305,7 +1305,7 @@ async function scan() {
     }
     if (!SMK(dev.id) && !(FM1_PAGE && FM1(dev.id))) { led("err", dev.id.text + ": not an SMK-37", "These packages are for the M-Vave SMK-37 keyboards only (SMK-37 Pro, Elite, MKE-P37)."); return; }
     detected = modelOf(dev.id);
-    if (window.setDev) window.setDev(detected === "fm1" ? "fm1" : "smk", true);
+    if (window.setDev) window.setDev(detected === "fm1" ? "fm1" : "smk");
     showModels();
     if (detected === "fm1") {                              // (a page with FM-1 packages)
       led("on", "FM-1 connected", (IS_OTA_ID(dev.id) ? "In update mode (" + dev.id.text + ")" : "Running " + dev.id.text) + " · port " + dev.name +

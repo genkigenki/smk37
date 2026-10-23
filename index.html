@@ -2132,33 +2132,32 @@ body[data-page="help"] #repair { max-width: none; margin-top: 30px; }
 })();
 </script>
 <script>
-/* the device selector: SMK-37 or FM-1 (#fm1 in the address, remembered; Connect switches to what it finds) */
+/* the device selector: SMK-37 or FM-1 (#fm1 in the address; the plain address is always the SMK-37; Connect switches
+ * to what it finds) */
 (() => {
   const btns = document.querySelectorAll(".devbtn");
-  const set = (d, keep) => {
+  const set = (d) => {
     d = d === "fm1" ? "fm1" : "smk";
     document.body.dataset.dev = d;
     btns.forEach((b) => b.setAttribute("aria-checked", String(b.dataset.dev === d)));
-    if (keep) { try { localStorage.setItem("smk37-dev", d); } catch (e) {} }
     const h = d === "fm1" ? "#fm1" : "";
     if (location.hash !== h && (h || location.hash === "#fm1")) history.replaceState(null, "", h || location.pathname + location.search);
   };
   window.setDev = set;
-  btns.forEach((b) => b.addEventListener("click", () => set(b.dataset.dev, true)));
-  let d = location.hash === "#fm1" ? "fm1" : "";
-  if (!d) { try { d = localStorage.getItem("smk37-dev") || ""; } catch (e) {} }
-  set(d || "smk", false);
+  btns.forEach((b) => b.addEventListener("click", () => set(b.dataset.dev)));
+  try { localStorage.removeItem("smk37-dev"); } catch (e) {}   // (the tab was remembered before: forgotten)
+  set(location.hash === "#fm1" ? "fm1" : "smk");
   // a card of the other tab (#fw-x, e.g. "on the SMK-37 too" on an FM-1 card): that tab, then the card
   const toCard = () => {
     const c = /^#fw-[a-z0-9-]+$/.test(location.hash) && document.getElementById(location.hash.slice(1));
     const fm1 = document.body.dataset.dev === "fm1";
     if (!c || (fm1 ? !!c.dataset.fm1 : !c.dataset.community)) return;   // (shown on this tab)
-    set(fm1 ? "smk" : "fm1", true);
+    set(fm1 ? "smk" : "fm1");
     c.scrollIntoView({ block: "start" });
   };
   toCard();
-  addEventListener("hashchange", () => { if (location.hash === "#fm1") set("fm1", true); else toCard(); });   // (the page already open: only the hash changes)
-  addEventListener("pageshow", (e) => { if (e.persisted && location.hash === "#fm1") set("fm1", true); });
+  addEventListener("hashchange", () => { if (location.hash === "#fm1") set("fm1"); else toCard(); });   // (the page already open: only the hash changes)
+  addEventListener("pageshow", (e) => { if (e.persisted && location.hash === "#fm1") set("fm1"); });
 })();
 </script>
 <script type="module">
@@ -2886,7 +2885,7 @@ async function scan() {
     }
     if (!SMK(dev.id) && !(FM1_PAGE && FM1(dev.id))) { led("err", dev.id.text + ": not an SMK-37", "These packages are for the M-Vave SMK-37 keyboards only (SMK-37 Pro, Elite, MKE-P37)."); return; }
     detected = modelOf(dev.id);
-    if (window.setDev) window.setDev(detected === "fm1" ? "fm1" : "smk", true);
+    if (window.setDev) window.setDev(detected === "fm1" ? "fm1" : "smk");
     showModels();
     if (detected === "fm1") {                              // (a page with FM-1 packages)
       led("on", "FM-1 connected", (IS_OTA_ID(dev.id) ? "In update mode (" + dev.id.text + ")" : "Running " + dev.id.text) + " · port " + dev.name +
