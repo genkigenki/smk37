@@ -3224,7 +3224,8 @@ async function stockInstall() {
   const ok = await confirmInstall("Back to the M-Vave firmware?",
     "Install the M-Vave " + k.name + " firmware V" + k.version + " on the connected keyboard (" + keyboardId() + ")?",
     stockFitNow && stockFitNow !== "same" ? "The keyboard reports " + keyboardId() + ". Make sure this file is for the model printed on your keyboard." : "",
-    ["The firmware on the keyboard, and the sounds and settings it saved, are replaced. Calibration and pairing are kept.",
+    ["The firmware on the keyboard, and the sounds and settings it saved, are replaced.",
+     "Coming from one of the community firmwares: M-Vave's firmware may rebuild its key mapping on its first start, and that rebuild erases the calibration and the Bluetooth pairings. Repair on the help page goes back to M-Vave and keeps them.",
      "If it fails, the keyboard stays in update mode: plug it in again and press Install again.",
      "Keep the USB cable connected and this tab open until it says Done."]);
   if (!ok) { busy = false; lockCards(); return; }
@@ -3249,9 +3250,15 @@ async function stockInstall() {
     finish(false, e && e.code === "mismatch" ? "Written, but the keyboard reports " + e.detail + " instead of " + k.product + ". Switch it off and on, then connect again."
       : e && e.code === "other" ? OTHER_MSG
       : e && e.code === "model" ? "This file is not for this device (" + e.message + "). Nothing was written."
+      : e && (e.code === "stopped" || e.code === "timeout") && /^the (device|keyboard)/.test(e.message) ? STEP1_REFUSED
       : (e && e.message) || String(e));
   }
 }
+// step 1 ended without "success": the running firmware checked M-Vave's package and refused it (or stopped asking)
+const STEP1_REFUSED = "The firmware on the keyboard refused M-Vave's package: nothing was written. Its screen shows FAILED and a " +
+  "number for a moment. FAILED -5: the keyboard's boot area is not M-Vave's (another bootloader, for example m-bootloader, is " +
+  "installed): put M-Vave's back with M-Flasher, then try again. Any other number, or none seen: use Repair on the help page " +
+  "with the same file. It goes back to M-Vave through the repair firmware and keeps the calibration. Copy the log for a report.";
 $("sinst").addEventListener("click", stockInstall);
 
 /* ---- the repair wizard (#repair): repair firmware (STASH) -> V016 (rebuilds the mapping) -> repair firmware (RESTORE)
