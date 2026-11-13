@@ -319,7 +319,12 @@ body[data-dev="fm1"] .card.fw:not([data-fm1]), body[data-dev="fm1"] #fm1-ports, 
 body[data-dev="fm1"] .ghead .smkword { display: none; }
 #fm1-community { display: none; }                                 /* the community's FM-1 firmwares: the FM-1 tab only */
 body[data-dev="fm1"] #fm1-community { display: block; }
-#fm1-community .ghead p + p { margin-top: 8px; }
+#fm1-community .ghead p + p, #smk-community .ghead p + p { margin-top: 8px; }
+body[data-dev="fm1"] #smk-community { display: none; }             /* the community's SMK-37 firmwares: the SMK-37 tab only */
+.card.ext { display: flex; flex-direction: column; }               /* (a link card: no install from here) */
+.card.ext .screen { margin: 4px auto 20px; }
+.card.ext .screen img { image-rendering: auto; }
+.card.ext .foot { margin-top: auto; padding-top: 18px; }
 .card .warnnote { font-size: 14px; color: var(--amber); margin: 8px 0 0; }
 .fm1note { display: none; font-size: 14px; color: var(--amber); }
 body[data-dev="fm1"] .fm1note { display: block; }
